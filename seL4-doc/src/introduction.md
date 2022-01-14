@@ -5,7 +5,7 @@ This project presents an entry-level Developer Kit (DevKit) to help users gain f
 - providing software to run on it to demonstrate seL4 boot-up, basic drivers (networking, USB, and file systems), and a security domain demonstration application;
 - documenting the specific steps needed along with more general guidance.
 
-# Audience
+## Audience
 
 The intended audience for this seL4 DevKit is an application developer who:
 - has experience programming within a Linux/macOS environment;
