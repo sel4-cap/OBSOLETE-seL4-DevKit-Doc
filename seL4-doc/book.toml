@@ -1,0 +1,6 @@
+[book]
+authors = ["mjenk6502"]
+language = "en"
+multilingual = false
+src = "src"
+title = "seL4 DevKit"
