@@ -26,9 +26,9 @@ Host machine setup
 - Installation of Docker.
 - Creation and usage of the build environment docker image
 
-Target platform setup
-- How to connect up the MaaxBoard including the TTY connections.
-- Need good quality pictures in this section.
+Target platform setup **-MARK**
+- How to connect up the MaaxBoard including the TTY connections. **-MARK**
+- Need good quality pictures in this section. **-MARK**
 
 Bootloader
 - Describe why we need U-Boot, i.e. what it does for us.
