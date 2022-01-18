@@ -2,4 +2,26 @@
 
 [Introduction](introduction.md)
 
-- [Chapter 1](./chapter_1.md)
+# Basic Requirements
+
+- [Hardware Requirements]()
+- [Software Requirements]()
+
+# Setup
+
+- [Host Machine Setup]()
+- [Target Platform Setup]()
+- [Bootloader]()
+- [SD Card Preparation]()
+- [First Boot]()
+
+# seL4 Application Development
+
+- [Building Applications]()
+- [Execution on Target Platform]()
+
+---
+
+# Appendices
+
+[Guide to Porting seL4]()
