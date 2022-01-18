@@ -10,7 +10,7 @@
 # Setup
 
 - [Host Machine Setup]()
-- [Target Platform Setup]()
+- [Target Platform Setup](target_platform_setup.md)
 - [Bootloader]()
 - [SD Card Preparation]()
 - [First Boot]()
