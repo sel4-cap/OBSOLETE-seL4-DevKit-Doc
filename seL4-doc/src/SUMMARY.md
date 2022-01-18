@@ -14,11 +14,11 @@ Introduction / general overview
 - Document that all compilation for the target board will be performed within a Docker instance. This greatly simplifies the requirements on the host system.
 - Document that the guide will be talking about three different environments (host, target and docker build environment). Explain this split and how they will be consistently referred to throughout the guide.
 
-Hardware requirements. - JOSH
+Hardware requirements. - **JOSH**
 - Some are optional (e.g. a USB memory stick) depending on how a binary is loaded.
 - Provide a shopping list from Farnell of all of the required parts (including memory stick. SD card reader/writer if needed).
 
-Host software requirements. - JOSH
+Host software requirements. - **JOSH**
 - Some are optional (e.g. a TFTP server) depending on how a binary is loaded.
 
 Host machine setup
@@ -32,7 +32,7 @@ Target platform setup
 
 Bootloader
 - Describe why we need U-Boot, i.e. what it does for us.
-- Instructions on how to build U-Boot for the MaaxBoard. - JOSH
+- Instructions on how to build U-Boot for the MaaxBoard. - **JOSH**
 - Need to explain that the application needs to be loaded into RAM and then executed by our bootloader.
 - Explain that there are three primary mechanisms for loading the application into RAM by U-Boot (additional mechanisms such as download over the serial console are available but are very slow so have not been documented. Also download from on-board flash memory is possible but is not applicable to our target board). Need to discuss what are the advantages and disadvantages of each of the mechanisms we document, but that it’s up to the user to decide what works best for them.
     - From SD Card
@@ -42,10 +42,10 @@ Bootloader
 - Talk about how U-Boot operation can be configured by uEnv.txt file and provide our file to support this.
 
 SD card preparation
-- Partitioning of the card (commands / instructions for both macOS and Linux) - JOSH
-- Writing U-Boot boot loader. - JOSH
+- Partitioning of the card (commands / instructions for both macOS and Linux) - **JOSH**
+- Writing U-Boot boot loader. - **JOSH**
     - Need some warnings here about ‘dd’. Incorrect use can destroy your data / system.
-- Placement of uEnv.txt. - JOSH
+- Placement of uEnv.txt. - **JOSH**
 
 First boot
 - U-Boot only.
