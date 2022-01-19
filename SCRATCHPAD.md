@@ -1,6 +1,6 @@
 ------ Overview of intended structure and content of each section ------
 
-Introduction / general overview
+Introduction / general overview - **STEPHEN**
 - Development kit is based around the Avnet MaaxBoard target board, an iMX8 based SBC.
 - Guide is expected to be followed on either a macOS or Linux based host (however the instructions could be adapted for use on windows with Cygwin by an experienced user).
 - Guide will provide all of the information required up to and including the building and execution of an seL4 application for target board.
