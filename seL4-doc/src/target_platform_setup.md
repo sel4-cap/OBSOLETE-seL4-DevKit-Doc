@@ -34,12 +34,9 @@ The final photograph shows the MaaXBoard (anti-clockwise from the top):
 
 - populated with a Micro SD card;
 - connected to the power supply (USB-C);
-- connected to a USB flash drive;
-- connected to an Ethernet cable;
+- connected to a USB flash drive (may not be necessary if loading via Ethernet);
+- connected to an Ethernet cable (may not be necessary if loading from USB);
 - connected to a USB-to-TTL serial cable.
 
 ![Avnet MaaXBoard populated](figures/maaxboard-populated.png)
-
-
-## Sub-heading
 
