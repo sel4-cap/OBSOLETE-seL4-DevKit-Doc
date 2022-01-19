@@ -4,7 +4,7 @@
 
 # Basic Requirements
 
-- [Hardware Requirements]()
+- [Hardware Requirements](hardware_requirements.md)
 - [Software Requirements]()
 
 # Setup
@@ -12,7 +12,7 @@
 - [Host Machine Setup]()
 - [Target Platform Setup](target_platform_setup.md)
 - [Bootloader]()
-- [SD Card Preparation]()
+- [SD Card Preparation](sd_card_preparation.md)
 - [First Boot]()
 
 # seL4 Application Development
