@@ -26,13 +26,13 @@ Target platform setup **-MARK**
 Bootloader
 - Describe why we need U-Boot, i.e. what it does for us.
 - Instructions on how to build U-Boot for the MaaxBoard. - **JOSH**
-- Need to explain that the application needs to be loaded into RAM and then executed by our bootloader.
-- Explain that there are three primary mechanisms for loading the application into RAM by U-Boot (additional mechanisms such as download over the serial console are available but are very slow so have not been documented. Also download from on-board flash memory is possible but is not applicable to our target board). Need to discuss what are the advantages and disadvantages of each of the mechanisms we document, but that it’s up to the user to decide what works best for them.
-    - From SD Card
-    - From USB storage device
-    - From TFTP - Best for a d=an application development environment as no need to keep plugging / unplugging anything from the board.
-- Need to document the key U-Boot commands that are required.
-- Talk about how U-Boot operation can be configured by uEnv.txt file and provide our file to support this.
+- Need to explain that the application needs to be loaded into RAM and then executed by our bootloader. **-MARK**
+- Explain that there are three primary mechanisms for loading the application into RAM by U-Boot (additional mechanisms such as download over the serial console are available but are very slow so have not been documented. Also download from on-board flash memory is possible but is not applicable to our target board). Need to discuss what are the advantages and disadvantages of each of the mechanisms we document, but that it’s up to the user to decide what works best for them. **-MARK**
+    - From SD Card **-MARK**
+    - From USB storage device **-MARK**
+    - From TFTP - Best for a d=an application development environment as no need to keep plugging / unplugging anything from the board. **-MARK**
+- Need to document the key U-Boot commands that are required. **-MARK**
+- Talk about how U-Boot operation can be configured by uEnv.txt file and provide our file to support this. **-MARK**
 
 SD card preparation
 - Partitioning of the card (commands / instructions for both macOS and Linux) - **JOSH**
