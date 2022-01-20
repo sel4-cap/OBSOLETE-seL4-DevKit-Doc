@@ -9,10 +9,10 @@ Developing on top of the seL4 microkernel is currently complex and time consumin
 # Introduction
 
 This document presents an entry-level developer kit to help users gain familiarity with using the seL4 microkernel and ultimately to encourage more use of seL4 within projects and products. It does this by:
-- selecting a readily available, low-cost single board computer (the [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/));
+- selecting a readily available, low-cost single board computer (the [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/)) as the target platform;
 - detailing the minimum hardware and software requirements necessary to follow the guide;
-- supplying the required development tools to be able to generate seL4 executable images;
-- demonstrating how an seL4 executable image can be loaded and executed on the chosen development board; and
+- supplying a preconfigured build environment with all tools required to generate seL4 executable images;
+- demonstrating how an seL4 executable image can be loaded and executed on the chosen target platform; and
 - documenting the specific steps needed along with more general guidance.
 
 This developer kit does not cover or replace any of the extensive documentation and tutorials of the [seL4 website](https://sel4.systems). 
@@ -20,18 +20,20 @@ This developer kit does not cover or replace any of the extensive documentation 
 ## Audience
 
 The intended audience for this developer kit is an application developer who:
-- has experience programming within a Linux/macOS environment;
+- has experience programming within a Linux, macOS or Windows environment;
 - is already familiar with seL4's concepts and benefits; and
 - is looking for more practical guidance to get started with seL4.
 
-Whilst the developer kit documentation aims to cover all the salient points and commands, it assumes a reasonable level of developer knowledge and does not necessarily cover every detail of 'standard' Linux/macOS environments (for example, it covers seL4-related installation, but does not cover, say, installation of macOS Xcode command line tools).
+Whilst the developer kit documentation aims to cover all the salient points and commands, it assumes a reasonable level of developer knowledge and does not necessarily cover every detail of 'standard' Linux/macOS/Windows environments (for example, it covers seL4-related installation, but does not cover, say, installation of Docker).
 
 ## Development Environments
 
 Throughout this developer kit activities will be performed across three different environments:
 
-1. **Host environment**: xxx. 
+1. **Host Machine**: The engineer's host machine. This can be either macOS, Linux or Windows based. 
 
-2. **Build environment**: xxx.
+2. **Build environment**: The environment within which all binaries for the target environment are built. This is a Linux based development environment running within a [Docker](https://www.docker.com) container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.
 
-3. **Target environment**: The [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/) single board computer. This is the environment upon which seL4 binaries are executed. User interaction with this environment is performed via a serial console from the host environment.
+3. **Target Platform**: The [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/), a single board computer based around the [NXP i.MX 8M SoC (system on chip)](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-processors/i-mx-8m-family-armcortex-a53-cortex-m4-audio-voice-video:i.MX8M). This is the environment upon which seL4 binaries are executed. User interaction with the target platform is performed via a serial console from the host machine.
+
+The required configuration of the host and target environments are detailed in the [Host Machine Setup](host_machine_setup.md) and [Target Platform Setup](target_platform_setup.md) sections. A preconfigured build environment is supplied as part of this developer kit as detailed in the [TBD](tbd) section.

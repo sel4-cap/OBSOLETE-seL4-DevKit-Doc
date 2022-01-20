@@ -9,7 +9,7 @@
 
 # Setup
 
-- [Host Machine Setup]()
+- [Host Machine Setup](host_machine_setup.md)
 - [Target Platform Setup](target_platform_setup.md)
 - [Bootloader]()
 - [SD Card Preparation](sd_card_preparation.md)
