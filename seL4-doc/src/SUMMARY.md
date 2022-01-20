@@ -18,7 +18,7 @@
 # seL4 Application Development
 
 - [Building Applications]()
-- [Execution on Target Platform]()
+- [Execution on Target Platform](seL4-doc/src/execution_on_target_platform.md)
 
 ---
 
