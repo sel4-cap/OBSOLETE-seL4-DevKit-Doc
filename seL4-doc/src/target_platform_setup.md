@@ -10,7 +10,7 @@ The following shows a plan view of the MaaxBoard with heat sink attached:
 
 ![Avnet MaaXBoard plan view](figures/avnet-maaxboard-plan.png)
 
-For clarity, not all of the components have been labelled, only those to which we are going to refer. Full hardware details are given in the [MaaXBoard Hardware User Manual](https://www.avnet.com/wps/wcm/connect/onesite/1e83cac7-ebe8-4be4-8776-6781e3833d11/MaaXBoard-Hardware_UserManual-V1.2-EN.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-1e83cac7-ebe8-4be4-8776-6781e3833d11-nVsEcIl), including the full pin-out for the 40-pin GPIO connector, but the only three pins that we use are labelled in red in the photograph. For reference, pin 1 is also labelled in blue and the numbering is as follows:
+For clarity, not all of the components have been labelled, only those to which we are going to refer. Full hardware details are given in the [MaaXBoard Hardware User Manual](https://www.avnet.com/wps/wcm/connect/onesite/1e83cac7-ebe8-4be4-8776-6781e3833d11/MaaXBoard-Hardware_UserManual-V1.2-EN.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-1e83cac7-ebe8-4be4-8776-6781e3833d11-nVsEcIl), including the full pin-out for the 40-pin GPIO connector, but we only use the three pins that are labelled in red in the photograph. For reference, pin 1 is also labelled in blue and the numbering is as follows:
 
 ![GPIO pin numbering](figures/GPIO-pin-out.png)
 
@@ -33,7 +33,7 @@ The red lead is wired to the USB connector's Vcc 5V power; however, this is not 
 The final photograph shows the MaaXBoard (anti-clockwise from the top):
 
 - populated with a Micro SD card;
-- connected to the power supply (USB-C);
+- connected to a power supply (USB-C);
 - connected to a USB flash drive (may not be necessary if loading via Ethernet);
 - connected to an Ethernet cable (may not be necessary if loading from USB);
 - connected to a USB-to-TTL serial cable.
