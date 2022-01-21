@@ -40,9 +40,9 @@ SD card preparation
     - Need some warnings here about ‘dd’. Incorrect use can destroy your data / system.
 - Placement of uEnv.txt. - **JOSH**
 
-First boot
-- U-Boot only.
-- Demonstrate access to the U-Boot console.
+First boot **-MARK**
+- U-Boot only. **-MARK**
+- Demonstrate access to the U-Boot console. **-MARK**
 
 Building applications and executing on the target platform
 - Use seL4-test as a worked example.
