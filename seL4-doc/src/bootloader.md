@@ -56,5 +56,7 @@ Loading via TFTP is considered to be the best method within an application devel
 
 ### U-Boot Commands for Loading
 
+NB tie-in with First Boot section here, so I've started that in parallel...
+
 ### U-Boot Configuration File
 
