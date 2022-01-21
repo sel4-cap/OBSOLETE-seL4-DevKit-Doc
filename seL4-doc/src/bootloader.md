@@ -16,7 +16,7 @@ After U-Boot has configured the MaaXBoard's memory and devices, it is able to lo
 
 ### Methods of Loading
 
-We cover the three primary mechanisms for loading the application into RAM by U-Boot below:
+We cover three primary mechanisms for loading the application into RAM by U-Boot:
 
 - from SD card;
 - from USB flash drive;
@@ -28,7 +28,33 @@ The remainder of this section assumes that you have an application in the form o
 
 #### Loading from SD Card
 
-The SD card is used to store U-Boot, the boot loader. The SD card may also be used to store the application.
+The SD card is used to store U-Boot, the boot loader. The SD card may also be used to store the application's ELF file to be loaded by the boot loader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, there is a `BOOT` partition that is suitable for this.
 
-Firstly, you need to write the executable ELF file to the SD card. If you have partitioned your SD card as described in the [SD Card Preparation](sd_card_preparation.md) section, you should have a `BOOT` partition. Simply copy the application file (`sel4_image` in our example) to the `BOOT` partition of the SD card.
+An advantage of this approach is that it makes more use of a single medium that (a) is already required to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
+
+A disadvantage is that while U-Boot is a likely to be a relatively static artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
+
+#### Loading from USB Flash Drive
+
+The MaaXBoard has two USB 3.0 connectors that U-Boot is able to access, so the application file may be stored on a removable USB flash drive (i.e. thumb/pen drive) and loaded into RAM by U-Boot.
+
+Compared with loading from SD card, this approach has the advantage of leaving the SD card and its U-Boot image undisturbed, although it still involves physical insertion and removal of the flash drive on both the development board and the host machine whenever a new version is to be tested.
+
+#### Loading via TFTP
+
+The MaaXBoard has an Ethernet port that U-Boot is able to access, and the application file may be downloaded from the host machine over TFTP (Trivial File Transfer Protocol), a convenient and popular method for booting.
+
+Connection options include either a direct Ethernet connection:
+
+![TFTP option direct connection](figures/TFTP-option-direct.png)
+
+Or a network connection via a router:
+
+![TFTP option router connection](figures/TFTP-option-router.png)
+
+Loading via TFTP is considered to be the best method within an application development environment as there is no need keep plugging and unplugging anything from the board.
+
+### U-Boot Commands for Loading
+
+### U-Boot Configuration File
 

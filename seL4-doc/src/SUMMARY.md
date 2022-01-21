@@ -13,7 +13,7 @@
 - [Target Platform Setup](target_platform_setup.md)
 - [Boot Loader](bootloader.md)
 - [SD Card Preparation](sd_card_preparation.md)
-- [First Boot]()
+- [First Boot](first_boot.md)
 
 # seL4 Application Development
 
