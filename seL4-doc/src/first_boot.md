@@ -166,7 +166,7 @@ The following log shows the difference when the MaaXBoard boots with the same sc
 ```
 To continue with this scenario: 
 
-1. Identify the IP address of the Ethernet adapter of the host machine. To establish this as the TFTP server for the MaaXBoard, issue the U-Boot console command `setenv serverip <IP address>` (substituting <IP address> for your own host machine's IP address on this Ethernet adapter).
+1. To resolve the error in lines 66 and 71 of the log above, identify the IP address of the Ethernet adapter of the host machine. To establish this as the TFTP server for the MaaXBoard, issue the U-Boot console command `setenv serverip <IP address>` (substituting <IP address> for your own host machine's IP address on this Ethernet adapter).
     - The IP address is available from the macOS/Linux `ifconfig` command or the TFTP Server user interface (i.e. 192.168.0.11 in the screenshot below). Note: this is different to the previous example as we are using the Wi-Fi Ethernet adapter en1, whose IP address has been allocated by the router.
  
 ![TFTP Server UI for direct Ethernet connection](figures/tftp-server-wifi-en1.png)

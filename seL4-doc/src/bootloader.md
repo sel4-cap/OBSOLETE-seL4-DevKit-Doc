@@ -32,7 +32,7 @@ The SD card is used to store the boot loader, U-Boot. The SD card may also be us
 
 An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
 
-A disadvantage is that while U-Boot is a likely to be a relatively unchanging artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
+A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
 
 #### Loading from USB Flash Drive
 
@@ -52,11 +52,53 @@ Or a network connection via a router:
 
 ![TFTP option router connection](figures/TFTP-option-router.png)
 
-Loading via TFTP is considered to be the best method within an application development environment as there is no need keep plugging and unplugging anything from the board.
+These two Ethernet configurations are covered in some more detail in the [First Boot](first_boot.md) section.
+
+Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need keep plugging and unplugging anything from the board.
 
 ### U-Boot Commands for Loading
 
-NB tie-in with First Boot section here, so I've started that in parallel...
+Ethernet-related examples of U-Boot commands for loading are given the [First Boot](first_boot.md) section. Broadly, these involve establishing the `serverip` and `ipaddr` environment variables via the `setenv` command, and then issuing `tftp ${loadaddress} sel4_image` to initiate the transfer to RAM.
+
+There are corresponding U-Boot commands for loading the application into RAM from the SD card and USB flash drive: both use FAT partitions and use the same `loadfat` command.
+
+More details are covered by the `uENV.txt` configuration file in the next section.
 
 ### U-Boot Configuration File
+
+Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card.
+
+```
+### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
+### the device IP address. If no static IP address is provided one will attempt to
+### assigned using DHCP / BOOTP.
+
+### ipaddr=192.168.100.50
+netmask=255.255.255.0
+
+### Uncomment and define the 'serverip' address to set the IP address of the
+### TFTP server. If no server IP address is defined then no attempt to boot
+### from TFTP will be made.
+
+serverip=192.168.0.11
+
+### Define the name of the ELF binary to boot.
+
+elf_binary_file=sel4_image
+
+### Attempt to boot the ELF binary. The following locations will be searched in
+### priority order:
+### 1. USB mass storage devices with a FAT filesystem.
+### 2, SD Card / eMMC devices with a FAT filesystem.
+### 3. TFTP server.
+
+elf_dev_boot=if ${devtype} dev ${devnum}; then echo Booting ELF binary from ${devtype} ${devnum} ...; fatload ${devtype} ${devnum} ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}; fi
+elf_tftp_boot_0=if test -n ${serverip}; then run elf_tftp_boot_1; else echo Skipping booting ELF binary from TFTP, serverip not defined; fi
+elf_tftp_boot_1=if test -n ${ipaddr}; then echo Using statically defined IP address; else echo Setting IP address from DHCP / BOOTP; setenv autoload no; dhcp; fi; run elf_tftp_boot_2
+elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}
+uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
+```
+
+In the example above, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, 
+[here](first_boot.md#MaaXBoard_with_Ethernet_Connection_to_DHCP_Router)
 
