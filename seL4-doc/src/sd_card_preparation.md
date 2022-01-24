@@ -11,7 +11,7 @@ the disk_images folder and selecting the image you want to use, and downloading 
 5. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your Maaxboard. The name of the ELF binary U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
 
 ## Setting up U-Boot config
-A U-Boot configuration file is contained within the images provided. It is located in the root of the  `BOOT`  partition. It contains 3 main configurable items:
+A U-Boot configuration file is contained within the images provided. It is placed in the root of the  `BOOT`  partition, and should be named 'uEnv.txt'. It contains 3 main configurable items:
 1. U-Boot network configuration (ipaddr and netmask): use this to manually configure the IP address and subnet for U-Boot to use, or comment them out too have them assigned by DHCP/BootP.
 2. TFTP server IP address: the IP address of the server to use for network boot, should you wish to boot the Maaxboard from a TFTP server.
 3. ELF binary name: the name of the ELF binary the U-Boot will try to load, first from a USB device, then a SD card and finally the configured TFTP server. This boot order can be configured a the bottom of the file.  
