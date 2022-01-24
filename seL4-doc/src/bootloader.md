@@ -28,11 +28,11 @@ The remainder of this section assumes that you have an application in the form o
 
 #### Loading from SD Card
 
-The SD card is used to store U-Boot, the boot loader. The SD card may also be used to store the application's ELF file to be loaded by the boot loader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, there is a `BOOT` partition that is suitable for this.
+The SD card is used to store the boot loader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the boot loader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, the `BOOT` partition is used for this.
 
-An advantage of this approach is that it makes more use of a single medium that (a) is already required to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
+An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
 
-A disadvantage is that while U-Boot is a likely to be a relatively static artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
+A disadvantage is that while U-Boot is a likely to be a relatively unchanging artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
 
 #### Loading from USB Flash Drive
 
@@ -44,7 +44,7 @@ Compared with loading from SD card, this approach has the advantage of leaving t
 
 The MaaXBoard has an Ethernet port that U-Boot is able to access, and the application file may be downloaded from the host machine over TFTP (Trivial File Transfer Protocol), a convenient and popular method for booting.
 
-Connection options include either a direct Ethernet connection:
+Connection options include either a direct Ethernet connection between the host machine and the MaaXBoard:
 
 ![TFTP option direct connection](figures/TFTP-option-direct.png)
 
