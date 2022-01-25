@@ -14,9 +14,9 @@ Hardware requirements. - **JOSH**
 Host software requirements. - **JOSH**
 - Some are optional (e.g. a TFTP server) depending on how a binary is loaded.
 
-Host machine setup
-- Installation and setup of required tools
-- Installation of Docker.
+Host machine setup **-MARK**
+- Installation and setup of required tools **-MARK**
+- Installation of Docker. **-MARK**
 - Creation and usage of the build environment docker image
 
 Target platform setup **-MARK**
