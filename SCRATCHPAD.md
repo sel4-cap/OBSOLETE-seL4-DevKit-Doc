@@ -7,6 +7,9 @@ Introduction / general overview - **STEPHEN**
 - Document that all compilation for the target board will be performed within a Docker instance. This greatly simplifies the requirements on the host system.
 - Document that the guide will be talking about three different environments (host, target and docker build environment). Explain this split and how they will be consistently referred to throughout the guide.
 
+Glossary
+- Table of terms / definitions with hyperlinks to relevant resources.
+
 Hardware requirements. - **JOSH**
 - Some are optional (e.g. a USB memory stick) depending on how a binary is loaded.
 - Provide a shopping list from Farnell of all of the required parts (including memory stick. SD card reader/writer if needed).
@@ -17,7 +20,7 @@ Host software requirements. - **JOSH**
 Host machine setup **-MARK**
 - Installation and setup of required tools **-MARK**
 - Installation of Docker. **-MARK**
-- Creation and usage of the build environment docker image
+- Creation and usage of the build environment docker image **STEPHEN**
 
 Target platform setup **-MARK**
 - How to connect up the MaaxBoard including the TTY connections. **-MARK**
