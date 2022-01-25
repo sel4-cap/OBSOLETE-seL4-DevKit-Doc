@@ -7,10 +7,14 @@
 - [Hardware Requirements](hardware_requirements.md)
 - [Software Requirements](software_requirements.md)
 
-# Setup
+# Development Environment Setup
 
 - [Host Machine Setup](host_machine_setup.md)
+- [Build Environment Setup](build_environment_setup.md)
 - [Target Platform Setup](target_platform_setup.md)
+
+# First Boot
+
 - [Boot Loader](bootloader.md)
 - [SD Card Preparation](sd_card_preparation.md)
 - [First Boot](first_boot.md)
