@@ -7,7 +7,7 @@ The SD card must be partitioned correctly in order to contain U-Boot, seL4 and s
 1. Get the prebuilt disk images from the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt) repo, either by cloning the entire repository, or by using GitHub to navigate to
 the disk_images folder and selecting the image you want to use, and downloading it through the GitHub interface. Currently two images are available:
     - maaxboard_uboot.img
-        - which contains just U-Boot, a U-Boot config file in the BOOT partition,  and a filesystem partition.
+        - which contains just U-Boot, a U-Boot configuration file in the BOOT partition,  and a filesystem partition.
     - sel4-test-maaxboard-imx8.img
         - which contains U-Boot, a U-Boot configuration file and a prebuilt seL4 test ELF binary in the boot partition.
         
