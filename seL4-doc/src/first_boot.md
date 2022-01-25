@@ -121,7 +121,7 @@ The log below shows the serial terminal output on the host machine when the MaaX
    106	u-boot=> 
 ```
 
-The CRC warning at line 20 is not an issue; it is just an artefact from the basic U-Boot image, and the default environment variables are sufficient.
+The CRC warning at line 20 is not an important issue; it is just an artefact from the basic U-Boot image, and the default environment variables are sufficient.
 
 Once at the U-Boot prompt, you can enter interactive U-Boot commands. For example:
 
