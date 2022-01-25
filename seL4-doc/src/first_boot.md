@@ -2,8 +2,6 @@
 
 ## U-Boot Only
 
-Prerequisites: *Note to self - list/reference other sections*
-
 Note that the serial terminal output does not include the line numbers shown in the example logs shown below; those line numbers have only been added afterwards for ease of reference in this documentation.
 
 ### MaaXBoard with no Ethernet Connection

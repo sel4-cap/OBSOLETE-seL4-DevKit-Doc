@@ -4,7 +4,7 @@
 
 When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.
 
-**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source boot loader commonly used in embedded devices. For such low-level operations, it has to be customised for the hardware on which it is running. As part of this Developer Kit we have provided a U-Boot build suitable for the MaaXBoard.
+**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source boot loader commonly used in embedded devices. For such low-level operations, it has to be customised for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
 
 ## Building U-Boot for the MaaXBoard
 
@@ -58,15 +58,15 @@ Loading via TFTP is considered to be the most convenient method within an applic
 
 ### U-Boot Commands for Loading
 
-Ethernet-related examples of U-Boot commands for loading are given the [First Boot](first_boot.md) section. Broadly, these involve establishing the `serverip` and `ipaddr` environment variables via the `setenv` command, and then issuing `tftp ${loadaddress} sel4_image` to initiate the transfer to RAM.
+Ethernet-related examples of U-Boot commands for loading are given the [First Boot](first_boot.md) section. Broadly, these involve establishing U-Boot's `serverip` and `ipaddr` environment variables via the `setenv` command, and then issuing `tftp ${loadaddress} sel4_image` to initiate the transfer to RAM (where `sel4_image` is the filename of our test application).
 
 There are corresponding U-Boot commands for loading the application into RAM from the SD card and USB flash drive: both use FAT partitions and use the same `loadfat` command.
 
-More details are covered by the `uENV.txt` configuration file in the next section.
+More details can be seen in the `uENV.txt` configuration file in the next section.
 
 ### U-Boot Configuration File
 
-Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card.
+Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and may be adapted for your environment.
 
 ```
 ### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
@@ -89,7 +89,7 @@ elf_binary_file=sel4_image
 ### Attempt to boot the ELF binary. The following locations will be searched in
 ### priority order:
 ### 1. USB mass storage devices with a FAT filesystem.
-### 2, SD Card / eMMC devices with a FAT filesystem.
+### 2. SD Card / eMMC devices with a FAT filesystem.
 ### 3. TFTP server.
 
 elf_dev_boot=if ${devtype} dev ${devnum}; then echo Booting ELF binary from ${devtype} ${devnum} ...; fatload ${devtype} ${devnum} ${loadaddr} ${elf_binary_file}; bootelf ${loadaddr}; fi
@@ -99,6 +99,4 @@ elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_bi
 uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
 ```
 
-In the example above, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, 
-[here](first_boot.md#MaaXBoard_with_Ethernet_Connection_to_DHCP_Router)
-
+In this example, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, which can be seen in the example shown in the [First Boot](first_boot.md#maaxboard-with-ethernet-connection-to-dhcp-router) section, hence `serverip` is assigned to this value. The name of the executable file to load into RAM is stored in the `elf_binary_file` environment variable. The final five lines implement the priority ordering to check USB, then SD card, and finally TFTP transfer.
