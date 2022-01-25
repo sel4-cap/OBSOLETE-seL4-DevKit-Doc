@@ -6,9 +6,19 @@ _NOTE: The disk images are setup for a 16GB SD card, please use a 16GB or larger
 1. Get the prebuilt disk images from the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt) repo. Either by cloning the entire repository or using GitHub to navigate to
 the disk_images folder and selecting the image you want to use, and downloading it through the GitHub interface. Currently two images are available, maaxboard_uboot.img, which contains just U-Boot, a U-Boot config file in the BOOT partition,  and a filesystem partition. Also provided is sel4-test-maaxboard-imx8.img, which contains U-Boot, a U-Boot config file and a prebuilt seL4 test ELF binary in the boot partition. _Note: the images are compressed as zip files in order to reduce their size (compressed size ~15MB, uncompressed size ~16GB), and will need to be uncompressed using a suitable utility before use._
 2. Once you have downloaded the image you wish to use, you will need to download [balenaEtcher](https://www.balena.io/etcher/), a utility for flashing images to external drives. Download and follow the instructions for installation.
-3. After installing balenaEtcher, insert the SD card you wish to flash, open balenaEtcher, the using the interface, select Flash from file, and navigate to and select the image file you wish to flash.
-4. Click select target and select the drive you wish to flash, the finally click ‘Flash!’ to flash the image.
-5. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your Maaxboard. The name of the ELF binary U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
+3. After installing balenaEtcher, insert the SD card you wish to flash, and open balenaEtcher.
+![etcher-default](figures/etcher-default.png)
+4. Using the interface, select Flash from file, and navigate to and select the image file you wish to flash. Then click open.
+![etcher-img-select](figures/etcher-img-select.png)
+5. Click select target and select the drive you wish to flash
+![etcher-drive-select](figures/etcher-drive-select.png)
+6. Then finally click ‘Flash!’ to flash the image.
+![etcher-ready-to-flash](figures/etcher-ready-to-flash.png)
+*Flashing in progress:*
+![etcher-flashing](figures/etcher-flashing.png)
+*After Etcher has flashed the disk, it will validate the disk:*
+![etcher-validation](figures/etcher-validation.png)
+7. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your Maaxboard. The name of the ELF binary U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
 
 ## Setting up U-Boot config
 A U-Boot configuration file is contained within the images provided. It is placed in the root of the  `BOOT`  partition, and should be named 'uEnv.txt'. It contains 3 main configurable items:
