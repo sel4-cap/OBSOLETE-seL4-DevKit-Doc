@@ -20,7 +20,9 @@ Host software requirements. - **JOSH**
 Host machine setup **-MARK**
 - Installation and setup of required tools **-MARK**
 - Installation of Docker. **-MARK**
-- Creation and usage of the build environment docker image **STEPHEN**
+
+Build environment setup **STEPHEN**
+- Creation and usage of the build environment docker image.
 
 Target platform setup **-MARK**
 - How to connect up the MaaxBoard including the TTY connections. **-MARK**
