@@ -49,7 +49,7 @@ First boot **-MARK**
 - U-Boot only. **-MARK**
 - Demonstrate access to the U-Boot console. **-MARK**
 
-Building applications and executing on the target platform
+Building applications and executing on the target platform **STEPHEN**
 - Use seL4-test as a worked example.
 - Build instructions.
 - Refer back to the section on U-Boot to show how the binary can be loaded into RAM and executed.
