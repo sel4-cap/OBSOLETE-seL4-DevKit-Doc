@@ -20,4 +20,12 @@ The following mandatory applications are assumed on the host machine:
 
 ## Optional Requirements
 
-**TBD**
+If the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see **TBD**) then installation of a TFTP server is required.
+
+Full details of the installation and configuration of a TFTP server is considered to be outside the scope of this developer kit, however the following guidance is offered:
+
+- **macOS**: A TFTP server is included in macOS by default. The [TftpServer](https://www.macupdate.com/app/mac/11116/tftpserver) application provides a graphical user interface to simplify use of the in-built server.
+  
+- **Linux**: TFTP servers are available for all major Linux distributions. On Fedora and CentOS a server can be installed via `yum -y install tftp-server`, on Debian and Ubuntu a server can be installed via `apt-get install tftpd-hpa`.
+
+- **Windows**: Multiple free TFTP server applications are available, e.g. [here](https://www.solarwinds.com/free-tools/free-tftp-server) and [here](https://pjo2.github.io/tftpd64).
