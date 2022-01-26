@@ -20,13 +20,13 @@ The build environment is a Debian Linux system pre-installed with all of the req
 
 Installation of the build environment comprises the download of a pre-built Docker image into the Docker tools. This can be performed from the command line on the host machine as follows:
 
-```
+```bash
 docker pull ghcr.io/sel4devkit/maaxboard:latest
 ```
 
 During download of the image progress is reported in the following format:
 
-```
+```bash
 % docker pull ghcr.io/sel4devkit/maaxboard:latest
 latest: Pulling from sel4devkit/maaxboard
 0e29546d541c: Pull complete 
@@ -40,18 +40,18 @@ On completion of the download the build environment is ready for use.
 
 ## Usage
 
-When using the build environment a directory from the host machine must be mapped to the `/host` directory within the build enviroment; this is the directory within which all work should be performed.
+When using the build environment a directory from the host machine must be mapped to the `/host` directory within the build environment; this is the directory within which all work should be performed.
 
 **WARNING**: Any changes made outside of the build environment's `/host` directory will be lost when the build environment is exited.
 
-For the purposes of the worked examples in this section the `/scratch/seL4` directory on the host machine is mapped to the build environment's `/host` directory, please note that the directory must be supplied as an absolute path and not as a relative path. It is expected that the user will choose a differnt directory and modify the commands as required.
+For the purposes of the worked examples in this section the `/scratch/seL4` directory on the host machine is mapped to the build environment's `/host` directory, please note that the directory must be supplied as an absolute path and not as a relative path. It is expected that the user will choose a different directory and modify the commands as required.
 
 The following command executed from the host machine will start the build environment:
 
-```
+```bash
 docker run -it --rm -v /scratch/seL4:/host:z ghcr.io/sel4devkit/maaxboard:latest
 ```
 
-On build environment startup the user will be placed into an interactive shell within the `/host` directory as a user named `dev-user` with `sudo` privilages.
+On build environment startup the user will be placed into an interactive shell within the `/host` directory as a user named `dev-user` with `sudo` privileges.
 
 How the build environment can be used to compile an seL4 binary for the MaaXBoard is documented in the [Building Applications](building_applications.md) section.

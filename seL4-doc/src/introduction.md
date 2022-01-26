@@ -1,4 +1,6 @@
-# Background
+# Introduction
+
+## Background
 
 The [seL4 Microkernel](https://sel4.systems) is a technology of increasing interest and has potential to deliver significant benefit across a range of applications that require strong domain separation and software enforced trusted execution environments.
 
@@ -6,9 +8,10 @@ seL4 is formally verified software and therefore offers significant benefits ove
 
 Developing on top of the seL4 microkernel is currently complex and time consuming, and the expertise is currently limited to a small number of individuals and organisations. This developer kit is targeted at reducing the barrier to entry for using (i.e. developing on top of) the seL4 technology and increasing the number of companies that can cost-effectively adopt seL4 in their products.
 
-# Introduction
+## Overview
 
 This document presents an entry-level developer kit to help users gain familiarity with using the seL4 microkernel and ultimately to encourage more use of seL4 within projects and products. It does this by:
+
 - selecting a readily available, low-cost single board computer (the [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/)) as the target platform;
 
 - detailing the minimum hardware and software requirements necessary to follow the guide;
@@ -19,11 +22,12 @@ This document presents an entry-level developer kit to help users gain familiari
 
 - documenting the specific steps needed along with more general guidance.
 
-This developer kit does not cover or replace any of the extensive documentation and tutorials of the [seL4 website](https://sel4.systems). 
+This developer kit does not cover or replace any of the extensive documentation and tutorials of the [seL4 website](https://sel4.systems).
 
 ## Audience
 
 The intended audience for this developer kit is an application developer who:
+
 - has experience programming within a Linux, macOS or Windows environment;
 
 - is already familiar with seL4's concepts and benefits; and
@@ -36,7 +40,7 @@ Whilst the developer kit documentation aims to cover all the salient points and 
 
 Throughout this developer kit activities will be performed across three different environments:
 
-1. **Host Machine**: The engineer's host machine. This can be either macOS, Linux or Windows based. 
+1. **Host Machine**: The engineer's host machine. This can be either macOS, Linux or Windows based.
 
 2. **Build environment**: The environment within which all binaries for the target environment are built. This is a Linux based development environment running within a [Docker](https://www.docker.com) container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.
 
@@ -46,7 +50,7 @@ The required configuration of the host and target environments are detailed in t
 
 ## Structure
 
-The document is structured into the following sections providing a step-by-step guuide:
+The document is structured into the following sections providing a step-by-step guide:
 
 - **Basic Requirements**: Defines the hardware requirements and the requirements on the user's host environment that need to be met to follow this guide. Completion of this section is expected to require the purchase of some equipment, e.g. the Avnet MaaXBoard.
   
