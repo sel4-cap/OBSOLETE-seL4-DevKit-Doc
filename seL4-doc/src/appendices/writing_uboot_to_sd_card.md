@@ -7,6 +7,8 @@
 3. Find the disk identifier (e.g  `/dev/disk6` ) for your SD card, on macOS this can be done by running `diskutil list` . This command should present a list of disks and their petitions, `/dev/disk0`  and  `/dev/disk1`  are usually used for the internal SSD/HDD on your Mac, so the newly inserted storage device will usually be at the bottom, assuming it was the last storage device attached to your machine.
 4. On macOS, you may need to unmount any volumes associated with the SD card. You can do this either from Disk Utility or by using `diskutil unmount /dev/diskXsY` where `X` is the disk identifier and `Y` is the volume identifier.
 5. Using the terminal, navigate to the folder containing your U-Boot  `flash.bin`  file.
-**WARNING: The next step uses the `dd` command line utility, which is used for writing images on to disks. IT WILL OVERWRITE ANY DATA ON THE DISK IT IS SPECIFIED TO WRITE TO! Improper usage WILL cause data loss, corruption and potentially render your system inoperable. Please ensure you are familiar with the use of the command, as well as the disk identifiers on your system, and that you are writing to the disk you intend to, and not your system drive!**
+
+> **WARNING: The next step uses the `dd` command line utility, which is used for writing images on to disks. IT WILL OVERWRITE ANY DATA ON THE DISK IT IS SPECIFIED TO WRITE TO! Improper usage WILL cause data loss, corruption and potentially render your system inoperable. Please ensure you are familiar with the use of the command, as well as the disk identifiers on your system, and that you are writing to the disk you intend to, and not your system drive!**
+
 6. From that folder run the following command: `sudo dd if=flash.bin of=/dev/diskX bs=1k seek=33` , replacing `/dev/diskX` with the disk identifier of your SD card respectively. You may be asked to enter your password.
 7. The image should now be written to your SD card and should be bootable by the MaaXBoard.
