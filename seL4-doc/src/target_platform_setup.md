@@ -6,7 +6,7 @@ The Avnet MaaXBoard is packaged in a small box with listed kit contents of:
 
 Our boards came with the heat sink already attached; however, sales photographs of the board are often shown without the heat sink and it is conceivable that you may have to attach it yourself.
 
-The following shows a plan view of the MaaxBoard with heat sink attached:
+The following shows a plan view of the MaaXBoard with heat sink attached:
 
 ![Avnet MaaXBoard plan view](figures/avnet-maaxboard-plan.png)
 
@@ -14,7 +14,7 @@ For clarity, not all of the components have been labelled, only those to which w
 
 ![GPIO pin numbering](figures/GPIO-pin-out.png)
 
-## Connecting to the MaaxBoard
+## Connecting to the MaaXBoard
 
 Communications with the MaaXBoard from the host machine are via the USB-to-TTL serial cable. This converts between the board's 0V and 3.3V logic levels and the 0V and 5V TTL signal levels expected by USB. The USB end plugs into the host machine, and the flying leads are connected to the GPIO pins on the MaaXBoard.
 

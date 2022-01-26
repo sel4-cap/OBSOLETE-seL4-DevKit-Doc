@@ -31,12 +31,12 @@ the disk_images folder and selecting the image you want to use, and downloading 
 *After Etcher has flashed the disk, it will validate the disk:*
 ![etcher-validation](figures/etcher-validation.png)
 
-7. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your Maaxboard. The name of the ELF binary that U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
+7. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your MaaXBoard. The name of the ELF binary that U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
 
 ## Setting up U-Boot config
 A U-Boot configuration file is contained within the images provided. It is placed in the root of the  `BOOT`  partition, and should be named 'uEnv.txt'. It contains 3 main configurable items:
 1. U-Boot network configuration (ipaddr and netmask): use this to manually configure the IP address and subnet for U-Boot to use, or comment them out too have them assigned by DHCP/BootP.
-2. TFTP server IP address: the IP address of the server to use for network boot, should you wish to boot the Maaxboard from a TFTP server.
+2. TFTP server IP address: the IP address of the server to use for network boot, should you wish to boot the MaaXBoard from a TFTP server.
 3. ELF binary name: the name of the ELF binary the U-Boot will try to load, first from a USB device, then a SD card and finally the configured TFTP server. This boot order can be configured a the bottom of the file.  
 
 ## Manual Preparation
@@ -59,7 +59,7 @@ diskutil partitionDisk /dev/diskX 3 MBR \
 ```
 This creates 3 partitions on the disk, a 10 megabyte bootloader partition for U-Boot, a 256 megabyte partition to hold the seL4 image, and finally the remainder of the disk is provided for the file system.
 
-### Writing the Maaxboard U-Boot image to an SD card.
+### Writing the MaaXBoard U-Boot image to an SD card.
 1. If you are continuing on from the partitioning section, skip straight to step 5.
 2. Insert your SD card into an SD card reader connected to your computer.
 3. Find the disk identifier (e.g  `/dev/disk6` ) for your SD card, on macOS this can be done by running `diskutil list` . This command should present a list of disks and their petitions, `/dev/disk0`  and  `/dev/disk1`  are usually used for the internal SSD/HDD on your Mac, so the SD card will usually be at the bottom, assuming it was the last storage device attached to your machine.
@@ -67,4 +67,4 @@ This creates 3 partitions on the disk, a 10 megabyte bootloader partition for U-
 5. Using the terminal, navigate to the folder containing your U-Boot  `flash.bin`  file.
 **WARNING: The next step uses the `dd` command line utility, which is used for writing images on to disks. IT WILL OVERWRITE ANY DATA ON THE DISK IT IS SPECIFIED TO WIRTE TO! Improper usage WILL cause data loss, corruption and potentially render your system inoperable. Please ensure you are familiar with the use of the command, as well as the disk identifiers on your system, and that you are writing to the disk you intend to, and not your system drive!**
 6. From that folder run the following command: `sudo dd if=flash.bin of=/dev/diskX bs=1k seek=33` , replacing `/dev/diskX` with the disk identifier of your SD card respectively. You may be asked to enter your password.
-7. The image should now be written to your SD card and should be bootable by the Maaxboard.
+7. The image should now be written to your SD card and should be bootable by the MaaXBoard.
