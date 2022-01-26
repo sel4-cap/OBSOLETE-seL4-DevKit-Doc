@@ -140,7 +140,7 @@ If the host machine has an Ethernet port, it may be connected directly to the Et
 
 2. Assign an arbitrary IP address to the MaaXBoard within the same subnet, using the U-Boot console command `setenv ipaddress <IP address>`. For example 169.254.172.62 would work in the example above.
 
-3. TFTP transfer of the application file (e.g. `sel4_image`) is then possible using the U-Boot command `tftp ${loadaddr} sel4_image`.
+3. TFTP transfer of the application file is then possible using the U-Boot command `tftp ${loadaddr} <filename>`.
     - Note: `${loadaddr}` accesses an environment variable that is already defined.
 
 ### MaaXBoard with Ethernet Connection to DHCP Router
@@ -169,5 +169,5 @@ To continue with this scenario:
  
 ![TFTP Server UI for direct Ethernet connection](figures/tftp-server-wifi-en1.png)
 
-2. As before, TFTP transfer of the application file (e.g. `sel4_image`) is then possible using the U-Boot command `tftp ${loadaddr} sel4_image`.
+2. As before, TFTP transfer of the application file is then possible using the U-Boot command `tftp ${loadaddr} <filename>`.
  
