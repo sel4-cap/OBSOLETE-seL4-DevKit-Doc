@@ -15,7 +15,7 @@
 
 # First Boot
 
-- [Boot Loader](bootloader.md)
+- [Bootloader](bootloader.md)
 - [SD Card Preparation](sd_card_preparation.md)
 - [First Boot](first_boot.md)
 
