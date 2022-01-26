@@ -45,5 +45,5 @@ A U-Boot configuration file is contained within the images provided. It is place
 
 ## Appendices
 
-[Manually partitioning the SD card](./appendices/partitioning_sd_card.md)
-[Manually writing U-Boot to an SD card](./appendices/writing_uboot_to_sd_card.md)
+- [Manually partitioning the SD card](./appendices/partitioning_sd_card.md)
+- [Manually writing U-Boot to an SD card](./appendices/writing_uboot_to_sd_card.md)

@@ -99,4 +99,4 @@ In this example, DHCP is used so the `ipaddr` line has been commented out. The T
 
 ## Appendices
 
-[Building U-Boot](./appendices/building_uboot.md)
+- [Building U-Boot](./appendices/building_uboot.md)
