@@ -27,11 +27,11 @@ No changes to `uEnv.txt` are required for options 1 or 2, since they are priorit
 
 ### SD Card
 
-To use this method, mount the SD card onto the host machine using the USB Micro SD Card Reader and copy `sel4_image` to the `BOOT` partition using the normal means of file copying (e.g. it does not need to flashed using Etcher, as it is already a formatted drive). Then return the SD card to the MaaXBoard.
+To use this method, mount the SD card onto the host machine using the USB Micro SD card reader / writer and copy `sel4_image` to the `BOOT` partition using the normal means of file copying (e.g. it does not need to flashed using Etcher, as it is already a formatted drive). Then return the SD card to the MaaXBoard.
 
 ### USB Flash Drive
 
-To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT32; then copy `sel4_image` to the flash drive. Then insert the USB flash drive into one of the USB ports on the MaaXBoard.
+To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT; then copy `sel4_image` to the flash drive. Then insert the USB flash drive into one of the USB ports on the MaaXBoard.
 
 ### TFTP
 
@@ -43,12 +43,12 @@ The TFTP Server application must be running on the host machine, and the _Change
 
 When all the items above are correctly set, upon powering up the MaaXBoard, CoolTerm will show U-Boot initialising the board and then loading `sel4_image` into RAM from the chosen medium. The final `bootelf` command within `uEnv.txt` will run the executable.
 
-As introduced in [Building Applications](building_applications.md), [seL4Test](https://docs.sel4.systems/projects/sel4test) is a test suite for seL4 developed and maintained by the seL4 Foundation. It comprises over 100 tests that exercise the seL4 microkernel. Its progress as it runs can be followed in the CoolTerm window. Upon successful completion, the AARCH64 version should finish with:
+As introduced in [Building Applications](building_applications.md), [seL4Test](https://docs.sel4.systems/projects/sel4test) is a test suite for seL4 developed and maintained by the seL4 Foundation. It comprises over 100 tests that exercise the seL4 microkernel. Its progress as it runs can be followed in the CoolTerm window. Upon successful completion, the AArch64 version should finish with:
 ```
 Test suite passed. 129 tests passed. 42 tests disabled.
 All is well in the universe
 ```
-The AARCH32 version completes with a similar message, having run a few more tests:
+The AArch32 version completes with a similar message, having run a few more tests:
 ```
 Test suite passed. 138 tests passed. 42 tests disabled.
 All is well in the universe
