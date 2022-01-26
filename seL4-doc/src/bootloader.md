@@ -66,7 +66,7 @@ More details can be seen in the `uENV.txt` configuration file in the next sectio
 
 ### U-Boot Configuration File
 
-Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and may be adapted for your environment.
+Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and will need to be adapted for your environment (e.g. server and client IP addresses and ELF filename).
 
 ```
 ### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
@@ -99,4 +99,4 @@ elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_bi
 uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
 ```
 
-In this example, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, which can be seen in the example shown in the [First Boot](first_boot.md#maaxboard-with-ethernet-connection-to-dhcp-router) section, hence `serverip` is assigned to this value. The name of the executable file to load into RAM is stored in the `elf_binary_file` environment variable. The final five lines implement the priority ordering to check USB, then SD card, and finally TFTP transfer.
+In this example, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, which can be seen in the example shown in the [First Boot](first_boot.md#maaxboard-with-ethernet-connection-to-dhcp-router) section, hence `serverip` is assigned to this value. The name of the executable file to load into RAM is stored in the `elf_binary_file` environment variable, `sel4_image` in this case. The final five lines implement the priority ordering to check USB flash drive, then SD card, and finally TFTP transfer.
