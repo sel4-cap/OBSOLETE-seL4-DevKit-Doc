@@ -19,6 +19,6 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 6. `build.sh` will clone a number of git repositories and extract necessary files from them, after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, when you reach the end, when prompted type `y` to accept. *Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot*
 
 7. `build.sh` will now clone some additional repositories and complete the build process. If this is successful you should see the following:
-![successful-uboot-build](figures/successful-uboot-build.png)
+![successful-uboot-build](../figures/successful-uboot-build.png)
 
 8. The generated `flash.bin` file is now ready to write to storage media. Please see [SD Card Preparation](./writing_uboot_to_media.md) for details on how to do this.

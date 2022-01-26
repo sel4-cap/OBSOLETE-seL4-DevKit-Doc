@@ -68,7 +68,7 @@ The example file below (stored on the SD card prepared via the instructions in t
 ### assigned using DHCP / BOOTP.
 
 ### ipaddr=192.168.100.50
-netmask=255.255.255.0
+### netmask=255.255.255.0
 
 ### Uncomment and define the 'serverip' address to set the IP address of the
 ### TFTP server. If no server IP address is defined then no attempt to boot
@@ -93,7 +93,7 @@ elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_bi
 uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
 ```
 
-Some configuration of the `uEnv.txt` file is required, e.g. to set IP addresses relevant to the user's network. This is covered in detail in the [SD Card Preparation](sd_card_preparation.md) section.
+Some configuration of the `uEnv.txt` file is required, e.g. to set IP addresses relevant to the user's network. This is covered in more detail in the [SD Card preparation](sd_card_preparation.md) and [First Boot](first_boot.md) sections.
 
 ## Appendices
 
