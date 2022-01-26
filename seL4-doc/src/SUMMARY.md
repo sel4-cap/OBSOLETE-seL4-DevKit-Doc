@@ -30,4 +30,7 @@
 
 # Appendices
 
-[Guide to Porting seL4]()
+- [Guide to Porting seL4]()
+- [Manually partitioning the SD card](./appendices/partitioning_sd_card.md)
+- [Building U-Boot](./appendices/building_uboot.md)
+- [Manually writing U-Boot to an SD card](./appendices/writing_uboot_to_sd_card.md)

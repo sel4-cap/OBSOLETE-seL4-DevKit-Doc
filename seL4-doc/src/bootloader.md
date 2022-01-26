@@ -4,11 +4,7 @@
 
 When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.
 
-**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customised for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
-
-## Building U-Boot for the MaaXBoard
-
-**Josh**
+**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
 
 ## Loading the Application
 
@@ -100,3 +96,7 @@ uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_
 ```
 
 In this example, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, which can be seen in the example shown in the [First Boot](first_boot.md#maaxboard-with-ethernet-connection-to-dhcp-router) section, hence `serverip` is assigned to this value. The name of the executable file to load into RAM is stored in the `elf_binary_file` environment variable, `sel4_image` in this case. The final five lines implement the priority ordering to check USB flash drive, then SD card, and finally TFTP transfer.
+
+## Appendices
+
+- [Building U-Boot](./appendices/building_uboot.md)
