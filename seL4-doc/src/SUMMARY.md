@@ -2,6 +2,8 @@
 
 [Introduction](introduction.md)
 
+[Glossary](glossary.md)
+
 # Basic Requirements
 
 - [Hardware Requirements](hardware_requirements.md)
