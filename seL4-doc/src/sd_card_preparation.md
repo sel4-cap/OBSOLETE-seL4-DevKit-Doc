@@ -2,20 +2,15 @@
 
 ## Using the prebuilt images
 
-The SD card must be partitioned correctly in order to contain U-Boot, seL4 and space for a filesystem, for convenience, a prebuilt disk image is provided. _Note: the disk images are set up for a 16GB SD card, please use 16GB or larger._
+The SD card must be partitioned correctly in order to contain U-Boot and partitions to hold a binary plus additional filesystem. For convenience a prebuilt disk image is provided. _Note: the disk image are set up for a 16GB SD card, please use 16GB or larger._
 
-1. Get the prebuilt disk images from the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt) repo, either by cloning the entire repository, or by using GitHub to navigate to
-the disk_images folder and selecting the image you want to use, and downloading it through the GitHub interface. Currently two images are available:
-    - maaxboard_uboot.img
-        - which contains just U-Boot, a U-Boot configuration file in the BOOT partition,  and a filesystem partition.
-    - sel4-test-maaxboard-imx8.img
-        - which contains U-Boot, a U-Boot configuration file and a prebuilt seL4 test ELF binary in the boot partition.
+1. Get the prebuilt disk image from the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt) repository, either by cloning the entire repository, or by using the direct link [here](https://github.com/sel4devkit/maaxboard-prebuilt/raw/master/disk_images/maaxboard-uboot.img.zip).
 
     _Note: the images are compressed as zip files in order to reduce their size (compressed size ~15MB, uncompressed size ~15.5GB), and will need to be uncompressed using a suitable utility before use._
 
-2. Once you have downloaded the image you wish to use, you will need to use a utility for flashing images to external drives. The rest of this section assumes that you will use balenaEtcher; see the [Host Machine Setup](host_machine_setup.md) section for more details.
+2. Once you have downloaded the image you will need to use a utility for flashing images to external drives. The rest of this section assumes that you will use Etcher; see the [Host Machine Setup](host_machine_setup.md) section for more details.
 
-3. Insert the SD card you wish to flash, and open balenaEtcher.
+3. Insert the SD card you wish to flash, and open Etcher.
 ![etcher-default](figures/etcher-default.png)
 
 4. Select Flash from file, and navigate to and select the image file you wish to flash. Then click open.
@@ -31,17 +26,17 @@ the disk_images folder and selecting the image you want to use, and downloading 
 *After Etcher has flashed the disk, it will validate the disk:*
 ![etcher-validation](figures/etcher-validation.png)
 
-7. Once flashing is complete, the SD card should be ready to accept an ELF binary in the BOOT partition, and ready to use in your MaaXBoard. The name of the ELF binary that U-Boot looks for can be configured (see section below on ‘Setting up U-Boot config’)
+7. Once flashing is complete, the SD card is ready for use in the MaaXBoard for booting as far as the U-Boot bootloader.
 
 ## Setting up U-Boot config
 
-A U-Boot configuration file is contained within the images provided. It is placed in the root of the  `BOOT`  partition, and should be named 'uEnv.txt'. It contains 3 main configurable items:
+A U-Boot configuration file is contained within the provide image. It is placed in the root of the  `BOOT`  partition and is named `uEnv.txt`. It contains 3 main configurable items:
 
-1. U-Boot network configuration (ipaddr and netmask): use this to manually configure the IP address and subnet for U-Boot to use, or comment them out too have them assigned by DHCP/BootP.
+1. U-Boot network configuration (`ipaddr` and `netmask`): use this to manually configure the IP address and subnet for U-Boot to use, or comment them out too have them assigned by DHCP/BootP.
 
-2. TFTP server IP address: the IP address of the server to use for network boot, should you wish to boot the MaaXBoard from a TFTP server.
+2. TFTP server IP address (`serverip`): use this to configure the IP address of the TFTP server to contact, or comment out to disable boot via TFTP.
 
-3. ELF binary name: the name of the ELF binary the U-Boot will try to load, first from a USB device, then a SD card and finally the configured TFTP server. This boot order can be configured a the bottom of the file.  
+3. ELF binary name (`elf_binary_file`): the name of the ELF binary the U-Boot will try to load, first from a USB device, then a SD card and finally the configured TFTP server.
 
 ## Appendices
 
