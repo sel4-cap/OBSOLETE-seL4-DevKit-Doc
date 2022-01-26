@@ -30,4 +30,6 @@ The following terminal parameters are suggested:
 
 ![CoolTerm terminal configuration](figures/coolTerm-terminal.png)
 
+Users may also wish to extend the size of the _Receive Buffer_ to be able to scroll back through a longer history. This is accessible via the _Receive_ sub-option within the _Connection > Options_ menu.
+
 All these settings may be saved for convenience as a CoolTerm configuration file.
