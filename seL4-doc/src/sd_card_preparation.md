@@ -1,8 +1,8 @@
 # SD Card preparation
 
-## Using the prebuilt images
+## Using the prebuilt image
 
-The SD card must be partitioned correctly in order to contain U-Boot and partitions to hold a binary plus additional filesystem. For convenience a prebuilt disk image is provided. _Note: the disk images have been created for a 16GB SD card; please use a card that is 16GB or larger._
+The SD card must be partitioned correctly in order to contain U-Boot and partitions to hold a binary / kernel plus additional filesystem. For convenience a prebuilt disk image is provided. _Note: the disk images have been created for a 16GB SD card; please use a card that is 16GB or larger._
 
 1. Get the prebuilt disk image from the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt) repository, either by cloning the entire repository, or by using the direct link [here](https://github.com/sel4devkit/maaxboard-prebuilt/raw/master/disk_images/maaxboard-uboot.img.zip).
 
