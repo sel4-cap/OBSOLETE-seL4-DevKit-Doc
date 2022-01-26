@@ -1,10 +1,10 @@
-# Boot Loader
+# Bootloader
 
 ## Overview
 
 When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.
 
-**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source boot loader commonly used in embedded devices. For such low-level operations, it has to be customised for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
+**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customised for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
 
 ## Building U-Boot for the MaaXBoard
 
@@ -28,7 +28,7 @@ The remainder of this section assumes that you have an application in the form o
 
 #### Loading from SD Card
 
-The SD card is used to store the boot loader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the boot loader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, the `BOOT` partition is used for this.
+The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, the `BOOT` partition is used for this.
 
 An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
 
@@ -66,7 +66,7 @@ More details can be seen in the `uENV.txt` configuration file in the next sectio
 
 ### U-Boot Configuration File
 
-Once it has been confirmed that basic boot loader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and will need to be adapted for your environment (e.g. server and client IP addresses and ELF filename).
+Once it has been confirmed that basic bootloader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and will need to be adapted for your environment (e.g. server and client IP addresses and ELF filename).
 
 ```
 ### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
