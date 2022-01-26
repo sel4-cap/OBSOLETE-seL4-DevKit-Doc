@@ -12,7 +12,7 @@ The build environment is a Debian Linux system pre-installed with all of the req
 - [__Repo__](https://gerrit.googlesource.com/git-repo/+/refs/heads/master/README.md) Git repository management tool.
 - [__aarch64-linux-gnu__](https://gcc.gnu.org) cross compiler toolchain targeting the ARM AArch64 instruction set.
 - [__arm-linux-gnueabi__](https://gcc.gnu.org) cross compiler toolchain targeting the ARM AArch32 instruction set.
-- [__make__](https://www.gnu.org/software/make/), [__cmake__](https://cmake.org), and [__ninja__](https://ninja-build.org) build automation tools.
+- [__Make__](https://www.gnu.org/software/make/), [__CMake__](https://cmake.org), and [__Ninja__](https://ninja-build.org) build automation tools.
 
 ## Installation
 
