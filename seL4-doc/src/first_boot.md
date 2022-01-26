@@ -1,14 +1,28 @@
 # First Boot
 
-## U-Boot Only
+First boot aims to demonstrate correct operation of the prepared SD card and communication over the serial interface.
+
+This ensures all steps have been followed correctly prior to proceeding with compilation and execution of an seL4 binary.
+
+## Prerequisites
+
+Prior to powering the MaaXBoard ensure the following setup is in place, building on previous sections:
+
+1. The SD card has been prepared as per the instructions in the [SD Card Preparation](sd_card_preparation.md) section.
+
+2. The MaaXBoard has been set up as per the [Target Platform Setup](target_platform_setup.md) section with only the USB-to-TTL cable connected and the SD card inserted.
+
+3. The USB-to-TTL cable is connected to the host machine with CoolTerm configured as per the [Host MAchine Setup](host_machine_setup.md) section and connected.
+
+## Boot to U-Boot Prompt
+
+At this stage power should be supplied to the MaaXBoard by connecting the USB-C power adaptor. On supply of power the user should see the output of the bootloader displayed in CoolTerm. As no `sel4_image` binary has been supplied the user should be dropped to the U-Boot command prompt.
+
+The log below shows the serial terminal output on the host machine when the MaaXBoard boots with no access to a binary to execute.
 
 Note that the serial terminal output does not include the line numbers shown in the example logs shown below; those line numbers have only been added afterwards for ease of reference in this documentation.
 
-### MaaXBoard with no Ethernet Connection
-
-The log below shows the serial terminal output on the host machine when the MaaXBoard boots with no connections or devices other than the SD card containing U-Boot (with no `uEnv.txt` file), a power supply, and the USB to TTL Serial Cable.
-
-```
+```text
      1	U-Boot SPL 2021.04-00002-gf752480a4c (Jan 20 2022 - 10:32:23 +0000)
      2	power_bd71837_init
      3	set buck8 to 1.2v for DDR4
@@ -65,109 +79,95 @@ The log below shows the serial terminal output on the host machine when the MaaX
     54	switch to partitions #0, OK
     55	mmc0 is current device
     56	SD/MMC found on device 0
-    57	Failed to load 'uEnv.txt'
-    58	switch to partitions #0, OK
-    59	mmc0 is current device
-    60	Failed to load 'boot.scr'
-    61	Failed to load 'Image'
-    62	Booting from net ...
-    63	ethernet@30be0000 Waiting for PHY auto negotiation to
+    57	1493 bytes read in 1 ms (1.4 MiB/s)
+    58  Loaded env from uEnv.txt
+    59  Importing environment from mmc0 ...
+    60  Running uenvcmd ...
+    61
+    62  Device 0: unknown device
+    63
+    64  Device 1: unknown device
+    65  switch to partitions #0, OK
+    66  mmc0 is current device
+    67  Booting ELF binary from mmc 0 ...
+    68  Failed to load 'sel4_image'
+    69  ## No elf image at address 0x40480000
+    70  MMC Device 1 not found
+    71  no mmc device at slot 1
+    72  Using statically defined IP address
+    73  Booting ELF binary from TFTP ...
+    74  ethernet@30be0000 Waiting for PHY auto negotiation to
+        complete......................................... TIMEOUT !
+    75  Could not initialize PHY ethernet@30be0000
+    76  Using ethernet@30be0000 device
+    77  TFTP from server 192.168.100.3; our IP address is 192.168.100.50
+    78  Filename 'sel4_image'.
+    79  Load address: 0x40480000
+    80  Loading: *.
+    81  ARP Retry count exceeded; starting again
+    82  ## No elf image at address 0x40480000
+    83  switch to partitions #0, OK
+    84	mmc0 is current device
+    85	Failed to load 'boot.scr'
+    86	Failed to load 'Image'
+    87	Booting from net ...
+    88	ethernet@30be0000 Waiting for PHY auto negotiation to
     	complete......................................... TIMEOUT !
-    64	Could not initialize PHY ethernet@30be0000
-    65	BOOTP broadcast 1
-    66	BOOTP broadcast 2
-    67	BOOTP broadcast 3
-    68	BOOTP broadcast 4
-    69	BOOTP broadcast 5
-    70	BOOTP broadcast 6
-    71	BOOTP broadcast 7
-    72	BOOTP broadcast 8
-    73	BOOTP broadcast 9
-    74	BOOTP broadcast 10
-    75	BOOTP broadcast 11
-    76	BOOTP broadcast 12
-    77	BOOTP broadcast 13
-    78	BOOTP broadcast 14
-    79	BOOTP broadcast 15
-    80	BOOTP broadcast 16
-    81	BOOTP broadcast 17
-    82	
-    83	Retry time exceeded; starting again
-    84	ethernet@30be0000 Waiting for PHY auto negotiation to
+    89	Could not initialize PHY ethernet@30be0000
+    90	BOOTP broadcast 1
+    91	BOOTP broadcast 2
+    92	BOOTP broadcast 3
+    93	BOOTP broadcast 4
+    94	BOOTP broadcast 5
+    95	BOOTP broadcast 6
+    96	BOOTP broadcast 7
+    97	BOOTP broadcast 8
+    98	BOOTP broadcast 9
+    99	BOOTP broadcast 10
+   100	BOOTP broadcast 11
+   101	BOOTP broadcast 12
+   102	BOOTP broadcast 13
+   103	BOOTP broadcast 14
+   104	BOOTP broadcast 15
+   105	BOOTP broadcast 16
+   106	BOOTP broadcast 17
+   107	
+   108	Retry time exceeded; starting again
+   109	ethernet@30be0000 Waiting for PHY auto negotiation to
     	complete......................................... TIMEOUT !
-    85	Could not initialize PHY ethernet@30be0000
-    86	BOOTP broadcast 1
-    87	BOOTP broadcast 2
-    88	BOOTP broadcast 3
-    89	BOOTP broadcast 4
-    90	BOOTP broadcast 5
-    91	BOOTP broadcast 6
-    92	BOOTP broadcast 7
-    93	BOOTP broadcast 8
-    94	BOOTP broadcast 9
-    95	BOOTP broadcast 10
-    96	BOOTP broadcast 11
-    97	BOOTP broadcast 12
-    98	BOOTP broadcast 13
-    99	BOOTP broadcast 14
-   100	BOOTP broadcast 15
-   101	BOOTP broadcast 16
-   102	BOOTP broadcast 17
-   103	
-   104	Retry time exceeded; starting again
-   105	WARN: Cannot load the DT
-   106	u-boot=> 
+   110	Could not initialize PHY ethernet@30be0000
+   111	BOOTP broadcast 1
+   112	BOOTP broadcast 2
+   113	BOOTP broadcast 3
+   114	BOOTP broadcast 4
+   115	BOOTP broadcast 5
+   116	BOOTP broadcast 6
+   117	BOOTP broadcast 7
+   118	BOOTP broadcast 8
+   119	BOOTP broadcast 9
+   120	BOOTP broadcast 10
+   121	BOOTP broadcast 11
+   122	BOOTP broadcast 12
+   123	BOOTP broadcast 13
+   124	BOOTP broadcast 14
+   125	BOOTP broadcast 15
+   126	BOOTP broadcast 16
+   127	BOOTP broadcast 17
+   128	
+   129	Retry time exceeded; starting again
+   130	WARN: Cannot load the DT
+   131	u-boot=> 
 ```
 
-The CRC warning at line 20 is not an important issue; it is just an artefact from the basic U-Boot image, and the default environment variables are sufficient.
+_Note: The CRC warning at line 20 is not an important issue; it is just an artefact from the basic U-Boot image, and the default environment variables are sufficient._
 
-Once at the U-Boot prompt, you can enter interactive U-Boot commands. For example:
+Once at the U-Boot prompt, the user can enter interactive U-Boot commands. For example:
 
+- `help` to display the available commands;
 - `printenv` to display the environment variables;
 - `setenv` to set environment variables;
 - `reset` to reset the CPU instead of physically cycling the power.
 
-There are many more commands (e.g. see [U-Boot commands](https://www.denx.de/wiki/U-Bootdoc/BasicCommandSet)) but we only use a couple of them in this Developer Kit.
+_Note: A full reference to U-Boot commands can be found [here](https://www.denx.de/wiki/U-Bootdoc/BasicCommandSet)) but we only use a couple of them in this Developer Kit._
 
-### MaaXBoard with Direct Ethernet Connection to Host Machine Running TFTP
-
-If the host machine has an Ethernet port, it may be connected directly to the Ethernet port of the MaaXBoard. The U-Boot log is no different to the previous log, since the MaaXBoard does not have any IP address configuration. However, by setting some environment variables via the U-Boot console, this connection can be established.
-
-1. Identify the IP address of the Ethernet adapter of the host machine to which the MaaXBoard is connected. To establish this as the TFTP server for the MaaXBoard, issue the U-Boot console command `setenv serverip <IP address>` (substituting <IP address> for your own host machine's IP address on this Ethernet adapter).
-    - The IP address is available from the macOS/Linux `ifconfig` command or the TFTP Server user interface (i.e. 169.254.172.61 in the screenshot below). Note: this is specific to the direct connection to the MaaXBoard and is unrelated for example to the IP address of the host machine's connection to the LAN network provided by its router (see the example in the next section).
-
-![TFTP Server UI for direct Ethernet connection](figures/tftp-server-direct-ethernet-en0.png)
-
-2. Assign an arbitrary IP address to the MaaXBoard within the same subnet, using the U-Boot console command `setenv ipaddress <IP address>`. For example 169.254.172.62 would work in the example above.
-
-3. TFTP transfer of the application file is then possible using the U-Boot command `tftp ${loadaddr} <filename>`.
-    - Note: `${loadaddr}` accesses an environment variable that is already defined.
-
-### MaaXBoard with Ethernet Connection to DHCP Router
-
-The following log shows the difference when the MaaXBoard boots with the same scenario as previously, except for an Ethernet connection to a router. The router has responded to the MaaXBoard's DHCP request with IP address 192.168.0.56, which automatically sets the environment variable `ipaddr` and the retries and timeout are not needed, shortening the boot sequence.
-
-```
-    62	Booting from net ...
-    63	BOOTP broadcast 1
-    64	BOOTP broadcast 2
-    65	DHCP client bound to address 192.168.0.56 (1003 ms)
-    66	*** ERROR: 'serverip' not set
-    67	Cannot autoload with TFTPGET
-    68	BOOTP broadcast 1
-    69	BOOTP broadcast 2
-    70	DHCP client bound to address 192.168.0.56 (892 ms)
-    71	*** ERROR: 'serverip' not set
-    72	Cannot autoload with TFTPGET
-    73	WARN: Cannot load the DT
-    74	u-boot=> 
-```
-To continue with this scenario: 
-
-1. To resolve the error in lines 66 and 71 of the log above, identify the IP address of the Ethernet adapter of the host machine. To establish this as the TFTP server for the MaaXBoard, issue the U-Boot console command `setenv serverip <IP address>` (substituting <IP address> for your own host machine's IP address on this Ethernet adapter).
-    - The IP address is available from the macOS/Linux `ifconfig` command or the TFTP Server user interface (i.e. 192.168.0.11 in the screenshot below). Note: this is different to the previous example as we are using the Wi-Fi Ethernet adapter en1, whose IP address has been allocated by the router.
- 
-![TFTP Server UI for direct Ethernet connection](figures/tftp-server-wifi-en1.png)
-
-2. As before, TFTP transfer of the application file is then possible using the U-Boot command `tftp ${loadaddr} <filename>`.
- 
+The following sections build upon this step by demonstrating the building and execution of an seL4 application on the MaaXBoard.
