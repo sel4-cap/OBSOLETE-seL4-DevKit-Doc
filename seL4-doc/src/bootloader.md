@@ -4,7 +4,7 @@
 
 When a computer is turned off, its software remains stored in non-volatile memory. When the computer is powered on, a bootstrap loader is required: a small, low-level program to configure the computer's memory and devices sufficient to then be able to load further software, such as a bare-metal application or operating system, into RAM and then call it.
 
-**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard.
+**Das U-Boot** (known as "the Universal Boot Loader" and often shortened to U-Boot) is an open-source bootloader commonly used in embedded devices. For such low-level operations, it has to be customized for the hardware on which it is running. As part of this developer kit we have provided a U-Boot build suitable for the MaaXBoard [here](https://github.com/sel4devkit/maaxboard-prebuilt/raw/master/u-boot/flash.bin).
 
 ## Loading the Application
 
@@ -24,15 +24,15 @@ The remainder of this section assumes that you have an application in the form o
 
 #### Loading from SD Card
 
-The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, the `BOOT` partition is used for this.
+The SD card is used to store the bootloader, U-Boot. The SD card may also be used to store the application's ELF file that is to be loaded into RAM by the bootloader. If the SD card is partitioned as described in the [SD Card Preparation](sd_card_preparation.md) section, the `BOOT` partition is used for this by placing the `sel4_image` file in the root of the partition.
 
 An advantage of this approach is that it makes use of a single medium that (a) is already being used to store U-Boot and (b) generally has a much larger capacity than is required by U-Boot alone.
 
-A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular computer board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
+A disadvantage is that while U-Boot is likely to be a relatively unchanging artefact (once it has been configured for a particular board), during development the application is likely to be modified repeatedly, and removing, reprogramming, and replacing the SD card is inconvenient and physically stresses the card and its mountings.
 
 #### Loading from USB Flash Drive
 
-The MaaXBoard has two USB 3.0 connectors that U-Boot is able to access, so the application file may be stored on a removable USB flash drive (i.e. thumb/pen drive) and loaded into RAM by U-Boot.
+The MaaXBoard has two USB 3.0 connectors that U-Boot is able to access, so the application file may be stored on a removable USB flash drive (i.e. thumb/pen drive) and loaded into RAM by U-Boot. To load the `sel4_image` binary from a USB flash drive the file needs to be placed in the root of a FAT formatted drive.
 
 Compared with loading from SD card, this approach has the advantage of leaving the SD card and its U-Boot image undisturbed, although it still involves physical insertion and removal of the flash drive on both the development board and the host machine whenever a new version is to be tested.
 
@@ -40,31 +40,29 @@ Compared with loading from SD card, this approach has the advantage of leaving t
 
 The MaaXBoard has an Ethernet port that U-Boot is able to access, and the application file may be downloaded from the host machine over TFTP (Trivial File Transfer Protocol), a convenient and popular method for booting.
 
-Connection options include either a direct Ethernet connection between the host machine and the MaaXBoard:
+Connection options include either a direct wired Ethernet connection between the host machine and the MaaXBoard:
 
 ![TFTP option direct connection](figures/TFTP-option-direct.png)
 
-Or a network connection via a router:
+Or a network connection via a hub / router:
 
 ![TFTP option router connection](figures/TFTP-option-router.png)
 
 These two Ethernet configurations are covered in some more detail in the [First Boot](first_boot.md) section.
 
-Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need keep plugging and unplugging anything from the board.
-
-### U-Boot Commands for Loading
-
-Ethernet-related examples of U-Boot commands for loading are given the [First Boot](first_boot.md) section. Broadly, these involve establishing U-Boot's `serverip` and `ipaddr` environment variables via the `setenv` command, and then issuing `tftp ${loadaddress} sel4_image` to initiate the transfer to RAM (where `sel4_image` is the filename of our test application).
-
-There are corresponding U-Boot commands for loading the application into RAM from the SD card and USB flash drive: both use FAT partitions and use the same `loadfat` command.
-
-More details can be seen in the `uENV.txt` configuration file in the next section.
+Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the `sel4_image` binary via TFTP the file needs to be made available for download from the TFTP server..
 
 ### U-Boot Configuration File
 
-Once it has been confirmed that basic bootloader functionality is working, it is  more convenient to use a configuration file, rather than typing U-Boot commands manually. This file has to be named `uEnv.txt` and is placed in the `BOOT` partition of the SD card. An example is shown below and will need to be adapted for your environment (e.g. server and client IP addresses and ELF filename).
+Booting via U-Boot can be configured via commands stored in a file named `uEnv.txt` and placed in the `BOOT` partition of the SD card.
 
-```
+The example file below (stored on the SD card prepared via the instructions in the [SD Card Preparation](sd_card_preparation.md) section) automatically searches for, loads and then executes the binary file named `sel4_image`. The following potential locations for the `sel4_image` are searched in order:
+
+1. USB flash drive with a FAT filesystem.
+2. SD Card / eMMC device with a FAT filesystem.
+3. TFTP server.
+
+```text
 ### Uncomment and define the 'ipaddr' and 'netmask' variables to statically set
 ### the device IP address. If no static IP address is provided one will attempt to
 ### assigned using DHCP / BOOTP.
@@ -95,7 +93,7 @@ elf_tftp_boot_2=echo Booting ELF binary from TFTP ...; tftp ${loadaddr} ${elf_bi
 uenvcmd=usb start; for devtype in usb mmc; do for devnum in 0 1; do run elf_dev_boot; done; done; run elf_tftp_boot_0
 ```
 
-In this example, DHCP is used so the `ipaddr` line has been commented out. The TFTP server has an IP address of 192.168.0.11, which can be seen in the example shown in the [First Boot](first_boot.md#maaxboard-with-ethernet-connection-to-dhcp-router) section, hence `serverip` is assigned to this value. The name of the executable file to load into RAM is stored in the `elf_binary_file` environment variable, `sel4_image` in this case. The final five lines implement the priority ordering to check USB flash drive, then SD card, and finally TFTP transfer.
+Some configuration of the `uEnv.txt` file is required, e.g. to set IP addresses relevant to the user's network. This is covered in detail in the [SD Card Preparation](sd_card_preparation.md) section.
 
 ## Appendices
 
