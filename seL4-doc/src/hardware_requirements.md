@@ -13,6 +13,6 @@ The following table includes order codes and hyperlinks for the [Farnell UK stor
 | 16GB Micro SD Card                   | Mandatory                     | [3498607](https://uk.farnell.com/integral/inmsdh16g10-90u1/16gb-ultimapro-microsd-c10-90/dp/3498607?ost=3498607)    |
 | USB Micro SD Card Reader             | Mandatory                     | [3493850](https://uk.farnell.com/tripp-lite/u452-000-sd-a/usb-c-memory-card-reader-sd-micro/dp/3493850?ost=3493850) |
 | 15W USB-C Power Adapter              | Mandatory                     | [3106255](https://uk.farnell.com/stontronics/t7725dv/adapter-ac-dc-1-o-p-5-1v-3a/dp/3106255?ost=3106255)            |
-| USB 2.0 Flash Drive                 | Optional - USB transfer only  | [3410011](https://uk.farnell.com/hama/90891/usb-memory-stick-rotate-8gb/dp/3410011?st=3410011)                      |
+| USB Flash Drive                      | Optional - USB transfer only  | [3410011](https://uk.farnell.com/hama/90891/usb-memory-stick-rotate-8gb/dp/3410011?st=3410011)                      |
 | Ethernet Cable                       | Optional - TFTP transfer only | [1526063](https://uk.farnell.com/videk/2961-2/patch-lead-cat5e-utp-beige-2m/dp/1526063?ost=1526063)                 |
 
