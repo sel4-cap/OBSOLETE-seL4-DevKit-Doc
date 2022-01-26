@@ -1,6 +1,7 @@
 # Target Platform Setup
 
 The Avnet MaaXBoard is packaged in a small box with listed kit contents of:
+
 - 1 x MaaXBoard; and
 - 1 x Heat Sink Kit.
 
@@ -39,4 +40,3 @@ The final photograph shows the MaaXBoard (anti-clockwise from the top):
 - connected to a USB-to-TTL serial cable.
 
 ![Avnet MaaXBoard populated](figures/maaxboard-populated.png)
-

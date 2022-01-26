@@ -18,6 +18,6 @@ The following table includes order codes and hyperlinks for the [Farnell UK stor
 
 This guide assumes the following basic hardware capabilities of the user's development environment:
 
-1. The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. Note tha this is only required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see **TBD**).
+1. The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. Note that this is only required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see **TBD**).
 
 2. The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.
