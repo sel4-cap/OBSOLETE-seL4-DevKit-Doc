@@ -11,7 +11,7 @@ the disk_images folder and selecting the image you want to use, and downloading 
     - sel4-test-maaxboard-imx8.img
         - which contains U-Boot, a U-Boot configuration file and a prebuilt seL4 test ELF binary in the boot partition.
         
-    _Note: the images are compressed as zip files in order to reduce their size (compressed size ~15MB, uncompressed size ~16GB), and will need to be uncompressed using a suitable utility before use._
+    _Note: the images are compressed as zip files in order to reduce their size (compressed size ~15MB, uncompressed size ~15.5GB), and will need to be uncompressed using a suitable utility before use._
 
 2. Once you have downloaded the image you wish to use, you will need to use a utility for flashing images to external drives. The rest of this section assumes that you will use balenaEtcher; see the [Host Machine Setup](host_machine_setup.md) section for more details.
 
@@ -49,12 +49,12 @@ The SD card must be partitioned correctly in order to contain U-Boot, seL4 and s
 
 3. On macOS, you may need to unmount any volumes associated with the SD card. You can do this either from Disk Utility or by using `diskutil unmount /dev/diskXsY` where `X` is the disk identifier and `Y` is the volume identifier.
 
-4. From terminal run the following command, replacing X in `/dev/diskX` with your disk identifier as found earlier
+4. From terminal run the following command, replacing X in `/dev/diskX` with your disk identifier as found earlier. *Note: the `15GB` size mentioned for the` FILESYS` partition can be changed to `R` which will use the remainder of the disk. The instructions here use `15GB` to reflect what was used to create the prebuilt images in the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt] repo. `15GB` is used as "16GB" SD cards/flash drives are not all truly "16GB" due to formatting, so this is done to account for minor differences in size.*
 ```
 diskutil partitionDisk /dev/diskX 3 MBR \
    FREE Bootloader 10M \
    FAT32 BOOT 256M \
-   FAT32 FILESYS R
+   FAT32 FILESYS 15GB
 
 ```
 This creates 3 partitions on the disk, a 10 megabyte bootloader partition for U-Boot, a 256 megabyte partition to hold the seL4 image, and finally the remainder of the disk is provided for the file system.
