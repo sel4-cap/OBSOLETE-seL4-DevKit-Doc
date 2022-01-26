@@ -1,12 +1,12 @@
 # Software Requirements
 
-This developer kit is intended to have minimal host machine software requirements by using Docker containment as much as possible.
+This developer kit is intended to have minimal software requirements on the host machine by using Docker containment as much as possible. The following applications are either needed or assumed on the host machine:
 
 Installation instructions are not reproduced here; please follow the instructions given by the application providers.
 
 Configuration of the applications is considered in the [Host Machine Setup](host_machine_setup.md) section.
 
-This guide assumes that the user has the required host environment permissions to install and configure the applications, for example on macOS and Linux it is assumed that the user has `sudo` privileges.
+This guide assumes that the user has sufficiently elevated privileges on the host machine to install and configure the applications; for example on macOS and Linux it is assumed that the user has `sudo` privileges.
 
 ## Mandatory Requirements
 
