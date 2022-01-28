@@ -2,7 +2,7 @@
 mdBook documentation for seL4 DevKit
 
 ## Building the documentation with mdbook
-The sel4devkit documentation is able to be viewed [here](src/seL4-doc/SUMMARY.md) using the built in GitHub markdown viewer, but is also designed to be built using the mdbook command line tool.
+The sel4devkit documentation is able to be viewed [here](seL4-doc/src/SUMMARY.md) using the built in GitHub markdown viewer, but is also designed to be built using the mdbook command line tool.
 
 ### Getting mdbook
 mdbook can be downloaded from the releases section of its GitHub repository, which can be found [here](https://github.com/rust-lang/mdBook). Installation instructions can be found in the mdbook documentation [here](https://rust-lang.github.io/mdBook/).
