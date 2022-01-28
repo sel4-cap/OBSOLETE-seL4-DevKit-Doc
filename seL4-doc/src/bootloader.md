@@ -50,7 +50,7 @@ Or a network connection via a hub / router:
 
 These two Ethernet configurations are covered in some more detail in the [First Boot](first_boot.md) section.
 
-Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the `sel4_image` binary via TFTP the file needs to be made available for download from the TFTP server..
+Loading via TFTP is considered to be the most convenient method within an application development environment as there is no need to keep plugging and unplugging anything from the board. To load the `sel4_image` binary via TFTP the file needs to be made available for download from the TFTP server.
 
 ### U-Boot Configuration File
 
