@@ -30,7 +30,7 @@ The following subsections provide guidance on how to use each of these mechanism
 
 ### USB Flash Drive
 
-To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT; then copy `sel4_image` to the root of the flash drive. Then insert the USB flash drive into one of the USB ports on the MaaXBoard prior to applying power to the MaaXBoard.
+To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT32; then copy `sel4_image` to the root of the flash drive. Then insert the USB flash drive into one of the USB ports on the MaaXBoard prior to applying power to the MaaXBoard.
 
 ### SD Card
 
