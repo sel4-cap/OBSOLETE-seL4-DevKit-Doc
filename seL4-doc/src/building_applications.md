@@ -4,18 +4,29 @@ For consistency with the methods employed by the [seL4 Foundation](https://sel4.
 
 As a worked example throughout this section the [seL4Test](https://docs.sel4.systems/projects/sel4test) project will be used. seL4Test is a test suite for seL4 developed and maintained by the seL4 Foundation.
 
-This section of the document assumes the [build environment setup](build_environment_setup.md) has been completed. All commands provided within this section are to be executed within the build environment.
+This section of the document assumes the [build environment setup](build_environment_setup.md) has been completed. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the [build environment setup's usage](build_environment_setup.md#usage) section and that you execute the following commands from inside the Docker container.
 
 ## Getting the Code
 
-Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and requited tools) will be cloned:
+Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and requited tools) will be cloned.
+
+Create a directory to hold the code:
 
 ```bash
-# Create a directory to hold the code
 mkdir /host/seL4Test
+```
+
+```bash
 cd /host/seL4Test
-# Clone the code and dependencies
+```
+
+Clone the code and dependencies:
+
+```bash
 repo init -u https://github.com/seL4/sel4test-manifest.git
+```
+
+```bash
 repo sync
 ```
 
