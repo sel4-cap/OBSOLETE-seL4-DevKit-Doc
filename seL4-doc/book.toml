@@ -1,6 +1,6 @@
 [book]
 title = "seL4 Developer Kit for the Avnet MaaXBoard"
-description = "A developer kit for the seL4 microkernel on the Avnet MaaxBaord single board computer."
+description = "A developer kit for the seL4 microkernel on the Avnet MaaXBoard single board computer."
 authors = ["Mark Jenkinson", "Joshua Selby", "Stephen Williams"]
 language = "en"
 multilingual = false
