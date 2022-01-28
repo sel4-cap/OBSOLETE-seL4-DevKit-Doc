@@ -20,7 +20,7 @@ No special configuration is necessary for Etcher.
 
 CoolTerm enables the host machine to communicate with the MaaXBoard over the serial interface using the UART pins on the board's GPIO connector (see [Target Platform Setup](target_platform_setup.md) section for more details of the necessary connections). Alternative applications are available, but this documentation will use CoolTerm, which is freely available and multi-platform.
 
-The configuration parameters are accessible via the _Connection > Options_ menu. The following serial port parameters are required (i.e. 115200 baud, 8 data bits, 1 stop bit):
+The configuration parameters are accessible via the _Connection > Options_ menu. The following serial port parameters are required (i.e. 115200 baud, 8 data bits, no parity, 1 stop bit):
 
 ![CoolTerm serial port configuration](figures/coolTerm-serialport.png)
 
