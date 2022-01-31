@@ -1,6 +1,6 @@
 # Building U-Boot for the MaaXBoard
 
-In order to build U-Boot, the seL4devkit Docker build environment is required, please see [Build Environment Setup](./build_environment_setup.md) to setup this up if you haven't already done so.
+In order to build U-Boot, the seL4devkit Docker build environment is required, please see [Build Environment Setup](../build_environment_setup.md) to setup this up if you haven't already done so.
 
 1. In a suitable location on your host machine, create a new directory with a relevant name, e.g. `maaxboard-uboot-build`
 
@@ -8,7 +8,7 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 
     - `docker run -it --rm -v /your/working/folder/path/here:/host:z ghcr.io/sel4devkit/maaxboard:latest`
 
-    - For more information on starting the seL4devkit build environment, refer to the [usage section of 'Build Environment Setup'](../build_environment_setup#Usage).
+    - For more information on starting the seL4devkit build environment, refer to the [usage section of 'Build Environment Setup'](../build_environment_setup.md#usage).
 
 3. Once the bash shell in your build environment has loaded, you can now clone the [maaxboard-uboot](https://github.com/sel4devkit/maaxboard-uboot) repository from `https://github.com/sel4devkit/maaxboard-uboot.git` using git.
 
@@ -21,4 +21,4 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 7. `build.sh` will now clone some additional repositories and complete the build process. If this is successful you should see the following:
 ![successful-uboot-build](../figures/successful-uboot-build.png)
 
-8. The generated `flash.bin` file is now ready to write to storage media. Please see [SD Card Preparation](./writing_uboot_to_media.md) for details on how to do this.
+8. The generated `flash.bin` file is now ready to write to storage media. Please see [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md) for details on how to do this.
