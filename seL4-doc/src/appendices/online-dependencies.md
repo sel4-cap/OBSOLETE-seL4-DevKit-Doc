@@ -1,0 +1,2 @@
+# Online Dependencies
+_This is a placeholder appendix to aid offline use of the seL4 Developer Kit: a list of online dependencies that would need to be copied locally if, for example, working in a development environment that is isolated from the internet, which may be the case in the security domain. The appendix can leave the "how" to the reader; this is just a list of the "what"._
