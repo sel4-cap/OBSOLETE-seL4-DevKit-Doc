@@ -4,7 +4,7 @@
 
 1. If you are continuing on from the partitioning appendix, skip straight to step 5.
 2. Connect your SD card reader to your host machine and insert your SD card.
-3. Find the disk identifier (e.g  `/dev/disk6` ) for your SD card, on macOS this can be done by running `diskutil list` . This command should present a list of disks and their petitions, `/dev/disk0`  and  `/dev/disk1`  are usually used for the internal SSD/HDD on your Mac, so the newly inserted storage device will usually be at the bottom, assuming it was the last storage device attached to your machine.
+3. Find the disk identifier (e.g  `/dev/disk6` ) for your SD card, on macOS this can be done by running `diskutil list` . This command should present a list of disks and their partitions, `/dev/disk0`  and  `/dev/disk1`  are usually used for the internal SSD/HDD on your Mac, so the newly inserted storage device will usually be at the bottom, assuming it was the last storage device attached to your machine.
 4. On macOS, you may need to unmount any volumes associated with the SD card. You can do this either from Disk Utility or by using `diskutil unmount /dev/diskXsY` where `X` is the disk identifier and `Y` is the volume identifier.
 5. Using the terminal, navigate to the folder containing your U-Boot  `flash.bin`  file.
 
