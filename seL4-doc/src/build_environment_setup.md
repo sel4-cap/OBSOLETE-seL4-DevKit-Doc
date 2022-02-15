@@ -44,7 +44,7 @@ When using the build environment a directory from the host machine must be mappe
 
 **WARNING**: Any changes made outside of the build environment's `/host` directory will be lost when the build environment is exited.
 
-For the purposes of the worked examples in this section the `/scratch/seL4` directory on the host machine is mapped to the build environment's `/host` directory; please note that the directory must be supplied as an absolute path and not as a relative path. It is expected that the user will choose a different directory and modify the commands as required.
+For the purposes of the worked examples in this section the `/scratch/seL4` directory on the host machine is mapped to the build environment's `/host` directory; please note that the directory must be supplied as an absolute path and not as a relative path, and within a Windows environment it needs to include a drive letter (such as `C:/scratch/seL4`). It is expected that the user will choose a different directory and modify the commands as required.
 
 The following command executed from the host machine will start the build environment:
 
