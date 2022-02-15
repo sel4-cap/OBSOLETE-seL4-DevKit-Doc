@@ -30,7 +30,7 @@ repo init -u https://github.com/seL4/sel4test-manifest.git
 repo sync
 ```
 
-**NOTE TO ROD**: Until MaaXBoard support has been merged back to the seL4 repos the `repo init` line in the above command block needs to be `repo init -u https://github.com/sel4devkit/sel4test-manifest.git`.
+**NOTE**: Until MaaXBoard support has been merged back to the seL4 repos the `repo init` line in the above command block needs to be `repo init -u https://github.com/sel4devkit/sel4test-manifest.git`.
 
 ## Building
 
