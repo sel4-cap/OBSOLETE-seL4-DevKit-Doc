@@ -1,6 +1,6 @@
 # Host Machine Setup
 
-The previous [Software Requirements](software_requirements.md) section listed the applications required on the host machine. This section covers any necessary configuration.
+The previous [Software Requirements](software_requirements.md) section listed the applications required on the host machine. Installation links provided there should be followed, where applicable. This section covers any necessary configuration.
 
 ## Docker Desktop / Docker Engine
 
@@ -9,6 +9,12 @@ Docker Desktop is a widely used platform for developing, packaging, and running 
 Little configuration of the default setup for Docker is required. Using the Docker Desktop application available for macOS and Windows, the following _Settings > Preferences_ have been found to be sufficient where the RAM setting was increased from a lower default:
 
 ![Docker Preferences](figures/docker-preferences.png)
+
+When using Linux, the user running the Docker Engine needs to be made a member of the `docker` group by issuing the following command, substituting your username for `<username>`:
+
+```bash
+sudo usermod -aG docker <username>
+```
 
 ## Etcher
 
