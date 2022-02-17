@@ -44,6 +44,41 @@ To help fully understand the guidance supplied by the seL4 documentation it is c
   - [seL4_tools commit](https://github.com/seL4/seL4_tools/commit/f086b4b818d51519a6d00f6934d97c2a3a834cbe)
   - [util_libs commit](https://github.com/seL4/util_libs/commit/b6f99879e59950f39ee35472ab15eac1efb0f139)
 
-## Building and running seL4Test
+## Testing the Port With seL4Test
 
-TBC
+To confirm the correct functionality of a port it is recommended that the [seL4Test](https://docs.sel4.systems/projects/sel4test/) test suite is executed.
+
+To build and execute seL4Test for testing purposes against forks of the seL4 git repositories the following procedure can be used. For the purposes of this example it is envisioned that the engineer has forked the [`sel4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories under GitHub account `work_account` and performed the required modifications under branches named `my_port`. When following the instructions the commands will need to be modified to match the name of the engineer's GitHub account and branch name.
+
+1. Create a fork of the [`sel4test-manifest`](https://github.com/seL4/sel4test-manifest) repository through the GitHub web interface and create branch `my_port`.
+
+2. Modify file `default.xml` in the `my_port` branch of the forked `sel4test-manifest` repository to point at the engineer's forks / branches. This will require the following changes.
+
+   - Add a new `remote` to the manifest:
+
+        ```xml
+        <remote name="work_account" fetch="https://github.com/work_account"/>
+        ```
+
+   - For each modified repository update the associated `project` entry . For example, the entry for the `seL4` repository would be changed from:
+
+        ```xml
+        <project name="seL4.git" path="kernel" revision="..." upstream="master" dest-branch="master"/>
+        ```
+
+      To the following:
+
+        ```xml
+        <project name="seL4.git" path="kernel" remote="work_account" revision="my_port" upstream="my_port" dest-branch="my_port"/>
+        ```
+
+3. Check out the newly updated manifest within the build environment:
+
+    ```sh
+    mkdir /host/seL4test
+    cd /host/seL4test
+    repo init -u https://github.com/work_account/sel4test-manifest.git -b my_port
+    repo sync
+    ```
+
+4. Building and executing seL4Test can be performed by following the instructions previously provided in the [Building Applications](../building_applications.md) and [Execution on Target Platform](../execution_on_target_platform.md) sections with the build commands modified appropriately to target the newly added platform.
