@@ -1,10 +1,10 @@
 # Guide to Porting seL4
 
-The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.
+The level of work required and complexity of porting seL4 to a new platform is directly related to the level of similarity between the system to be ported and systems already supported by seL4. Porting seL4 to a new system based upon a SoC (system-on-chip) already supported by seL4 is likely to be relatively straightforward whilst porting seL4 to a system with a currently unsupported SoC is likely to require more work, e.g. requiring the addition of new serial and timer drivers.
 
 As a starting point the user should read and understand the excellent guidance on porting supplied by the seL4 Foundation at [this link](https://docs.sel4.systems/projects/sel4/porting.html).
 
-The remainder of this section does not seek to repeat any information in the seL4 documentation, instead it provides more detailed guidance and worked examples based upon the experience of porting seL4 to the Avnet MaaXBoard.
+The remainder of this section does not seek to repeat any information in the seL4 documentation; instead it provides more detailed guidance and worked examples based upon the experience of porting seL4 to the Avnet MaaXBoard.
 
 ## Device Tree (DTS)
 
@@ -29,7 +29,7 @@ Following creation of the platform's DTS file it should be stored in the `/tools
 
 ## Previous Worked Examples
 
-To help fully understand the guidance supplied by the seL4 documentation it is considered to be informative to examine the changes made to the seL4 repositories made previously to support new platforms. To that end the following links are to commits in the seL4 git repositories where support for platforms was added. It should be noted to perform a basic port of seL4 to a new platform, i.e. sufficient to run and pass the seL4Test application, will require modification to the [`sel4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories.
+To help fully understand the guidance supplied by the seL4 documentation it is informative to examine the changes made to the seL4 repositories made previously to support new platforms. To that end the following links are to commits in the seL4 git repositories where support for platforms was added. It should be noted that to perform a basic port of seL4 to a new platform, i.e. sufficient to run and pass the seL4Test application, will require modification to the [`seL4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories.
 
 - Avnet MaaXBoard - Port to platform with existing SoC support
   - TBC
@@ -48,11 +48,11 @@ To help fully understand the guidance supplied by the seL4 documentation it is c
 
 To confirm the correct functionality of a port it is recommended that the [seL4Test](https://docs.sel4.systems/projects/sel4test/) test suite is executed.
 
-To build and execute seL4Test for testing purposes against forks of the seL4 git repositories the following procedure can be used. For the purposes of this example it is envisioned that the engineer has forked the [`sel4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories under GitHub account `work_account` and performed the required modifications under branches named `my_port`. When following the instructions the commands will need to be modified to match the name of the engineer's GitHub account and branch name.
+To build and execute seL4Test for testing purposes against forks of the seL4 git repositories the following procedure can be used. For the purposes of this example it is envisioned that the developer has forked the [`sel4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories under GitHub account `work_account` and performed the required modifications under branches named `my_port`. When following the instructions the commands will need to be modified to match the name of the developer's GitHub account and branch name.
 
 1. Create a fork of the [`sel4test-manifest`](https://github.com/seL4/sel4test-manifest) repository through the GitHub web interface and create branch `my_port`.
 
-2. Modify file `default.xml` in the `my_port` branch of the forked `sel4test-manifest` repository to point at the engineer's forks / branches. This will require the following changes.
+2. Modify file `default.xml` in the `my_port` branch of the forked `sel4test-manifest` repository to point at the developer's forks / branches. This will require the following changes.
 
    - Add a new `remote` to the manifest:
 
@@ -60,7 +60,7 @@ To build and execute seL4Test for testing purposes against forks of the seL4 git
         <remote name="work_account" fetch="https://github.com/work_account"/>
         ```
 
-   - For each modified repository update the associated `project` entry . For example, the entry for the `seL4` repository would be changed from:
+   - For each modified repository update the associated `project` entry. For example, the entry for the `seL4` repository would be changed from:
 
         ```xml
         <project name="seL4.git" path="kernel" revision="..." upstream="master" dest-branch="master"/>
