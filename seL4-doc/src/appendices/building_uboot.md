@@ -22,3 +22,67 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 ![successful-uboot-build](../figures/successful-uboot-build.png)
 
 8. The generated `flash.bin` file is now ready to write to storage media. Please see [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md) for details on how to do this.
+
+## Understanding build.sh
+
+Whilst an understanding of how the build script ([`build.sh`](https://github.com/sel4devkit/maaxboard-uboot/blob/main/build.sh)) functions is not required for most use cases, such information is useful in case the engineer has a need to modify the script. For example, it may be necessary to adapt the script for a different board or to update the script to use a different version or fork of U-Boot.
+
+It is worth noting that `build.sh` does not produce a U-Boot image containing HDMI firmware, i.e. it builds an image only suitable for use of the board in 'headless' mode. If display output is required the build script will need to be modified to configure U-Boot with the device tree variant and include firmware for the desired display output (e.g. HDMI or MIPI-DSI)
+
+This section seeks to document the origins of the script and provide guidance on potential modifications.
+
+### Origin and rationale
+
+The steps performed by the build script mirror those, and are distilled from those, performed by the much more complex build script [`mk-imx-boot.sh`](https://github.com/Avnet/uboot-imx/blob/maaxboard_v2020.04_5.4.24_2.1.0/mk-imx-boot.sh) provided by the Avnet U-Boot fork.
+
+The `build.sh` build script was produced to:
+
+1. Remove much of the complexity of the `mk-imx-boot.sh` script, cutting it down to the bare minimum required to support the MaaXBoard, thereby making the required build steps clear; and
+
+2. Ensure that the build script only uses resources held within the development kit GitHub account, thereby ensuring that the ability to build a known-working U-Boot cannot be broken by changes to upstream repositories.
+
+## Build steps
+
+To build U-Boot for the MaaXBoard, and indeed any board, the following resources are generally required:
+
+- A version of U-Boot with drivers supporting the board and a configuration file targeting the board. This will typically either the U-Boot mainline or a fork of U-Boot provided by the board manufacturer.
+
+- Firmware for the board hardware, e.g. to initialise and configure hardware such as the memory. This will typically be supplied by the board or SoC manufacturer.
+
+- Firmware for the processor. In the case of an ARM based SoC, such as the i.MX8MQ used on the MaaXBoard, this is the ATF (ARM Trusted Firmware).
+
+- A tool to compose all of the required elements (e.g. compiled U-Boot binaries and firmware blobs) into the structure and layout expected by the board at boot. In the case of i.MX based SoCs this tool is [`imx-mkimage`](https://github.com/sel4devkit/imx-mkimage).
+
+To satisfy the requirements above, the build script performs the followed ordered steps:
+
+1. Clones a copy of the U-Boot sources that support the MaaXBoard.
+
+2. Configures U-Boot build system for the MaaXBoard and then compiles the U-Boot binaries.
+
+3. Decompresses and compiles the DDR PHY and HDMI firmware.
+
+4. Clones a copy of the ATF (ARM Trusted Firmware).
+
+5. Compiles the ATF configured for the i.MX8MQ SoC as used by the MaaXBoard.
+
+6. Clones a copy of the source code of the `imx-mkimage` tool.
+
+7. Copies all of the binaries and firmware elements produced in the earlier steps into the locations expected by `imx-mkimage`.
+
+8. Builds and executes `imx-mkimage` configured for the i.MX8MQ SoC in 'headless' mode.
+
+The build steps, if successful, result in a binary named `flash.bin` which is suitable for booting the MaaXBoard if placed in a specific location on an SD card as documented within the section [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md).
+
+## Modifying the build script
+
+Given the detailed explanation of the steps performed by the build script above, it is expected that modifying the script should be relatively straightforward.
+
+Whilst the build steps and their ordering is expected to remain unchanged, the contents of each of those steps can easily be changed, for example:
+
+- The locations of Git repositories and the branch cloned by the script can be modified.
+
+- The version of the [hardware firmware](https://github.com/sel4devkit/maaxboard-uboot/tree/main/firmware) supplied by NXP can be changed.
+
+- The choices of configuration options and firmware to be included can be changed.
+
+It is expected that such changes would me made within a fork of the [`maaxboard-uboot`](https://github.com/sel4devkit/maaxboard-uboot) Git repository that provides the build script and folder structure supporting the build.
