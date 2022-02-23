@@ -10,7 +10,7 @@
     - **macOS:** This can be done by running `diskutil list` . This command should present a list of disks and their partitions, `/dev/disk0`  and  `/dev/disk1`  are usually used for the internal SSD/HDD on your Mac, so the newly inserted storage device will usually be at the bottom, assuming it was the last storage device attached to your machine. 
     - **Linux**: You can list all disk drives and their idenfitifers using either `lsblk` or `df -h`, where `/dev/sda` is usually the system drive.
 
-4. You may need to unmount any volumes associated with the SD card. In bothcases, `X` is the disk identifer and `Y` is the volume identifier.
+4. You may need to unmount any volumes associated with the SD card. In both cases, `X` is the disk identifer and `Y` is the volume identifier.
     - **macOS:** You can do this either from Disk Utility or by using `diskutil unmount /dev/diskXsY`. 
     - **Linux:** unmouting of volumes on the disk can be performing using `sudo unmount /dev/sdXY`. 
 
