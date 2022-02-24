@@ -1,8 +1,8 @@
 # Partitioning the SD card
 
-The SD card must be partitioned correctly in order to contain U-Boot, seL4 and space for a filesystem, this can be done as follows.
+The SD card must be partitioned correctly in order to contain U-Boot, seL4 and space for a filesystem. This can be done as follows.
 
-The intention of this section is provide instructions on how to creates three partitions on the disk:
+The intention of this section is provide instructions on how to create three partitions on the disk:
 
 - a 10 megabyte bootloader partition for U-Boot;
 
