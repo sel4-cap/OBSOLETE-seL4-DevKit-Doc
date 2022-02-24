@@ -14,15 +14,15 @@ Device tree files are stored within the Linux kernel within the `/arch/<arch_ide
 
 Support has not been incorporated into the mainline Linux kernel for the Avnet MaaXBoard, and therefore the device tree needed to be sourced from the platform-specific Linux distribution supplied by Avnet at [this link](https://github.com/Avnet/linux-imx/blob/maaxboard_5.4.24_2.1.0/arch/arm64/boot/dts/freescale/maaxboard-base.dts).
 
-Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named `maaxboard.dts`. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel.
+Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named `maaxboard.dts`. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the [build environment](../build_environment_setup.md) (i.e. the Docker container).
 
 ```sh
 git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
    arch/arm64/boot/dts/freescale/maaxboard-base.dts temp.dts
-dtc temp.dts temp.dtb
-dtc -I dtb -O dts temp.dtb > maaxboard.dts
+dtc -o temp.dtb temp.dts
+dtc -o maaxboard.dts temp.dtb
 ```
 
 Following creation of the platform's DTS file it should be stored in the `/tools/dts` folder of the `seL4` git repository and the `update-dts.sh` script (located in the same location) updated to reference the new DTS file.
