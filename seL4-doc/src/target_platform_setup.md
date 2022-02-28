@@ -19,13 +19,11 @@ For clarity, not all of the components have been labelled, only those to which w
 
 Communications with the MaaXBoard from the host machine are via the USB-to-TTL serial cable. This converts between the board's 0V and 3.3V logic levels and the 0V and 5V TTL signal levels expected by USB. The USB end plugs into the host machine, and the flying leads are connected to the GPIO pins on the MaaXBoard.
 
-The USB-to-TTL serial cable that we used has 4 flying lead connectors (only 3 of which we use), but some cables have more connectors. The leads shown below in our photographs adhere to a common colour convention, but this should not necessarily be assumed for your cable and should be confirmed before connecting:
+The USB-to-TTL serial cable that we used has 3 flying lead connectors, but some cables have more connectors. The leads shown below in our photographs adhere to the following colour convention, but this should not necessarily be assumed for your cable and should be confirmed before connecting:
 
 - Black = Ground;
-- White = Transmit;
-- Green = Receive.
-
-The red lead is wired to the USB connector's Vcc 5V power; however, this is not used in our application (the MaaXBoard has its own power supply via the board's USB-C connector) and it has been tied out of the way for convenience in the photographs below.
+- Yellow = Transmit;
+- Orange = Receive.
 
 ![UART connector side 1](figures/uart-connector-side1.png)
 

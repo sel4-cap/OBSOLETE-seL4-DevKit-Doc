@@ -9,7 +9,7 @@ The following table includes order codes and hyperlinks for the [Farnell UK stor
 | Item                                 | Notes                         | Order Code                                                                                                          |
 | ------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Avnet MaaXBoard (AES-MC-SBC-IMX8M-G) | Mandatory                     | [3436577](https://uk.farnell.com/avnet/aes-mc-sbc-imx8m-g/sbc-quad-arm-cortex-a53-cortex/dp/3436577?ost=3436577)    |
-| USB to TTL Serial Cable              | Mandatory                     | [3404320](https://uk.farnell.com/pro-signal/usb-ttl-a/usb-to-ttl-serial-cable/dp/3404320?ost=3404320)               |
+| USB to TTL Serial Cable              | Mandatory                     | [2147356](https://uk.farnell.com/ftdi/ttl-232r-rpi/cable-debug-ttl-232-usb-rpi/dp/2147356)               |
 | 16GB Micro SD Card                   | Mandatory                     | [3498607](https://uk.farnell.com/integral/inmsdh16g10-90u1/16gb-ultimapro-microsd-c10-90/dp/3498607?ost=3498607)    |
 | USB Micro SD Card Reader / Writer    | Mandatory                     | [3493850](https://uk.farnell.com/tripp-lite/u452-000-sd-a/usb-c-memory-card-reader-sd-micro/dp/3493850?ost=3493850) |
 | 15W USB-C Power Adapter              | Mandatory                     | [3106255](https://uk.farnell.com/stontronics/t7725dv/adapter-ac-dc-1-o-p-5-1v-3a/dp/3106255?ost=3106255)            |
