@@ -21,9 +21,9 @@ The SD card must be partitioned correctly in order to contain U-Boot and partiti
 
 6. Then finally click ‘Flash!’ to flash the image. This may take a significant time (e.g. 25 minutes).
 ![etcher-ready-to-flash](figures/etcher-ready-to-flash.png)
-*Flashing in progress:*
+_Flashing in progress:_
 ![etcher-flashing](figures/etcher-flashing.png)
-*After Etcher has flashed the disk, it will validate the disk:*
+_After Etcher has flashed the disk, it will validate the disk:_
 ![etcher-validation](figures/etcher-validation.png)
 
 7. Once flashing is complete, the SD card is ready for use in the MaaXBoard for booting as far as the U-Boot bootloader.
