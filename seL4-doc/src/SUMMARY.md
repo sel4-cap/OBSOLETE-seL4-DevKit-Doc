@@ -30,9 +30,10 @@
 
 - [Device Driver Introduction](device_driver_intro.md)
 - [U-Boot Driver Library Overview](uboot_driver_library.md)
-- [Library Extension - New Platform]()
-- [Library Extension - New Device Class]()
-- [Library Extension - New Driver]()
+- [Using the U-Boot Driver Library](uboot_driver_usage.md)
+- [Library Extension - New Platform](uboot_library_add_platform.md)
+- [Library Extension - New Device Class](uboot_library_add_class.md)
+- [Library Extension - New Driver](uboot_library_add_driver.md)
 
 ---
 
