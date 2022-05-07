@@ -4,11 +4,11 @@ _This may not be the right structure. For now, just some markdown notes of conte
 
 ## Worked example - I<sup>2</sup>C
 
-A good way to show the process of adding a driver is to work through an example. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on board's I<sup>2</sup>C bus. In this worked example, we shall not install a driver for the BD71837MWV itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV, and perform a sample memory read.
+A good way to show the process of adding a driver is to work through an example. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on board's I<sup>2</sup>C bus. In this worked example, we shall not go as far as installing a driver for the BD71837MWV itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV, and perform a sample memory read.
 
 ### Establishing the driver
 
-The first place to look is the relevant source code for the driver in U-Boot. Consider as an example the I<sup>2</sup>C driver. For the i.MX series (the SoC used in the MaaXBoard), the relevant file is `mxc_i2c.c`, found within the directory at [https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)
+The first place to look is the relevant source code for the driver in U-Boot. Using the example of the I<sup>2</sup>C driver, for the i.MX series (the SoC used in the MaaXBoard), the relevant file is `mxc_i2c.c`, found within the directory at [https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)
 
 At the end of the file `mxc_i2c.c`, we can see the driver's name and that it relies on the I2C uclass: 
 ```
@@ -48,6 +48,7 @@ extern struct uclass_driver _u_boot_uclass_driver__i2c_generic;
 ...
 extern struct driver _u_boot_driver__i2c_mxc;
 extern struct driver _u_boot_driver__i2c_generic_chip_drv;
+...
 ```
 
 and `projects_libs/libubootdrivers/src/plat/maaxboard/plat_driver_data.c`:
@@ -105,7 +106,7 @@ A further `ninja` compiles but generates a linker error for an undefined referen
 #define CONFIG_SYS_I2C_MXC_I2C4         1
 ```
 
-This results in a successful build whose `dm tree` reveals the presence of the `i2c_mxc` driver:
+This results in a successful build for which a `dm tree` command reveals the presence of the `i2c_mxc` driver:
 
 ```
  Class     Index  Probed  Driver                Name
@@ -159,17 +160,18 @@ Corresponding changes are made in `projects_libs/libubootdrivers/include/plat/ma
 ```
 /* Define the number of different driver elements to be used on this platform */
 ...
-#define _u_boot_cmd_count  17  // in this example previous count was 16, so +1
+#define _u_boot_cmd_count  17  // In this example previous count was 16, so +1
 ...
 
 /* Define the u-boot commands to be used on this platform */
 ...
 extern struct cmd_tbl _u_boot_cmd__i2c;
+...
 ```
 
 We need to import the U-Boot source code for the i2c command, copying the file `i2c.c` from [https://github.com/u-boot/u-boot/tree/master/cmd](https://github.com/u-boot/u-boot/tree/master/cmd) to `projects_libs/libubootdrivers/src/uboot/src/cmd/`.
 
-We can now try building to identify any extra header files that we need. Within our `build` directory, after `init_build` and `ninja`, we see some missing files that are terminating the compilation:
+We can now try building to identify any extra header files that we need. Within our `build` directory, after `init_build` and `ninja`, we see a missing file that is terminating the compilation:
 
 `... /projects_libs/libubootdrivers/src/uboot/src/cmd/i2c.c:73:10: fatal error: edid.h: No such file or directory`
 
