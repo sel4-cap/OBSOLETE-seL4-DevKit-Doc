@@ -20,10 +20,6 @@ The primary goal of the library is to allow drivers from U-boot to be used withi
 
 The following sections provide details on the design of stub or wrapper elements that are significant to support the functioning of the drivers within the Driver Model framework.
 
-### Initialisation
-
-TBC
-
 ### Linker Lists
 
 To allow variable levels of functionality to be built into a U-Boot executable, U-Boot utilises a concept of [linker-generated arrays](https://u-boot.readthedocs.io/en/latest/api/linker_lists.html). These are arrays of objects (e.g. drivers, supported commands, driver classes, etc) which are stored by U-Boot within dedicated linker sections to be queried at runtime.
@@ -37,6 +33,28 @@ To mimic this functionality within the library the following approach has been t
 2. During initialisation of the library, the platform-dependant contents of the ```driver_data``` global variable are set up.
 
 3. A stubbed version of the ```linker_lists.h``` header file is provided. Rather than accessing data from the executable's linker sections as performed by the original version, the stubbed version accesses data from the arrays within the ```driver_data``` global variable.
+
+### Global Data
+
+U-Boot maintains a [global data](https://u-boot.readthedocs.io/en/latest/develop/global_data.html) structure for the storage of globally required fields.
+
+The macro ```DECLARE_GLOBAL_DATA_PTR``` is used by U-Boot to provide a pointer to this data structure. On most architectures this pointer is stored in a specific register (e.g. register ```r25``` on ARM), such a mechanism is not compatible with seL4.
+
+Within the library the following approach has been taken to global data:
+
+1. A stub of the ```global_data.h``` header file has been provided to provide macro ```DECLARE_GLOBAL_DATA_PTR``` as a standard pointer to a global variable.
+
+2. At initialisation of the library, memory for the global data structure is allocated and initialised as follows:
+   - Most elements are unused and set to null values.
+   - The global status ```flags``` are set up to mimic an instance of U-Boot that has been relocated and is executing from RAM.
+   - Pointers to the flattened device tree are setup to point to seL4's device tree.
+   - A [live device tree](https://u-boot.readthedocs.io/en/latest/develop/driver-model/livetree.html) is built from the flattened device tree and referenced.
+
+### Timer
+
+The U-Boot code expects to have access to have access to a high-frequency, monotonic, timer. The timer is accessed by the U-Boot source code through calls to routines ```get_ticks```, ```get_timer_*``` and ```timer_get_*```.
+
+Provision of such a timer is platform dependent. For the Avnet MaaXBaord the timer has been implemented through use of the System Counter (SYS_CON) device provided by the iMX8MQ SoC, see file ```timer_imx8mq.c``` for details.
 
 ### Memory Mapped IO
 
@@ -53,20 +71,42 @@ As such the addresses used by U-Boot drivers are *physical* addresses which are 
 
 2. When a driver attempts to perform memory mapped IO it calls architecture-dependent routines from the ```io.h``` header, e.g. ```readl``` or ```writel```. A stubbed version of the ```io.h``` header is provided that uses the ```sel4_io_map``` package to translate the physical addresses provided by the driver to the equivalent address mapped into the libraries virtual address space.
 
-Using the approach provided above U-Boot drivers can seamlessly perform memory mapped IO without the need for any modifications being made to the driver itself.
+U-Boot drivers performing memory mapped IO should perform seamlessly without the need for any modifications to the driver.
 
+### DMA
 
-## TODO
+TBC
 
-- Design decisions
+- Drivers requiring DMA may need to be modified. For XHCI USB all of the required modification have been made in the XHCI stack so other drivers should not require changes. Drivers using the DMA interface exported by linux/dma-mapping.h should work; an seL4 specific implementation of this API has been provided by the library. Drivers not using either of these mechanisms will need to be updated to use the API exported by sel_dma.h (see the fec_mxc.c ethernet driver as an example).
 
-- Major issues to overcome
-  - Initialisation
-  - "Linker Lists" - DONE
-  - Running in a virtual address space
-    - Memory mapped IO - DONE
-    - DMA
-  - Clock / time. Need to provide a monotonic high-frequency clock.
+### Console
+
+TBC
+
+- Output wrappers around printf / ZF_LOGxxx routines.
+
+### Initialisation
+
+As part of library initialisation any U-Boot subsystems that require explicit initialisation are handled (see ```uboot_wrapper.c:initialise_uboot_wrapper```). This mimics the minimal subset of the initialisation that would normally be performed by [U-Boot's start-up routine](https://github.com/u-boot/u-boot/blob/master/common/board_r.c).
+
+Initialisation of the library comprises:
+
+- Initialisation of the memory mapped IO and DMA wrappers.
+- Initialisation of the monotonic timer.
+- Initialisation of the Linker Lists data structure.
+- Initialisation of the Global Data data structure.
+- Initialisation of U-Boot's Environment subsystem (manages storage of environment variables).
+- Initialisation of U-Boot's Driver Model subsystem.
+- Initialisation of U-Boot's MMC subsystem (if SD/MMC drivers are used by the platform).
+- Initialisation of U-Boot's Network subsystem (if Ethernet drivers are used by the platform).
+
+### Configuration
+
+TBC
+
+## Code Structure
+
+TBC
 
 - General structure:
   - Code structure
@@ -79,22 +119,12 @@ Using the approach provided above U-Boot drivers can seamlessly perform memory m
     - Memory mapping.
     - DMA.
 
+## Limitations of the Library
 
+TBC
 
-- Linker lists.
-- Env / console.
-  - Output wrappers around printf / ZF_LOGxxx routines.
-- Memory mapped IO.
-
-- Different types of hardware interfaces:
-
-  - Drivers using memory mapped IO with addresses should just work.
-  - Drivers requiring DMA may need to be modified. For XHCI USB all of the required modification have been made in the XHCI stack so other drivers should not require changes. Drivers using the DMA interface exported by linux/dma-mapping.h should work; an seL4 specific implementation of this API has been provided by the library. Drivers not using either of these mechanisms will need to be updated to use the API exported by sel_dma.h (see the fec_mxc.c ethernet driver as an example).
-  - Interrupt handling is currently not used / supported/
-
-- Limitations:
-
-  - Not thread safe ( uses musclib that are not thread safe).
-  - Don’t expect amazing performance.
-  - Unable to control ARM power domains (requires calls to the ATF).
-  - Only works with drivers that have been updated to work with U-Boot’s “live tree” functionality. Such for uses of devfdt_xxx routines and replace with the equivalent dev_xxx routine. See pinctrl-imx.c for an example.
+- Not thread safe ( uses musclib that are not thread safe).
+- Don’t expect amazing performance.
+- Unable to control ARM power domains (requires calls to the ATF).
+- Only works with drivers that have been updated to work with U-Boot’s “live tree” functionality. Such for uses of devfdt_xxx routines and replace with the equivalent dev_xxx routine. See pinctrl-imx.c for an example.
+- Interrupts are currently not used / supported.
