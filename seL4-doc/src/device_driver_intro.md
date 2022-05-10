@@ -26,4 +26,4 @@ Device drivers can be ported from any source where the device driver source code
 
 In line with the goals stated above this guide therefore focuses on the porting of drivers from U-boot to seL4.
 
-The following sections describe the creation of an extensible library for seL4 allowing U-Boot device drivers to function under seL4 with either minimal or no modifications. As an example of its usage the library provides an extensive set of device drivers for the Avnet MaaXBoard (support for USB, Ethernet, MMC/SD, I<sup>2</sup>C, GPIO, Clock and SPI devices). Guidance on the extension of this library to support other platforms and devices is also provided.
+The following sections describe the creation of an extensible library for seL4 allowing U-Boot device drivers to function under seL4 with either minimal or no modifications. As an example of its usage the library provides an extensive set of device drivers for the Avnet MaaXBoard (support for USB, Ethernet, MMC/SD, I<sup>2</sup>C, GPIO, IOMUX, Clock and SPI devices). Guidance on the extension of this library to support other platforms and devices is also provided.
