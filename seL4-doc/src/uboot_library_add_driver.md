@@ -4,7 +4,7 @@ _This may not be the right structure. For now, just some markdown notes of conte
 
 ## Worked example - I<sup>2</sup>C
 
-A good way to show the process of adding a driver is to work through an example. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on board's I<sup>2</sup>C bus. In this worked example, we shall not go as far as installing a driver for the BD71837MWV itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV, and perform a sample memory read.
+A helpful way to show the process of adding a driver is to work through an example step-by-step. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on the board's I<sup>2</sup>C bus. In this worked example, we shall not go as far as installing a driver for the BD71837MWV itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV, and perform a sample memory read.
 
 ### Establishing the driver
 
@@ -36,7 +36,7 @@ U_BOOT_DRIVER(i2c_generic_chip_drv) = {
     ...
 ```
 
-This provides the driver references that we need to add to `libubootdrivers` via `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`:
+This provides the driver references that we need to add to `libubootdrivers` via `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`: 
 
 ```
 /* Define the uclass drivers to be used on this platform */
@@ -56,20 +56,20 @@ and `projects_libs/libubootdrivers/src/plat/maaxboard/plat_driver_data.c`:
 ```
 void initialise_driver_data(void) {
     ...
-    driver_data.uclass_driver_array[16] = _u_boot_uclass_driver__i2c;
-    driver_data.uclass_driver_array[17] = _u_boot_uclass_driver__i2c_generic;
+    driver_data.uclass_driver_array[17] = _u_boot_uclass_driver__i2c;
+    driver_data.uclass_driver_array[18] = _u_boot_uclass_driver__i2c_generic;
     ...
-    driver_data.driver_array[17] = _u_boot_driver__i2c_mxc;
-    driver_data.driver_array[18] = _u_boot_driver__i2c_generic_chip_drv;
+    driver_data.driver_array[18] = _u_boot_driver__i2c_mxc;
+    driver_data.driver_array[19] = _u_boot_driver__i2c_generic_chip_drv;
     ...
 ```
 
-We can see that the latter change has added to the arrays, which needs to be reflected back in `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h` by increasing the size counts:
+We can see that the latter change has added to the arrays. In this example, the two arrays had previously extended to elements [16] and [17] respectively. The increased sizes need to be reflected back in `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h` by increasing the size counts:
 
 ```
 /* Define the number of different driver elements to be used on this platform */
-#define _u_boot_uclass_driver_count  18  // In this example previous count was 16, so +2
-#define _u_boot_driver_count         19  // In this example previous count was 17, so +2
+#define _u_boot_uclass_driver_count  19  // In this example previous count was 17, so +2
+#define _u_boot_driver_count         20  // In this example previous count was 18, so +2
 ...
 ```
 
