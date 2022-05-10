@@ -106,21 +106,74 @@ A further `ninja` compiles but generates a linker error for an undefined referen
 #define CONFIG_SYS_I2C_MXC_I2C4         1
 ```
 
-This results in a successful build for which a `dm tree` command reveals the presence of the `i2c_mxc` driver:
+This should result in a clean build.
+
+### Integrating the driver with CAmkES
+
+We have established the underlying driver code, but it is not yet integrated within the CAmkES component that we shall be using. Assuming that we use the `uboot-driver-example` test application introduced earlier – see [Using the U-Boot Driver Library](uboot_driver_usage.md#instructions-for-running-the-uboot-driver-example-test) – we need to modify the file `camkes/apps/uboot-driver-example/include/plat/maaxboard/platform_devices.h` as follows.
+
+Firstly, we need to add path definitions so that the devices can be located in the device tree:
 
 ```
- Class     Index  Probed  Driver                Name
------------------------------------------------------------
-       ...
- i2c           0  [   ]   i2c_mxc               |   |   |-- i2c@30a20000
- i2c           1  [   ]   i2c_mxc               |   |   |-- i2c@30a30000
- i2c           2  [   ]   i2c_mxc               |   |   |-- i2c@30a40000
- i2c           3  [   ]   i2c_mxc               |   |   |-- i2c@30a50000
+#define I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
+#define I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
+#define I2C_2_PATH      "/soc@0/bus@30800000/i2c@30a40000"
+#define I2C_3_PATH      "/soc@0/bus@30800000/i2c@30a50000"
+```
+
+These need to be added to `DEVICE_PATHS` and `DEVICE_PATHS_LENGTH` modified accordingly:
+
+```
+#define DEVICE_PATHS {  \
+    ...                 \
+    I2C_0_PATH,         \
+    I2C_1_PATH,         \
+    I2C_2_PATH,         \
+    I2C_3_PATH,         \
+    ...
+    };
+#define DEVICE_PATHS_LENGTH 22 // In this example previous size was 18 so +4
+```
+Entries for the devices need to be added to `HARDWARE_INTERFACES`:
+
+```
+#define HARDWARE_INTERFACES  \
+    ...                      \
+    consumes Dummy i2c_0;    \
+    consumes Dummy i2c_1;    \
+    consumes Dummy i2c_2;    \
+    consumes Dummy i2c_3;    \
+    ...                      \
+    emits Dummy dummy_source;
+```
+
+And also added to `HARDWARE_COMPOSITION`:
+
+```
+#define HARDWARE_COMPOSITION                                             \
+    ...                                                                  \
+    connection seL4DTBHardware i2c_0_conn(from dummy_source, to i2c_0);  \
+    connection seL4DTBHardware i2c_1_conn(from dummy_source, to i2c_1);  \
+    connection seL4DTBHardware i2c_2_conn(from dummy_source, to i2c_2);  \
+    connection seL4DTBHardware i2c_3_conn(from dummy_source, to i2c_3);  \
+    ...
+```
+
+And also added to `HARDWARE_CONFIGURATION`:
+
+```
+#define HARDWARE_CONFIGURATION                                                  \
+    ...                                            \
+    i2c_0.dtb     = dtb({ "path" : I2C_0_PATH });  \
+    i2c_1.dtb     = dtb({ "path" : I2C_1_PATH });  \
+    i2c_2.dtb     = dtb({ "path" : I2C_2_PATH });  \
+    i2c_3.dtb     = dtb({ "path" : I2C_3_PATH });  \
+    ...
 ```
 
 ### Establishing the driver API
 
-This has established the driver but now we need to work on its API. We are going to access the driver via the U-Boot `i2c` command, such as is available at a U-Boot command line:
+We now need to work on the driver's API. We are going to access the driver via the U-Boot `i2c` command, such as is available at a U-Boot command line:
 
 ```
 u-boot=> i2c
@@ -181,7 +234,7 @@ This should then build successfully.
 
 ### Testing the driver
 
-Now that we have the I<sup>2</sup>C driver and its API, we can call `i2c` commands from our test program. For example, the following lines can be used within a CAmkES component:
+Now that we have the I<sup>2</sup>C driver and its API, we can call `i2c` commands from our test application. For example, the following lines can be used within a CAmkES component (in our example, these would be added to file `camkes/apps/uboot-driver-example/components/Test/src/test.c`):
 
 ```
     // I2C test
@@ -206,7 +259,19 @@ reads the first 32 bytes from the BD71837MWV, displaying:
 0010: 1e 14 1e 1e 02 03 03 28 03 00 00 00 00 00 0f 48    .......(.......H
 ```
 
-and following the `i2c probe` the `dm tree` command shows the instantiation of the `i2c_generic_chip_drv` driver that we ported earlier:
+Before the `i2c probe`, a `dm tree` command would reveal the presence of the `i2c_mxc` driver:
+
+```
+ Class     Index  Probed  Driver                Name
+-----------------------------------------------------------
+       ...
+ i2c           0  [   ]   i2c_mxc               |   |   |-- i2c@30a20000
+ i2c           1  [   ]   i2c_mxc               |   |   |-- i2c@30a30000
+ i2c           2  [   ]   i2c_mxc               |   |   |-- i2c@30a40000
+ i2c           3  [   ]   i2c_mxc               |   |   |-- i2c@30a50000
+```
+
+Following the `i2c probe`, the `dm tree` command shows the instantiation of the `i2c_generic_chip_drv` driver that we ported earlier:
 
 ```
  Class     Index  Probed  Driver                Name

@@ -40,7 +40,8 @@
 # Appendices
 
 - [Guide to Porting seL4](./appendices/guide_to_porting_sel4.md)
-- [Manually partitioning the SD card](./appendices/partitioning_sd_card.md)
+- [Manually Partitioning the SD Card](./appendices/partitioning_sd_card.md)
 - [Building U-Boot](./appendices/building_uboot.md)
-- [Manually writing U-Boot to an SD card](./appendices/writing_uboot_to_sd_card.md)
+- [Manually Writing U-Boot to an SD Card](./appendices/writing_uboot_to_sd_card.md)
 - [Online Dependencies](./appendices/online-dependencies.md)
+- [Optional Extra - SPI Bus BMP280 Pressure Sensor](./appendices/spi_bmp280.md)
