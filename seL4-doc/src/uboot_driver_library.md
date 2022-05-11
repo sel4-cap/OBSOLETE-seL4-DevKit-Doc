@@ -2,7 +2,12 @@
 
 To achieve the goals specified in [device driver introduction](device_driver_intro.md) section an extensible library of device drivers ported form U-Boot has been created. This library provides an extensive set of drivers for the Avnet MaaXBoard platform as a worked example of its usage supported by documentation in the following sections on usage and maintenance of the library and guidance on the extension of the library to support additional platforms and devices.
 
-The remainder of this section provides information on the design and structure of the library. Before attempting to
+Information on the design and structure of the library is provided under the following sections:
+
+- [Design Summary](#design-summary)
+- [Configuration](#configuration)
+- [Code Structure](#code-structure)
+- [Library Limitations](#library-limitations)
 
 ## Design Summary
 
@@ -60,7 +65,7 @@ Provision of such a timer is platform dependent. For the Avnet MaaXBaord the tim
 
 One of the core mechanisms for providing a software interface to a hardware device is through the use of [memory mapped IO](https://en.wikipedia.org/wiki/Memory-mapped_I/O).
 
-The memory addresses which a U-Boot driver uses for communication with a device can be either read from the device tree (i.e. from a devices ```reg``` property) or in some cases can be hard-coded into the driver. At this pointed it should be noted that U-Boot source code is intended to be executed in an environment with direct access to the system's physical address space whilst, however the library is executed within a virtual address space provided by seL4.
+The memory addresses which a U-Boot driver uses for communication with a device can be either read from the device tree (i.e. from a devices ```reg``` property) or in some cases can be hard-coded into the driver. At this pointed it should be noted that U-Boot source code is intended to be executed in an environment with direct access to the system's physical address space, however the library is executed within a virtual address space provided by seL4.
 
 As such the addresses used by U-Boot drivers are *physical* addresses which are not directly accessible by the library. To work around this issue:
 
@@ -75,9 +80,26 @@ U-Boot drivers performing memory mapped IO should perform seamlessly without the
 
 ### DMA
 
-TBC
+As for [memory mapped IO](#memory-mapped-io) it should be noted that U-Boot source code expects to be executed in an environment with direct access to the system's physical address space, however the library is executed within a virtual address space provided by seL4.
 
-- Drivers requiring DMA may need to be modified. For XHCI USB all of the required modification have been made in the XHCI stack so other drivers should not require changes. Drivers using the DMA interface exported by linux/dma-mapping.h should work; an seL4 specific implementation of this API has been provided by the library. Drivers not using either of these mechanisms will need to be updated to use the API exported by sel_dma.h (see the fec_mxc.c ethernet driver as an example).
+This can lead to U-Boot drivers executed within seL4 erroneously providing a *virtual* memory address to devices as the address to use for a DMA transfer; DMA transfers performed by devices can only be performed to *physical* addresses.
+
+To support this issue the library:
+
+1. Provides the ```sel4_dma``` package as part of its wrapper that:
+   - Provides memory allocation / deallocation routines that utilise the underlying DMA functions proivided by seL4's platform support library.
+   - Maintains a mapping between the physical and virtual addresses, and provide routines to perform address translations.
+   - Provides routines to perform flushing and invalidation of the allocated DMA regions.
+
+2. Provides an implementation of Linux's ```dma_mapping.h``` interface via the ```sel4_dma``` package.
+
+3. Provides modifications to the XHCI USB stack, as used by USB 3.0 devices, intended to cover all DMA issues related to *users* of the USB stack (e.g. keyboard, mouse and mass storage devices).
+
+It is an unfortunate fact that drivers utilising DMA may require manual modifications to function correctly:
+
+- Drivers using the DMA interface exported by ```dma-mapping.h``` should work without modification; drivers ported to U-Boot from Linux have been seen to use this interface. Examples of device drivers for the Avnet MaaXBoard using the ```dma-mapping.h``` DMA interface are the USB driver and the SD/MMC driver.
+
+- Drivers not using the DMA interface exported by ```dma-mapping.h``` will need to be updated to use the API exported by ```sel4_dma``` wrapper package. An example of a device driver for the Avnet MaaXBoard that required manual modifications is the Ethernet driver (see ```fec_mxc.c```).
 
 ### Console
 
@@ -109,7 +131,7 @@ Initialisation of the library comprises:
 - Initialisation of U-Boot's MMC subsystem (if SD/MMC drivers are used by the platform).
 - Initialisation of U-Boot's Network subsystem (if Ethernet drivers are used by the platform).
 
-### Configuration
+## Configuration
 
 TBC
 
@@ -128,7 +150,7 @@ TBC
     - Memory mapping.
     - DMA.
 
-## Limitations of the Library
+## Library Limitations
 
 TBC
 
