@@ -8,7 +8,7 @@ This section of the document assumes the [build environment setup](build_environ
 
 ## Getting the Code
 
-Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and requited tools) will be cloned.
+Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and required tools) will be cloned.
 
 Create a directory to hold the code:
 
