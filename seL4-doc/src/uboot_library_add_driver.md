@@ -127,7 +127,7 @@ Firstly, we need to add path definitions so that the devices can be located in t
 #define I2C_3_PATH      "/soc@0/bus@30800000/i2c@30a50000"
 ```
 
-These need to be added to `DEVICE_PATHS` and `DEVICE_PATHS_LENGTH` modified accordingly:
+These need to be added to `DEVICE_PATHS` and then `DEVICE_PATHS_LENGTH` should be modified accordingly:
 
 ```
 #define DEVICE_PATHS {  \

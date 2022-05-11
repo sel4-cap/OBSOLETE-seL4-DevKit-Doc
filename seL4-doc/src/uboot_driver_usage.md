@@ -1,14 +1,19 @@
 # Using the U-Boot Driver Library
 
-TODO: Include some discussion on extending the library API in here?
+This section...
 
-## xxx
+## The Library API
 
 The ported U-Boot drivers in the library have been made accessible via U-Boot commands, i.e. a subset of those available at the [U-Boot prompt](first_boot.md#boot-to-u-boot-prompt). For example, in the [I<sup>2</sup>C worked example](uboot_library_add_driver.md#establishing-the-driver-api), it is shown how the U-Boot `i2c` command is added and used, e.g. to probe the bus.
 
-Our CAmkeS test application `uboot-driver-example` shows how to access the drivers that have been ported so far.
+Although this provides a relatively simple API, it is intuitive as it clearly has a direct analogue to the commands available at the U-Boot command line. This could readily be developed further to expose more functionality programmatically; for example, U-Boot commands typically complete an action and print outcomes to the console, whereas we could adapt the routines instead to return values that can then be handled programmatically.
 
-## Instructions for running the uboot-driver-example test
+Our CAmkES test application `uboot-driver-example` demonstrates use of the library API to access the drivers that have been ported so far. Sections below give a basic overview of the test application and how to build and run it. 
+
+In addition, another CAmkES test application `picoserver_uboot` is used to demonstrate an implementation of the picoTCP stack on top of the Ethernet driver that we have ported.
+
+## `uboot-driver-example` test application
+### Instructions for running the `uboot-driver-example` test application
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
@@ -30,14 +35,19 @@ repo sync
 
 _Temporary workaround of musllibc bug until [seL4_libs PR#63](https://github.com/seL4/seL4_libs/pull/63) is merged: Copy `memalign.c` from [https://github.com/stephen-williams-capgemini/musllibc/tree/issue_17/src/malloc](https://github.com/stephen-williams-capgemini/musllibc/tree/issue_17/src/malloc) and overwrite the version in `/host/uboot_test/projects/musllibc/src/malloc/`_
 
-The test application includes an Ethernet operation (ping) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` should be edited:
+The test application includes an Ethernet operation (`ping`) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` should be edited:
 
 ```
-run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard e.g. 192.168.0.111
-run_uboot_command("setenv gatewayip xxx.xxx.xxx.xxx"); // IP address of router e.g. 192.168.0.1; only required to ping beyond the local network
+run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
+run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
+```
+
+Optionally, to `ping` to an address beyond the local network:
+
+```
+run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
 run_uboot_command("setenv netmask 255.255.255.0");
-run_uboot_command("ping xxx.xxx.xxx.xxx"); // IP address of host machine e.g. 192.168.0.11
-run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS); requires gatewayip to have been set
+run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
 ```
 
 From the `/host/uboot_test` directory, execute the following commands:
@@ -57,4 +67,106 @@ ninja
 
 A successful build will result in an executable file called `capdl-loader-image-arm-maaxboard` in the `images` subdirectory. This should be copied to a file named `sel4_image` and then made available to the preferred loading mechanism, such as TFTP, as per [Execution on Target Platform](execution_on_target_platform.md).
 
-_Incomplete, and remember to refer to new appendix for BMP280_
+### Overview of the `uboot-driver-example` test application
+
+The source file `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` represents the script for the test application. It contains `run_uboot_cmd("...")` calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the `cmd_tbl` entries of `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`.
+
+It is left to the reader to look through the test script in detail, but the features demonstrated include the following.
+
+- The MaaXBoard's two integral LEDs are toggled.
+- Ping operations.
+- USB operations, including:
+    - identify and list (`ls`) the contents of a USB flash drive, if connected;
+    - read and echo keypresses from a USB keyboard during a defined period, if connected.
+- SD/MMC operations to identify and list (`ls`) the contents of the SD card.
+- I<sup>2</sup>C operations to probe the bus and read the power management IC present on the MaaXBoard's I<sup>2</sup>C bus. (There are more details in the [worked example](uboot_library_add_driver.md#worked-example---i2c) that walks through the steps that were required to add this driver.)
+- SPI operations to access the SPI bus and read a BMP280 pressure sensor, if connected.
+    - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations return nothing in the test application.
+
+Other utility commands are exercised, such as `dm tree`, which is useful to follow the instantiation of device drivers, and `clocks` which lists all the available clocks. As well as 'headline' drivers like USB and SPI above, there are also some fundamental 'building block' drivers in the library, for elements such as clocks, IOMUX, and GPIO, which are needed by other drivers.
+
+## `picoserver_uboot` test application
+
+### Instructions for running the `picoserver_uboot` test application
+
+As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
+
+
+```bash
+mkdir /host/uboot_pico
+cd /host/uboot_pico
+```
+
+ _(Note: below is currently on maaxboard-usb branch; will ultimately change)_
+
+```bash
+repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
+```
+
+```bash
+repo sync
+```
+
+From the `/host/uboot_pico` directory, execute the following commands:
+
+```bash
+mkdir build
+cd build
+```
+
+```bash
+../init-build.sh -DCAMKES_APP=picoserver_uboot -DPLATFORM=maaxboard -DSIMULATION=FALSE -DPICOSERVER_IP_ADDR=xxx.xxx.xxx.xxx
+ninja
+```
+
+where `xxx.xxx.xxx.xxx` is the IP address to allocate to the MaaXBoard.
+
+A successful build will result in an executable file called `capdl-loader-image-arm-maaxboard` in the `images` subdirectory. This should be copied to a file named `sel4_image` and then made available to the preferred loading mechanism, such as TFTP, as per [Execution on Target Platform](execution_on_target_platform.md).
+
+When the `picoserver_uboot` application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.
+
+At any time while running, the application may display `No such port ....` messages as it monitors traffic on the network.
+
+Meanwhile, from a terminal window on your host machine, use the `netcat` (`nc`) command, where `xxx.xxx.xxx.xxx` is the IP address of the MaaXBoard, as previously:
+
+```bash
+nc xxx.xxx.xxx.xxx 1234
+```
+
+On the MaaXBoard (via CoolTerm as usual), a message like the following should be seen:
+
+```
+echo: Connection established with yyy.yyy.yyy.yyy on socket 1
+```
+
+where `yyy.yyy.yyy.yyy` is the IP address of the host machine.
+
+From the host machine's terminal, strings may be typed until `nc` is terminated with Ctrl-C:
+
+```bash
+hostmachine ~ % nc 192.168.0.111 1234
+Hello world!
+Goodbye
+^C
+hostmachine ~ %
+```
+
+Each time carriage return is entered, the `picoserver_uboot` application will display the string, until the `nc` session is terminated, upon which the connection will be closed:
+
+```
+echo: Connection established with 192.168.0.11 on socket 1
+echo: Received message of length 13 --> Hello world!
+echo: Received message of length 8 --> Goodbye
+echo: Connection closing on socket 4
+echo: Connection closed on socket 4
+```
+
+Connections can be re-established simply by issuing another `nc` command.
+
+#### Implementation note
+
+As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXboard, host machine, and router), a changing MAC address for a given IP address between reboots of the MaaXBoard can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over wifi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; the host machine cannot then `nc` to the MaaXBoard over wifi for a period. This can be avoided by, for example, using a USB Flash Drive to serve the `picoserver_uboot` application instead of TFTP.
+
+### Overview of the `picoserver_uboot` test application
+
+MJ HERE
