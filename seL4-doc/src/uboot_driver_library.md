@@ -133,7 +133,15 @@ Initialisation of the library comprises:
 
 ## Configuration
 
-TBC
+U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. To manage this configuration the U-Boot source code relies upon the definitions of a set of macros (typically named ```CONFIG_xxx```). The library therefore needs to define these macros to manage the functionality of the included U-Boot source code.
+
+This configuration is handled at a number of levels:
+
+1. Within the library's CMake file (```CMakeLists.txt```) those macros related directly to the architecture (e.g. ```CONFIG_ARM``` for ARM based devices) or platform (e.g. ```CONFIG_IMX8MQ``` for devices using the iMX8MQ SoC such as the Avnet MaaXBoard) are automatically set based upon settings from the seL4 build system.
+
+2. Macros which are expected to be consistent across all platforms, e.g. those supporting the basic U-Boot subsystem configuration which the library relies upon, are defined in the ```uboot_helper.h``` header file within the library's wrapper.
+
+3. Macros which are platform specific, i.e. those related to the optional subsystems supported by a platform and the platform specific drivers, are defined in the platform specific ```plat_uboot_config.h``` header file.
 
 ## Code Structure
 
