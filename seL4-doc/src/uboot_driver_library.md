@@ -6,8 +6,8 @@ Information on the design and structure of the library is provided under the fol
 
 - [Design Summary](#design-summary)
 - [Configuration](#configuration)
-- [Code Structure](#code-structure)
 - [Library Limitations](#library-limitations)
+- [Code Structure](#code-structure)
 
 ## Design Summary
 
@@ -143,21 +143,6 @@ This configuration is handled at a number of levels:
 
 3. Macros which are platform specific, i.e. those related to the optional subsystems supported by a platform and the platform specific drivers, are defined in the platform specific ```plat_uboot_config.h``` header file.
 
-## Code Structure
-
-TBC
-
-- General structure:
-  - Code structure
-  - U-Boot code, minimally modified.
-  - Stub
-    - delay / time.
-    - print / debug.
-  - Wrapper
-    - Mimic of u-boot start-up code.
-    - Memory mapping.
-    - DMA.
-
 ## Library Limitations
 
 Users of the library should be aware of its limitations, and potential workarounds for those limitations.
@@ -171,3 +156,32 @@ Users of the library should be aware of its limitations, and potential workaroun
 4. **Interrupt Handling**: The device drivers provided by U-Boot generally do not support interrupt handling, instead they rely busy waiting / polling of devices. There is however no inherent reason preventing the use of interrupt handlers. Should use of interrupt handling be required then such handling would need to be added by the user to the driver and the libraries API enhanced to support such functionality.
 
 5. **ARM Power Domains**: ARM power domains are controlled through calls to the ARM Trusted Firmware (ATF). Accessing the ATF from within seL4 is not currently supported due the need for elevated privileges. It is instead suggested that the power domains should be set as required during execution of the bootloader prior to seL4's startup. For example on the Avnet MaaXBoard power domains need to be enabled to power to the USB PHY, therefore the USB devices need to be probed from the U-Boot bootloader prior to starting seL4 to ensure they are powered.
+
+## Code Structure
+
+The library code is held within the following structure:
+
+```text
+libubootdrivers
+|
+└───include
+│   └───plat
+│   └───public_api
+│   └───stub
+│   └───uboot
+│   └───wrapper
+│
+└───src
+    └───plat
+    └───stub
+    └───uboot
+    └───wrapper
+```
+
+The following conventions are maintained for each folder name:
+
+- **plat**: Folder to hold platform specific source files. Contains one subfolder per platform.
+- **public_api**: Holds header files defining the publicly accessible API for the library.
+- **uboot**: Holds unmodified, or minimally modified, source code from U-Boot. Internal folder structure mirrors U-Boot code structure.
+- **stub**: Holds library specific replacements for U-Boot source code. Internal folder structure mirrors U-Boot code structure.
+- **wrapper**: Bespoke code written for the library.
