@@ -1,8 +1,10 @@
 # Using the U-Boot Driver Library
 
+TODO: Include some discussion on extending the library API in here?
+
 ## xxx
 
-The ported U-Boot drivers in the library have been made accessible via U-Boot commands, i.e. a subset of those available at the [U-Boot prompt](first_boot.md#boot-to-u-boot-prompt). For example, in the [I<sup>2</sup>C worked example](uboot_library_add_driver.md#establishing-the-driver-api), it is shown how the U-Boot `i2c` command is added and used, e.g. to probe the bus. 
+The ported U-Boot drivers in the library have been made accessible via U-Boot commands, i.e. a subset of those available at the [U-Boot prompt](first_boot.md#boot-to-u-boot-prompt). For example, in the [I<sup>2</sup>C worked example](uboot_library_add_driver.md#establishing-the-driver-api), it is shown how the U-Boot `i2c` command is added and used, e.g. to probe the bus.
 
 Our CAmkeS test application `uboot-driver-example` shows how to access the drivers that have been ported so far.
 
