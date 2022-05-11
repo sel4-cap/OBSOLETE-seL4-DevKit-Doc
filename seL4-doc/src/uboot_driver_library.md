@@ -81,9 +81,18 @@ TBC
 
 ### Console
 
-TBC
+A minimal stub of U-Boot's console subsystem has been provided (see ```console.c```). This stub provides the subset of functionality required to allow input and output devices to be registered and accessed by the driver library.
 
-- Output wrappers around printf / ZF_LOGxxx routines.
+It should be noted that the console systems's ```stdout``` file is not used by the library; instead all output is routed directly to C libraries output routines.
+
+The console subsystem's ```stdin``` file, however, is used. For example, if a USB keyboard is registered with the console as the ```stdin``` device then subsequent calls to retrieve input from ```stdin``` will return keypresses input from the USB keyboard.
+
+### Standard Output and Logging
+
+The wrapper header file ```uboot_print.h``` provides a set of macros that map:
+
+- All U-Boot standard output routines onto calls to the C libraries ```printf``` routine.
+- All U-Boot logging routines onto the seL4 platform support libraries's ```ZF_LOG*``` routines at an equivalent logging level.
 
 ### Initialisation
 
