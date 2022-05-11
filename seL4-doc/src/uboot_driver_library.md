@@ -160,10 +160,14 @@ TBC
 
 ## Library Limitations
 
-TBC
+Users of the library should be aware of its limitations, and potential workarounds for those limitations.
 
-- Not thread safe ( uses musclib that are not thread safe).
-- Don’t expect amazing performance.
-- Unable to control ARM power domains (requires calls to the ATF).
-- Only works with drivers that have been updated to work with U-Boot’s “live tree” functionality. Such for uses of devfdt_xxx routines and replace with the equivalent dev_xxx routine. See pinctrl-imx.c for an example.
-- Interrupts are currently not used / supported.
+1. **Thread safety**: The library is not thread safe, as such it is the responsibility of the user to serialise access to any single instance of the library. Note however that there multiple instances of the library may be used. For example, two instances of the library could be used concurrently, each held within separate CAmkES components. IF multiple instances of the library are used it is the responsibility of the user to ensure that each instance is using disjoint devices, i.e. two instances of the library would not both be able to access the same USB device however it should be possible for one instance to access an Ethernet device whilst a second instance access a USB device.
+
+2. **Performance**: Quite simply do not expect great performance from the library. The underlying U-Boot drivers have tended to prioritise simplicity over performance, for example the SPI driver for the Avnet MaaXBoard does not support the use of DMA transfers even though the underlying device can perform DMA transfers. Additionally the library wrapper adds additional layers of address translations and data copying (e.g. in its support of memory mapped IO and DMA) as part of the trade-off for minimising changes necessary to the U-Boot drivers.
+
+3. **U-Boot Live Device Tree**: The decision has been taken for the library to utilise U-Boot's modern [live device tree](https://u-boot.readthedocs.io/en/latest/develop/driver-model/livetree.html) functionality to read device tree properties rather than the historical ```fdtdec``` interface. Whilst this should result in improved long term support for the library it may be necessary to make minor changes to a driver to port an old drivers to the live device tree interface. Porting is a simple activity Guidance on porting drivers is provided [here](https://u-boot.readthedocs.io/en/latest/develop/driver-model/livetree.html#porting-drivers).
+
+4. **Interrupt Handling**: The device drivers provided by U-Boot generally do not support interrupt handling, instead they rely busy waiting / polling of devices. There is however no inherent reason preventing the use of interrupt handlers. Should use of interrupt handling be required then such handling would need to be added by the user to the driver and the libraries API enhanced to support such functionality.
+
+5. **ARM Power Domains**: ARM power domains are controlled through calls to the ARM Trusted Firmware (ATF). Accessing the ATF from within seL4 is not currently supported due the need for elevated privileges. It is instead suggested that the power domains should be set as required during execution of the bootloader prior to seL4's startup. For example on the Avnet MaaXBoard power domains need to be enabled to power to the USB PHY, therefore the USB devices need to be probed from the U-Boot bootloader prior to starting seL4 to ensure they are powered.
