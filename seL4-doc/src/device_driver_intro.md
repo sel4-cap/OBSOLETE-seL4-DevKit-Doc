@@ -8,7 +8,9 @@ This guide will focus on methods, complete with an extensive worked example, for
 
 ## Goals
 
-The goal of this guide is lower the barrier to entry for the use of seL4. One such barrier is the relatively limited device driver support for seL4. To help overcome this barrier this guide will attempt to provide a route for adding device support to seL4 with minimal effort and technical challenges. This goal has resulted in the following decisions and priorities being taken:
+The goal of this guide is lower the barrier to entry for the use of seL4. One such barrier is device driver support for seL4, both the relatively limited device driver support as well as the difficulty in the creation of new device drivers.
+
+To help overcome this barrier,  this guide will attempt to provide a route for adding device support to seL4 with minimal effort and technical challenges. This goal has resulted in the following decisions and priorities being taken:
 
 1. A focus on porting of existing open source device drivers from other projects (e.g. Linux or U-Boot) over the writing of new device drivers; detailed guidance on the writing of new device drivers is outside the scope of this guide.
 
@@ -18,7 +20,7 @@ The goal of this guide is lower the barrier to entry for the use of seL4. One su
 
 ## Porting Drivers
 
-Device drivers can be ported from any source where the device driver source code is available under a suitable license. The most obvious such sources are Linux and U-Boot, both of which contain a very large selection of open source device drivers. It is suggested that porting drivers from U-Boot is much easier than porting drivers from Linux for the following reasons:
+Device drivers can be ported from any source where the device driver source code is available under a suitable license. The most obvious such sources are Linux and U-Boot, both of which contain a very large selection of open source device drivers. It is suggested that porting drivers from U-Boot is easier than porting drivers from Linux for the following reasons:
 
 - Porting a device driver either requires the driver to be made to function independently from the driver framework of its source project, or for the source project's driver framework to be made to function within seL4. The U-Boot driver framework is significantly less complex and extensive than the Linux driver framework.
 
