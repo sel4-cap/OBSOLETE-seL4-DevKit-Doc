@@ -1,19 +1,19 @@
 # Using the U-Boot Driver Library
 
-This section...
+This section ... TBC
 
 ## The Library API
 
 The ported U-Boot drivers in the library have been made accessible via U-Boot commands, i.e. a subset of those available at the [U-Boot prompt](first_boot.md#boot-to-u-boot-prompt). For example, in the [I<sup>2</sup>C worked example](uboot_library_add_driver.md#establishing-the-driver-api), it is shown how the U-Boot `i2c` command is added and used, e.g. to probe the bus.
 
-Although this provides a relatively simple API, it is intuitive as it clearly has a direct analogue to the commands available at the U-Boot command line. This could readily be developed further to expose more functionality programmatically; for example, U-Boot commands typically complete an action and print outcomes to the console, whereas we could adapt the routines instead to return values that can then be handled programmatically.
+Although this provides a relatively simple API, it is intuitive as it has a direct analogue to the commands available at the U-Boot command line. This could readily be developed further to expose more functionality programmatically; for example, U-Boot commands typically complete an action and print outcomes to the console, whereas the routines could instead be adapted to return values that can then be handled programmatically.
 
 Our CAmkES test application `uboot-driver-example` demonstrates use of the library API to access the drivers that have been ported so far. Sections below give a basic overview of the test application and how to build and run it. 
 
 In addition, another CAmkES test application `picoserver_uboot` is used to demonstrate an implementation of the picoTCP stack on top of the Ethernet driver that we have ported.
 
-## `uboot-driver-example` test application
-### Instructions for running the `uboot-driver-example` test application
+## Test application: `uboot-driver-example`
+### Instructions for running `uboot-driver-example`
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
@@ -85,9 +85,9 @@ It is left to the reader to look through the test script in detail, but the feat
 
 Other utility commands are exercised, such as `dm tree`, which is useful to follow the instantiation of device drivers, and `clocks` which lists all the available clocks. As well as 'headline' drivers like USB and SPI above, there are also some fundamental 'building block' drivers in the library, for elements such as clocks, IOMUX, and GPIO, which are needed by other drivers.
 
-## `picoserver_uboot` test application
+## Test application: `picoserver_uboot`
 
-### Instructions for running the `picoserver_uboot` test application
+### Instructions for running `picoserver_uboot`
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
@@ -125,9 +125,9 @@ A successful build will result in an executable file called `capdl-loader-image-
 
 When the `picoserver_uboot` application is running on the MaaXBoard, it should confirm that it is listening on port 1234 of the supplied IP address. It will also confirm registration of the protocol stack layers. The application allocates a random MAC address.
 
-At any time while running, the application may display `No such port ....` messages as it monitors traffic on the network.
+At any time while running, the application may display `No such port ....` messages as it monitors traffic on the network; this is expected behaviour that may be ignored.
 
-Meanwhile, from a terminal window on your host machine, use the `netcat` (`nc`) command, where `xxx.xxx.xxx.xxx` is the IP address of the MaaXBoard, as previously:
+Meanwhile, from a terminal window on the host machine, use the `netcat` (`nc`) command, where `xxx.xxx.xxx.xxx` is the IP address of the MaaXBoard, as previously specified:
 
 ```bash
 nc xxx.xxx.xxx.xxx 1234
@@ -157,15 +157,15 @@ Each time carriage return is entered, the `picoserver_uboot` application will di
 echo: Connection established with 192.168.0.11 on socket 1
 echo: Received message of length 13 --> Hello world!
 echo: Received message of length 8 --> Goodbye
-echo: Connection closing on socket 4
-echo: Connection closed on socket 4
+echo: Connection closing on socket 2
+echo: Connection closed on socket 2
 ```
 
 Connections can be re-established simply by issuing another `nc` command.
 
 #### Implementation note
 
-As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXboard, host machine, and router), a changing MAC address for a given IP address between reboots of the MaaXBoard can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over wifi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; the host machine cannot then `nc` to the MaaXBoard over wifi for a period. This can be avoided by, for example, using a USB Flash Drive to serve the `picoserver_uboot` application instead of TFTP.
+As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXBoard, host machine, and router), a changing MAC address for a given IP address between reboots of the MaaXBoard can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over wifi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; for a period, the host machine cannot then `nc` to the MaaXBoard over wifi. This can be avoided by, for example, using a USB Flash Drive to serve the `picoserver_uboot` application instead of TFTP.
 
 ### Overview of the `picoserver_uboot` test application
 
