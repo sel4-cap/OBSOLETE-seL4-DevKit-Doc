@@ -2,9 +2,9 @@
 
 This section outlines the library's API and provides instructions for running two test applications that demonstrate use of its drivers.
 
-- [Library API](http://localhost:3000/uboot_driver_usage.html#library-api)
-- [Test application: `uboot-driver-example`](uboot_driver_usage.md#test-application-uboot-driver-example)
-- [Test application: `picoserver_uboot`](uboot_driver_usage.md#test-application-picoserver_uboot)
+- [Library API](#library-api)
+- [Test application: `uboot-driver-example`](#test-application-uboot-driver-example)
+- [Test application: `picoserver_uboot`](#test-application-picoserver_uboot)
 
 ## Library API
 
@@ -12,7 +12,7 @@ The ported U-Boot drivers in the library have been made accessible via U-Boot co
 
 Although this provides a relatively simple API, it is intuitive as it has a direct analogue to the commands available at the U-Boot command line. This could readily be developed further to expose more functionality; for example, U-Boot commands typically complete an action and print outcomes to the console, whereas the routines could instead be adapted to return values that can then be handled programmatically.
 
-Our CAmkES test application `uboot-driver-example` demonstrates use of the library API to access the drivers that have been ported so far. Sections below give a basic overview of the test application and how to build and run it. 
+Our CAmkES test application `uboot-driver-example` demonstrates use of the library API to access the drivers that have been ported so far. Sections below give a basic overview of the test application and how to build and run it.
 
 In addition, another CAmkES test application `picoserver_uboot` is used to demonstrate an implementation of the picoTCP stack on top of the Ethernet driver that we have ported.
 
@@ -20,19 +20,21 @@ In addition, another CAmkES test application `picoserver_uboot` is used to demon
 
 ### Overview of the `uboot-driver-example` test application
 
-Having followed the build instructions in the [following section](uboot_driver_usage.md#instructions-for-running-uboot-driver-example), the source file at `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` represents the script for the test application. It contains `run_uboot_cmd("...")` calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the `cmd_tbl` entries of `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`.
+Having followed the build instructions in the [following section](#instructions-for-running-uboot-driver-example), the source file at `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` represents the script for the test application. It contains `run_uboot_cmd("...")` calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the `cmd_tbl` entries of `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`.
 
 It is left to the reader to look through the test script in detail, but the features demonstrated include the following.
 
 - The MaaXBoard's two integral LEDs are toggled.
 - Ping operations.
-- USB operations, including:
-    - identify and list (`ls`) the contents of a USB flash drive, if connected;
-    - read and echo keypresses from a USB keyboard during a defined period, if connected.
+- USB operations[^1], including:
+  - identify and list (`ls`) the contents of a USB flash drive, if connected;
+  - read and echo keypresses from a USB keyboard, if connected, during a defined period.
 - SD/MMC operations to identify and list (`ls`) the contents of the SD card.
 - I<sup>2</sup>C operations to probe the bus and read the power management IC present on the MaaXBoard's I<sup>2</sup>C bus. (There are more details in the [worked example](uboot_library_add_driver.md#worked-example---i2c) that walks through the steps that were required to add this driver.)
 - SPI operations to access the SPI bus and read a BMP280 pressure sensor, if connected.
-    - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations return nothing in the test application.
+  - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations return nothing in the test application.
+
+[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
 Other utility commands are exercised, such as `dm tree`, which is useful to follow the instantiation of device drivers, and `clocks` which lists all the available clocks. As well as 'headline' drivers like USB and SPI above, there are also some fundamental 'building block' drivers in the library, for elements such as clocks, IOMUX, and GPIO, which are needed by other drivers.
 
@@ -40,13 +42,12 @@ Other utility commands are exercised, such as `dm tree`, which is useful to foll
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
-
 ```bash
 mkdir /host/uboot_test
 cd /host/uboot_test
 ```
 
- _(Note: below is currently on maaxboard-usb branch; will ultimately change)_
+_(Note: below is currently on maaxboard-usb branch; will ultimately change)_
 
 ```bash
 repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
@@ -60,14 +61,14 @@ _Temporary workaround of musllibc bug until [seL4_libs PR#63](https://github.com
 
 The test application includes an Ethernet operation (`ping`) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` should be edited:
 
-```
+```c
 run_uboot_command("setenv ipaddr xxx.xxx.xxx.xxx"); // IP address to allocate to MaaXBoard
 run_uboot_command("ping yyy.yyy.yyy.yyy"); // IP address of host machine
 ```
 
 Optionally, to `ping` to an address beyond the local network:
 
-```
+```c
 run_uboot_command("setenv gatewayip zzz.zzz.zzz.zzz"); // IP address of router
 run_uboot_command("setenv netmask 255.255.255.0");
 run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS)
@@ -103,7 +104,6 @@ Ethdriver is a simple implementation of an Ethernet driver that has been ported 
 ### Instructions for running `picoserver_uboot`
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
-
 
 ```bash
 mkdir /host/uboot_pico
@@ -148,7 +148,7 @@ nc xxx.xxx.xxx.xxx 1234
 
 On the MaaXBoard (via CoolTerm as usual), a message like the following should be seen:
 
-```
+```text
 echo: Connection established with yyy.yyy.yyy.yyy on socket 1
 ```
 
@@ -166,7 +166,7 @@ hostmachine ~ %
 
 Each time carriage return is entered, the `picoserver_uboot` application will display the string, until the `nc` session is terminated, upon which the connection will be closed:
 
-```
+```text
 echo: Connection established with 192.168.0.11 on socket 1
 echo: Received message of length 13 --> Hello world!
 echo: Received message of length 8 --> Goodbye

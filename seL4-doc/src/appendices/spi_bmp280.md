@@ -1,6 +1,6 @@
 # Optional Extra - SPI Bus Pressure Sensor
 
-Having added a Serial Peripheral Interface (SPI) driver, it was tested with a widely available and inexpensive board module that uses the [Bosch BMP280](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/) barometric pressure / temperature sensor. Here is a link for a typical example, but there are many alternative sources: [Amazon link](https://www.amazon.co.uk/AZDelivery-Generic-BMP280-Barometric-Pressure/dp/B07D8TPVVY). You may also need some suitable cabling, such as female-to-female ribbon cable [(example here)](https://www.amazon.co.uk/gp/product/B07KYHBVR7) and a soldering iron to securely connect the pin header.
+Having added a Serial Peripheral Interface (SPI) driver, it was tested with a widely available and inexpensive board module that uses the [Bosch BMP280](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/) barometric pressure / temperature sensor. Here is a link for a typical example, but there are many alternative sources: [Amazon link](https://www.amazon.co.uk/AZDelivery-Generic-BMP280-Barometric-Pressure/dp/B07D8TPVVY). You may also need some suitable cabling, such as female-to-female ribbon cable [(example here)](https://www.amazon.co.uk/gp/product/B07KYHBVR7) and a soldering iron to connect the pin header.
 
 If this sensor is connected, the `uboot-driver-example` test application will use it (see [Using the U-Boot Driver Library](uboot_driver_usage.md#instructions-for-running-the-uboot-driver-example-test)).
 
