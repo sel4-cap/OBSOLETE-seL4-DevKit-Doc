@@ -131,17 +131,25 @@ Initialisation of the library comprises:
 - Initialisation of U-Boot's MMC subsystem (if SD/MMC drivers are used by the platform);
 - Initialisation of U-Boot's Network subsystem (if Ethernet drivers are used by the platform).
 
-## Configuration
+## Build System
 
-U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. To manage this configuration, the U-Boot source code relies upon the definitions of a set of macros (typically named `CONFIG_xxx`). The library therefore needs to define these macros to manage the functionality of the included U-Boot source code.
+U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. The U-Boot source code relies upon a KConfig build system that results in the definition of a set of macros (typically named `CONFIG_xxx`), together with the identification of the required source code files, to manage this configuration. However, seL4 relies upon the CMake build system. To resolve this issue the following approach has been taken:
 
-This configuration is handled at a number of levels:
+1. Macros which are expected to be consistent across all platforms, e.g. those supporting the basic U-Boot subsystem configuration which the library relies upon, are defined in the ```uboot_helper.h``` header file within the library's wrapper.
 
-1. Within the library's CMake file (`CMakeLists.txt`) those macros related directly to the architecture (e.g. ```CONFIG_ARM``` for ARM based devices) or platform (e.g. `CONFIG_IMX8MQ` for devices using the iMX8MQ SoC, such as the Avnet MaaXBoard) are automatically set based upon settings from the seL4 build system.
+2. All other configuration, i.e. macros, includes and sources files, are controlled by the library's CMake file (```CMakeLists.txt```).
 
-2. Macros that are expected to be consistent across all platforms, e.g. those supporting the basic U-Boot subsystem configuration upon which the library relies, are defined in the `uboot_helper.h` header file within the library's wrapper.
+As such all architecture and platform dependent configuration is encapsulated within the library's CMake file. The general structure of this file is as follow:
 
-3. Macros that are platform specific, i.e. those related to the optional subsystems supported by a platform and the platform specific drivers, are defined in the platform specific `plat_uboot_config.h` header file.
+- A section controlling architecture dependent settings. The settings necessary for ARM based platforms (both ARMv7 and ARMv8) hase been provided.
+
+- A section controlling platform dependent settings. This section covers platform specific macros, identification of the drivers that support the platform, and platform specific header files.
+
+- One section for each class of device (e.g. clock devices, USB devices, etc). For each class of device the generic settings are provided (i.e. settings required irrespective of the chosen driver) as well as the settings provided for each supported driver.
+
+- A section controlling configuration consistent across all architectures and platforms, e.g. the set of source files required by all platforms.
+
+This modular structure of the CMake file is intended to allow for the library to be incrementally extended, i.e. through the addition of support for new architectures, platforms, device classes and drivers.
 
 ## Library Limitations
 

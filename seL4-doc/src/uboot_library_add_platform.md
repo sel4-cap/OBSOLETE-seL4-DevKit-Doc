@@ -1,1 +1,166 @@
 # Library Extension - New Platform
+
+This section documents the required actions and guidance for adding support for a new platform to the library.
+
+By the end of this section an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform.
+
+## Add basic support to library
+
+To allow the library to be successfully compiled for a new platform the following changes will need to be made to the library:
+
+### Update the library's CMake file to support the platform
+
+The library's `CMakeLists.txt` file contains a The section titled ```Platform specific settings``` to control the settings for each platform. This section:
+
+1. Declares a set of variables to control which drivers and optional capabilities are to be built for each platform. The defaults for these variables will produce a build including only a dummy timer driver, this is the minimum necessary to allow the library to be built.
+
+2. Provides a conditional block of settings associated with each supported platform, e.g. to control which of the supported drivers to build. If no conditional block is supplied for a platform the compilation of the library will fail and an error message will be returned.
+
+The minimal changes changes to this section to allow the library to be built is therefore the inclusion of a conditional block for the platform, even if that section makes to changes from the default settings. For example, to add support for a platform that is named  ```foo``` within the seL4 build system, the following changes would be required:
+
+```cmake
+    # Set up the applicable drivers and platform dependent configuration.
+    if(KernelPlatImx8mq)
+        ...
++   elseif("${KernelPlatform}" STREQUAL "foo") )
++       # Platform specific settings for the Foo board.
+    else()
+        message(FATAL_ERROR "Unsupported platform. Aborting.")
+    endif()
+```
+
+Note that where settings are shared across multiple platforms this logic can be simplified to reflect the shared settings. An example of this is provided in the library's `CMakeLists.txt` for the ```maaxboard``` and ```imx8mq-evk``` platforms which both use the iMX8MQ SoC.
+
+It should also be noted that U-Boot drivers can support multiple devices. For example, many of the drivers added to support the Avnet MaaXBoard support multiple iMX SoCs. If previously supported drivers are compatible wih the new platform this support can be added now, for example if platform `foo` has a GPIO device supported by the `gpio_mxc` driver (as used by the Avnet MaaXBoard), then the line ```set(gpio_driver "gpio_mxc")``` could be added to the `foo` platform's settings to enable support.
+
+### Define platform specific Linker Lists data structure
+
+As documented within the [Linker Lists section of the library overview](uboot_driver_library.md#linker-lists), the library requires a global data structure named ```driver_data``` to be declared to allow the U-Boot source code to access optional functionality included in the executable.
+
+To define ```driver_data``` for the new platform new platform specific files must be added to the library. The code blocks that follow provide minimal templates for these files that include the base device classes, drivers for those classes, and base commands that are required by all platforms.
+
+File `inlcude/plat/foo/plat_driver_data.h`:
+
+```c
+/*
+ * This file defines which drivers, driver classes, driver entries and commands
+ * are to be included in the compiled library for this platform.
+ *
+ * This allows only the drivers compatible with the targeted platform to be
+ * included with all non-compatible drivers excluded.
+ *
+ * It should be noted that some of these are fundamental to allowing the U-Boot
+ * driver model to function (e.g. the nop, root and simple bus drivers).
+ */
+
+/* Define the number of different driver elements to be used on this platform */
+#define _u_boot_uclass_driver_count     5
+#define _u_boot_driver_count            2
+#define _u_boot_usb_driver_entry_count  0
+#define _u_boot_part_driver_count       0
+#define _u_boot_cmd_count               3
+#define _u_boot_env_driver_count        0
+#define _u_boot_env_clbk_count          0
+#define _u_boot_driver_info_count       0
+#define _u_boot_udevice_count           0
+
+/* Define the uclass drivers to be used on this platform */
+extern struct uclass_driver _u_boot_uclass_driver__nop;
+extern struct uclass_driver _u_boot_uclass_driver__root;
+extern struct uclass_driver _u_boot_uclass_driver__simple_bus;
+extern struct uclass_driver _u_boot_uclass_driver__phy;
+extern struct uclass_driver _u_boot_uclass_driver__blk;
+
+/* Define the drivers to be used on this platform */
+extern struct driver _u_boot_driver__root_driver;
+extern struct driver _u_boot_driver__simple_bus;
+
+/* Define the driver entries to be used on this platform */
+
+/* Define the disk partition types to be used */
+
+/* Define the u-boot commands to be used on this platform */
+extern struct cmd_tbl _u_boot_cmd__dm;
+extern struct cmd_tbl _u_boot_cmd__env;
+extern struct cmd_tbl _u_boot_cmd__setenv;
+
+/* Define the u-boot environment variables callbacks to be used on this platform */
+```
+
+File `src/plat/foo/plat_driver_data.c`:
+
+```c
+#include <uboot_helper.h>
+
+#include <dm/device.h>
+#include <dm/uclass.h>
+#include <dm/platdata.h>
+#include <usb.h>
+#include <part.h>
+
+void initialise_driver_data(void) {
+    driver_data.uclass_driver_array[0]  = _u_boot_uclass_driver__nop;
+    driver_data.uclass_driver_array[1]  = _u_boot_uclass_driver__root;
+    driver_data.uclass_driver_array[2]  = _u_boot_uclass_driver__simple_bus;
+    driver_data.uclass_driver_array[3]  = _u_boot_uclass_driver__phy;
+    driver_data.uclass_driver_array[4]  = _u_boot_uclass_driver__blk;
+
+    driver_data.driver_array[0]  = _u_boot_driver__root_driver;
+    driver_data.driver_array[1]  = _u_boot_driver__simple_bus;
+
+    driver_data.cmd_array[0]  = _u_boot_cmd__dm;
+    driver_data.cmd_array[2]  = _u_boot_cmd__env;
+    driver_data.cmd_array[3]  = _u_boot_cmd__setenv;
+}
+```
+
+As support for additional optional objects (e.g. drivers, driver classes, commands, etc) are added for a platform these files will be updated to reference the associated objects. See the files for the Avnet MaaXBoard platform for an example of these files providing more extensive support.
+
+## Add support to example application
+
+Section [Using the U-Boot Driver Library](uboot_driver_usage.md) introduced demonstration application  `uboot-driver-example`. This section documents the changes required to the `uboot-driver-example` application to allow it to be built for the new platform.
+
+The following empty template file needs to be added to the application `inlcude/plat/platform_devices.h`:
+
+```c
+#pragma once
+
+#define DEVICE_PATHS {};
+#define DEVICE_PATHS_LENGTH 0
+
+#define HARDWARE_INTERFACES
+
+#define HARDWARE_COMPOSITION
+
+#define HARDWARE_CONFIGURATION
+```
+
+As support for devices are added for a platform this file will be updated to reference those devices from the platform's device tree. See the file for the Avnet MaaXBoard platform for an example providing more extensive support.
+
+## Guidance on next steps
+
+At this point the library should compile cleanly for the new platform with basic support, i.e. ability to run the `dm` command (for querying the status of the Driver Model framework) and the `set` / `setenv` commands (for querying and setting environment variables).
+
+The order in which drivers need to be added is likely to depend on the intended usage of the library, e.g. support for a single device or support for multiple devices, and the internal needs of the device drivers to be added.
+
+The following drivers are considered to be the core of the support for a platform and underpin the capabilities of other drivers. Whilst it may be possible to support some devices without these core drivers that would need to checked on a case by case basis.
+
+### Timer
+
+As documented [in the library overview](uboot_driver_library.md#timer) some U-Boot drivers rely upon access to a monotonic timer to underpin their timing needs.
+
+By default a platform will be supported by the `dummy` timer driver (see library file `src/timer/timer_dummy.c`). Whilst this driver allows the library to build cleanly it will raise an assertion should any of the timing routines be used. Some simple drivers (e.g. GPIO drivers) typically do not require any timing routines and so can be supported without the need to provide a functional timer, however a functional timer will typically need to be provided to support more complex devices such as Ethernet or USB.
+
+The means of providing a timer driver is architecture and platform dependent so detailed guidance cannot be provided. A worked example of a timer driver for the iMX8MQ Soc is provided in file `src/timer/timer_imx8mq.c`, it is expected that this driver could be extended to cover multiple iMX SoCs.
+
+### Clock
+
+The U-Boot `CLK` subsystem is used to enable and reconfigure clocks. To enable the `CLK` subsystem, support for the platform's U-Boot clock driver will need to be added. See the configuration of the clock driver for the Avnet MaaXBoard in the library's `CMakeLists.txt` file as an example.
+
+In many cases it may be possible to support devices without the need to add support for a clock driver. Simple device, e.g. GPIO, may not use a clock source. Even for more complex devices that use a clock source it may be possible for the device to function without providing a clock driver, e.g. if the device was previously set up and used by the bootloader prior to entry to seL4 then it is likely that the required clocks have already been configured and enabled.
+
+### GPIO
+
+Many drivers rely upon the availability of a GPIO driver to function correctly. For example, an MMC driver may use GPIO for card detect and write protect sensing, an Ethernet driver may use GPIO to reset an external PHY, an SPI driver may use GPIO for the chip select signal, etc.
+
+As such it may be necessary to provide a GPIO driver for other drivers to function correctly.
