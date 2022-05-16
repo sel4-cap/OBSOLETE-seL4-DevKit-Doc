@@ -31,7 +31,8 @@ A `dm tree` command from the U-Boot prompt[^2] should reveal an `i2c` entry, whi
 A search for `i2c_mxc` within U-Boot's github repository [https://github.com/u-boot/u-boot](https://github.com/u-boot/u-boot) reveals the file referenced above.
 
 At the end of the file `mxc_i2c.c`, we can see the driver's name and that it relies on the I2C uclass:
-```
+
+```c
 U_BOOT_DRIVER(i2c_mxc) = {
     .name = "i2c_mxc",
     .id = UCLASS_I2C,
@@ -39,7 +40,8 @@ U_BOOT_DRIVER(i2c_mxc) = {
 ```
 
 The I2C uclass is provided by the file `i2c-uclass.c` in the same directory. At the end of `i2c-uclass.c`, we can see that driver and the other relevant drivers:
-```
+
+```c
 UCLASS_DRIVER(i2c) = {
     .id = UCLASS_I2C,
     .name = "i2c",
@@ -58,7 +60,7 @@ U_BOOT_DRIVER(i2c_generic_chip_drv) = {
 
 This provides the driver references that we need to add to `libubootdrivers` via `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`:
 
-```
+```c
 /* Define the uclass drivers to be used on this platform */
 ...
 extern struct uclass_driver _u_boot_uclass_driver__i2c;
@@ -73,7 +75,7 @@ extern struct driver _u_boot_driver__i2c_generic_chip_drv;
 
 and `projects_libs/libubootdrivers/src/plat/maaxboard/plat_driver_data.c`:
 
-```
+```c
 void initialise_driver_data(void) {
     ...
     driver_data.uclass_driver_array[17] = _u_boot_uclass_driver__i2c;
@@ -86,7 +88,7 @@ void initialise_driver_data(void) {
 
 We can see that the latter change has added to the arrays. In this example, the two arrays had previously extended to elements [16] and [17] respectively. The increased sizes need to be reflected back in `libubootdrivers/include/plat/maaxboard/plat_driver_data.h` by increasing the size counts:
 
-```
+```c
 /* Define the number of different driver elements to be used on this platform */
 #define _u_boot_uclass_driver_count  19  // In this example previous count was 17, so +2
 #define _u_boot_driver_count         20  // In this example previous count was 18, so +2
@@ -161,7 +163,7 @@ We have established the underlying driver code, but it is not yet integrated wit
 
 Firstly, we need to add path definitions so that the devices can be located in the device tree:
 
-```
+```c
 #define I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
 #define I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
 #define I2C_2_PATH      "/soc@0/bus@30800000/i2c@30a40000"
@@ -170,7 +172,7 @@ Firstly, we need to add path definitions so that the devices can be located in t
 
 These need to be added to `DEVICE_PATHS` and then `DEVICE_PATHS_LENGTH` should be modified accordingly:
 
-```
+```c
 #define DEVICE_PATHS {  \
     ...                 \
     I2C_0_PATH,         \
@@ -181,9 +183,10 @@ These need to be added to `DEVICE_PATHS` and then `DEVICE_PATHS_LENGTH` should b
     };
 #define DEVICE_PATHS_LENGTH 22 // In this example previous size was 18 so +4
 ```
+
 Entries for the devices need to be added to `HARDWARE_INTERFACES`:
 
-```
+```c
 #define HARDWARE_INTERFACES  \
     ...                      \
     consumes Dummy i2c_0;    \
@@ -196,7 +199,7 @@ Entries for the devices need to be added to `HARDWARE_INTERFACES`:
 
 And also added to `HARDWARE_COMPOSITION`:
 
-```
+```c
 #define HARDWARE_COMPOSITION                                             \
     ...                                                                  \
     connection seL4DTBHardware i2c_0_conn(from dummy_source, to i2c_0);  \
@@ -208,7 +211,7 @@ And also added to `HARDWARE_COMPOSITION`:
 
 And also added to `HARDWARE_CONFIGURATION`:
 
-```
+```c
 #define HARDWARE_CONFIGURATION                                                  \
     ...                                            \
     i2c_0.dtb     = dtb({ "path" : I2C_0_PATH });  \
@@ -222,7 +225,7 @@ And also added to `HARDWARE_CONFIGURATION`:
 
 We now need to work on the driver's API. We are going to access the driver via the U-Boot `i2c` command, such as is available at the U-Boot command line:
 
-```
+```text
 u-boot=> i2c
 i2c - I2C sub-system
 
@@ -248,7 +251,7 @@ u-boot=>
 
 We return to `libubootdrivers/src/plat/maaxboard/plat_driver_data.c` to add a new entry to the `cmd_array`:
 
-```
+```c
 void initialise_driver_data(void) {
     ...
     driver_data.cmd_array[16] = _u_boot_cmd__i2c;
@@ -257,14 +260,14 @@ void initialise_driver_data(void) {
 
 Corresponding changes are made in `libubootdrivers/include/plat/maaxboard/plat_driver_data.h`:
 
-```
+```c
 /* Define the number of different driver elements to be used on this platform */
 ...
 #define _u_boot_cmd_count  17  // In this example previous count was 16, so +1
 ...
 
 /* Define the u-boot commands to be used on this platform */
-...
+...c
 extern struct cmd_tbl _u_boot_cmd__i2c;
 ...
 ```
@@ -274,41 +277,41 @@ We need to import the U-Boot source code for the `i2c` command, copying the file
 As with the previous addition of `.c` files, this needs to be added to the `libubootdrivers/CMakeLists.txt` makefile, along with a CMD configuration switch. The earlier extract from the makefile is repeated below, with two additional lines marked.
 
 ```makefile
-############################
-# Settings for I2C drivers #
-############################
+    ############################
+    # Settings for I2C drivers #
+    ############################
 
-if(i2c_driver MATCHES "none")
-    # Nothing to do
-else()
-    # Enable I2C support
-    add_definitions("-DCONFIG_CMD_I2C=1")            # <-- additional line for cmd
-    add_definitions("-DCONFIG_DM_I2C=1")
-    # Generic I2C source files
-    list(APPEND uboot_deps src/uboot/src/cmd/i2c.c)  # <-- additional line for cmd
-    list(APPEND uboot_deps src/uboot/src/drivers/i2c/i2c-uclass.c)
-
-    # Driver specific settings / files
-    if(i2c_driver MATCHES "i2c_mxc")
-        add_definitions("-DCONFIG_SYS_I2C_MXC=1")
-        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C1=1")
-        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C2=1")
-        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C3=1")
-        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C4=1")
-        add_definitions("-DCONFIG_SYS_MXC_I2C1_SPEED=100000")
-        add_definitions("-DCONFIG_SYS_MXC_I2C1_SLAVE=0")
-        add_definitions("-DCONFIG_SYS_MXC_I2C2_SPEED=100000")
-        add_definitions("-DCONFIG_SYS_MXC_I2C2_SLAVE=0")
-        add_definitions("-DCONFIG_SYS_MXC_I2C3_SPEED=100000")
-        add_definitions("-DCONFIG_SYS_MXC_I2C3_SLAVE=0")
-        add_definitions("-DCONFIG_SYS_MXC_I2C4_SPEED=100000")
-        add_definitions("-DCONFIG_SYS_MXC_I2C4_SLAVE=0")
-
-        list(APPEND uboot_deps src/uboot/src/drivers/i2c/mxc_i2c.c)
+    if(i2c_driver MATCHES "none")
+        # Nothing to do
     else()
-        message(FATAL_ERROR "Unrecognised I2C driver. Aborting.")
+        # Enable I2C support
++       add_definitions("-DCONFIG_CMD_I2C=1")
+        add_definitions("-DCONFIG_DM_I2C=1")
+        # Generic I2C source files
++       list(APPEND uboot_deps src/uboot/src/cmd/i2c.c)
+        list(APPEND uboot_deps src/uboot/src/drivers/i2c/i2c-uclass.c)
+
+        # Driver specific settings / files
+        if(i2c_driver MATCHES "i2c_mxc")
+            add_definitions("-DCONFIG_SYS_I2C_MXC=1")
+            add_definitions("-DCONFIG_SYS_I2C_MXC_I2C1=1")
+            add_definitions("-DCONFIG_SYS_I2C_MXC_I2C2=1")
+            add_definitions("-DCONFIG_SYS_I2C_MXC_I2C3=1")
+            add_definitions("-DCONFIG_SYS_I2C_MXC_I2C4=1")
+            add_definitions("-DCONFIG_SYS_MXC_I2C1_SPEED=100000")
+            add_definitions("-DCONFIG_SYS_MXC_I2C1_SLAVE=0")
+            add_definitions("-DCONFIG_SYS_MXC_I2C2_SPEED=100000")
+            add_definitions("-DCONFIG_SYS_MXC_I2C2_SLAVE=0")
+            add_definitions("-DCONFIG_SYS_MXC_I2C3_SPEED=100000")
+            add_definitions("-DCONFIG_SYS_MXC_I2C3_SLAVE=0")
+            add_definitions("-DCONFIG_SYS_MXC_I2C4_SPEED=100000")
+            add_definitions("-DCONFIG_SYS_MXC_I2C4_SLAVE=0")
+
+            list(APPEND uboot_deps src/uboot/src/drivers/i2c/mxc_i2c.c)
+        else()
+            message(FATAL_ERROR "Unrecognised I2C driver. Aborting.")
+        endif()
     endif()
-endif()
 ```
 
 We can again try building to identify any extra header files that we need. Within our `build` directory, after `init_build` and `ninja`, we see a missing file that is terminating the compilation:
@@ -323,7 +326,7 @@ This should then build successfully.
 
 Now that we have the I<sup>2</sup>C driver and its API, we can call `i2c` commands from our test application. For example, the following lines can be used within a CAmkES component (in our example, these would be added to file `camkes/apps/uboot-driver-example/components/Test/src/test.c`):
 
-```
+```c
     // I2C test
     run_uboot_command("i2c dev 0"); // Set current i2c bus to zero
     run_uboot_command("i2c probe"); // Probe i2c bus 0
@@ -331,7 +334,7 @@ Now that we have the I<sup>2</sup>C driver and its API, we can call `i2c` comman
 
 On the MaaXBoard, the `i2c probe` command returns `Valid chip addresses: 4B`, which is the address of the BD71837MWV power management IC on the bus. Extending the test case as follows:
 
-```
+```c
     // I2C test
     run_uboot_command("i2c dev 0"); // Set current i2c bus to zero
     run_uboot_command("i2c probe"); // Probe i2c bus 0
@@ -341,14 +344,14 @@ On the MaaXBoard, the `i2c probe` command returns `Valid chip addresses: 4B`, wh
 
 reads the first 32 bytes from the BD71837MWV, displaying:
 
-```
+```text
 0000: a3 04 03 a2 00 40 40 44 44 00 00 00 00 14 14 14    .....@@DD.......
 0010: 1e 14 1e 1e 02 03 03 28 03 00 00 00 00 00 0f 48    .......(.......H
 ```
 
 Before the `i2c probe`, a `dm tree` command would reveal the presence of the `i2c_mxc` driver:
 
-```
+```text
  Class     Index  Probed  Driver                Name
 -----------------------------------------------------------
        ...
@@ -360,7 +363,7 @@ Before the `i2c probe`, a `dm tree` command would reveal the presence of the `i2
 
 Following the `i2c probe`, the `dm tree` command shows the instantiation of the `i2c_generic_chip_drv` driver that we ported earlier:
 
-```
+```text
  Class     Index  Probed  Driver                Name
 -----------------------------------------------------------
        ...
