@@ -10,11 +10,25 @@ _Expect we need to cover to following:_
 
 ## Worked example - I<sup>2</sup>C
 
-A helpful way to show the process of adding a driver is to work through an example step-by-step. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on the board's I<sup>2</sup>C bus. In this worked example, we shall not go as far as installing a driver for the BD71837MWV itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV, and perform a sample memory read.
+A helpful way to show the process of adding a driver is to work through an example step-by-step. The I<sup>2</sup>C driver is relatively straightforward and can be readily tested on the MaaXBoard as there is a power management IC (BD71837MWV) already installed on the board's I<sup>2</sup>C bus. In this worked example, we shall not go as far as installing a driver for the BD71837MWV device itself, but we can probe the I<sup>2</sup>C bus, identify the address of the BD71837MWV device, and perform a sample memory read.
 
 ### Establishing the driver
 
-The first place to look is the relevant source code for the driver in U-Boot. Using the example of the I<sup>2</sup>C driver, for the i.MX series (the SoC used in the MaaXBoard), the relevant file is `mxc_i2c.c`, found within the directory at [https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)
+The first place to look is the relevant source code for the driver in U-Boot. Using the example of the I<sup>2</sup>C driver, for the i.MX series (the SoC used in the MaaXBoard), the relevant file is `mxc_i2c.c`, found within the directory at [https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c). This file may be identified as follows.
+
+A `dm tree` command from the U-Boot prompt[^2] should reveal an `i2c` entry, which uses driver `i2c_mxc`.
+
+```text
+ Class     Index  Probed  Driver                Name
+-----------------------------------------------------------
+       ...
+ i2c           0  [   ]   i2c_mxc                   |   |-- i2c@30a20000
+ i2c           1  [   ]   i2c_mxc                   |   |-- i2c@30a30000
+```
+
+[^2]: If the MaaXBoard is powered on and autoboot is interrupted (e.g. press the `Enter` key during the countdown shown in line 37 of the output in the [First Boot](first_boot.md#boot-to-u-boot-prompt) section), then the `dm tree` command may be entered at the U-Boot prompt.
+
+A search for `i2c_mxc` within U-Boot's github repository [https://github.com/u-boot/u-boot](https://github.com/u-boot/u-boot) reveals the file referenced above.
 
 At the end of the file `mxc_i2c.c`, we can see the driver's name and that it relies on the I2C uclass:
 ```
@@ -70,7 +84,7 @@ void initialise_driver_data(void) {
     ...
 ```
 
-We can see that the latter change has added to the arrays. In this example, the two arrays had previously extended to elements [16] and [17] respectively. The increased sizes need to be reflected back in `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h` by increasing the size counts:
+We can see that the latter change has added to the arrays. In this example, the two arrays had previously extended to elements [16] and [17] respectively. The increased sizes need to be reflected back in `libubootdrivers/include/plat/maaxboard/plat_driver_data.h` by increasing the size counts:
 
 ```
 /* Define the number of different driver elements to be used on this platform */
@@ -79,40 +93,67 @@ We can see that the latter change has added to the arrays. In this example, the 
 ...
 ```
 
-We need to add the relevant source code for the i2c drivers from U-Boot, so we create a new `i2c` directory thus: `project_libs/libubootdrivers/src/uboot/src/drivers/i2c/`. From the U-Boot path that we identified earlier ([https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)), we copy `mxc_i2c.c` and `i2c-uclass.c` into our new directory.
+We need to add the relevant source code for the i2c drivers from U-Boot, so we create a new `i2c` directory thus: `libubootdrivers/src/uboot/src/drivers/i2c/`. From the U-Boot path that we identified earlier ([https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)), we copy `mxc_i2c.c` and `i2c-uclass.c` into our new directory.
+
+In order to build these new files, we need to add them to the `libubootdrivers/CMakeLists.txt` makefile. There are also some U-Boot configuration switches relevant to I<sup>2</sup>C that are needed, which are also set within the makefile (see `CONFIG_SYS_*I2C*` definitions below)[^2]. The extract from the makefile that is relevant to I<sup>2</sup>C is shown below.
+
+[^2]: _Working TBD note: How to identify the relevant switches from U-Boot?_
+
+```makefile
+############################
+# Settings for I2C drivers #
+############################
+
+if(i2c_driver MATCHES "none")
+    # Nothing to do
+else()
+    # Enable I2C support
+    add_definitions("-DCONFIG_DM_I2C=1")
+    # Generic I2C source files
+    list(APPEND uboot_deps src/uboot/src/drivers/i2c/i2c-uclass.c)
+
+    # Driver specific settings / files
+    if(i2c_driver MATCHES "i2c_mxc")
+        add_definitions("-DCONFIG_SYS_I2C_MXC=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C1=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C2=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C3=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C4=1")
+        add_definitions("-DCONFIG_SYS_MXC_I2C1_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C1_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C2_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C2_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C3_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C3_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C4_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C4_SLAVE=0")
+
+        list(APPEND uboot_deps src/uboot/src/drivers/i2c/mxc_i2c.c)
+    else()
+        message(FATAL_ERROR "Unrecognised I2C driver. Aborting.")
+    endif()
+endif()
+```
 
 We can now try building to identify the extra header files that we need. Within our `build` directory, after `init_build` (to pick up the new files that we have added so far) and `ninja`, we see some missing files that are terminating the compilation:
 
-`... /projects_libs/libubootdrivers/src/uboot/src/drivers/i2c/i2c-uclass.c:23:10: fatal error: acpi_i2c.h: No such file or directory`
+`... /libubootdrivers/src/uboot/src/drivers/i2c/i2c-uclass.c:23:10: fatal error: acpi_i2c.h: No such file or directory`
 
 and
 
-`... /projects_libs/libubootdrivers/src/uboot/src/drivers/i2c/mxc_i2c.c:25:10: fatal error: asm/mach-imx/mxc_i2c.h: No such file or directory`
+`... /libubootdrivers/src/uboot/src/drivers/i2c/mxc_i2c.c:25:10: fatal error: asm/mach-imx/mxc_i2c.h: No such file or directory`
 
-We find that `acpi_i2c.h` is at the same U-Boot path as the `.c` files were ([https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)), so this can be copied to `project_libs/libubootdrivers/src/uboot/src/drivers/i2c/`.
+We find that `acpi_i2c.h` is at the same U-Boot path as the `.c` files were ([https://github.com/u-boot/u-boot/tree/master/drivers/i2c](https://github.com/u-boot/u-boot/tree/master/drivers/i2c)), so this can be copied to `libubootdrivers/src/uboot/src/drivers/i2c/`.
 
-`mxc_i2c.h` can be found at [https://github.com/u-boot/u-boot/tree/master/arch/arm/include/asm/mach-imx](https://github.com/u-boot/u-boot/tree/master/arch/arm/include/asm/mach-imx) and we copy it to `project_libs/libubootdrivers/include/uboot/arch/imx8m/asm/mach-imx/`.
+`mxc_i2c.h` can be found at [https://github.com/u-boot/u-boot/tree/master/arch/arm/include/asm/mach-imx](https://github.com/u-boot/u-boot/tree/master/arch/arm/include/asm/mach-imx) and we copy it to `libubootdrivers/include/uboot/arch/imx8m/asm/mach-imx/`.
 
 Another `ninja` will reveal a further missing header file:
 
-`... /projects_libs/libubootdrivers/include/uboot/arch/imx8m/asm/mach-imx/mxc_i2c.h:8:10: fatal error: asm/mach-imx/iomux-v3.h: No such file or directory`
+`... /libubootdrivers/include/uboot/arch/imx8m/asm/mach-imx/mxc_i2c.h:8:10: fatal error: asm/mach-imx/iomux-v3.h: No such file or directory`
 
 `iomux-v3.h` is found in and copied to the same locations as `mxc_i2c.h`.
 
-A further `ninja` compiles but generates a linker error for an undefined reference to `_u_boot_driver__i2c_mxc` in `plat_driver_data.c`, an addition we made earlier. There are some U-Boot configuration switches that we need to set. The following are related to I<sup>2</sup>C and we add these lines to `projects_libs/libubootdrivers/include/plat/maaxboard/plat_uboot_config.h`:
-
-```
-/* Enable I2C */
-#define CONFIG_DM_I2C                   1
-#define CONFIG_CMD_I2C                  1
-#define CONFIG_SYS_I2C_MXC              1
-#define CONFIG_SYS_I2C_MXC_I2C1         1
-#define CONFIG_SYS_I2C_MXC_I2C2         1
-#define CONFIG_SYS_I2C_MXC_I2C3         1
-#define CONFIG_SYS_I2C_MXC_I2C4         1
-```
-
-This should result in a clean build.
+A further `ninja` should result in a clean build.
 
 ### Integrating the driver with CAmkES
 
@@ -179,7 +220,7 @@ And also added to `HARDWARE_CONFIGURATION`:
 
 ### Establishing the driver API
 
-We now need to work on the driver's API. We are going to access the driver via the U-Boot `i2c` command, such as is available at a U-Boot command line:
+We now need to work on the driver's API. We are going to access the driver via the U-Boot `i2c` command, such as is available at the U-Boot command line:
 
 ```
 u-boot=> i2c
@@ -205,7 +246,7 @@ i2c speed [speed] - show or set I2C bus speed
 u-boot=>
 ```
 
-We return to `projects_libs/libubootdrivers/src/plat/maaxboard/plat_driver_data.c` to add a new entry to the `cmd_array`:
+We return to `libubootdrivers/src/plat/maaxboard/plat_driver_data.c` to add a new entry to the `cmd_array`:
 
 ```
 void initialise_driver_data(void) {
@@ -214,7 +255,7 @@ void initialise_driver_data(void) {
     ...
 ```
 
-Corresponding changes are made in `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`:
+Corresponding changes are made in `libubootdrivers/include/plat/maaxboard/plat_driver_data.h`:
 
 ```
 /* Define the number of different driver elements to be used on this platform */
@@ -228,11 +269,51 @@ extern struct cmd_tbl _u_boot_cmd__i2c;
 ...
 ```
 
-We need to import the U-Boot source code for the i2c command, copying the file `i2c.c` from [https://github.com/u-boot/u-boot/tree/master/cmd](https://github.com/u-boot/u-boot/tree/master/cmd) to `projects_libs/libubootdrivers/src/uboot/src/cmd/`.
+We need to import the U-Boot source code for the `i2c` command, copying the file `i2c.c` from [https://github.com/u-boot/u-boot/tree/master/cmd](https://github.com/u-boot/u-boot/tree/master/cmd) to `libubootdrivers/src/uboot/src/cmd/`.
 
-We can now try building to identify any extra header files that we need. Within our `build` directory, after `init_build` and `ninja`, we see a missing file that is terminating the compilation:
+As with the previous addition of `.c` files, this needs to be added to the `libubootdrivers/CMakeLists.txt` makefile, along with a CMD configuration switch. The earlier extract from the makefile is repeated below, with two additional lines marked.
 
-`... /projects_libs/libubootdrivers/src/uboot/src/cmd/i2c.c:73:10: fatal error: edid.h: No such file or directory`
+```makefile
+############################
+# Settings for I2C drivers #
+############################
+
+if(i2c_driver MATCHES "none")
+    # Nothing to do
+else()
+    # Enable I2C support
+    add_definitions("-DCONFIG_CMD_I2C=1")            # <-- additional line for cmd
+    add_definitions("-DCONFIG_DM_I2C=1")
+    # Generic I2C source files
+    list(APPEND uboot_deps src/uboot/src/cmd/i2c.c)  # <-- additional line for cmd
+    list(APPEND uboot_deps src/uboot/src/drivers/i2c/i2c-uclass.c)
+
+    # Driver specific settings / files
+    if(i2c_driver MATCHES "i2c_mxc")
+        add_definitions("-DCONFIG_SYS_I2C_MXC=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C1=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C2=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C3=1")
+        add_definitions("-DCONFIG_SYS_I2C_MXC_I2C4=1")
+        add_definitions("-DCONFIG_SYS_MXC_I2C1_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C1_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C2_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C2_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C3_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C3_SLAVE=0")
+        add_definitions("-DCONFIG_SYS_MXC_I2C4_SPEED=100000")
+        add_definitions("-DCONFIG_SYS_MXC_I2C4_SLAVE=0")
+
+        list(APPEND uboot_deps src/uboot/src/drivers/i2c/mxc_i2c.c)
+    else()
+        message(FATAL_ERROR "Unrecognised I2C driver. Aborting.")
+    endif()
+endif()
+```
+
+We can again try building to identify any extra header files that we need. Within our `build` directory, after `init_build` and `ninja`, we see a missing file that is terminating the compilation:
+
+`... /libubootdrivers/src/uboot/src/cmd/i2c.c:73:10: fatal error: edid.h: No such file or directory`
 
 The missing `edid.h` file can be copied from [https://github.com/u-boot/u-boot/tree/master/include](https://github.com/u-boot/u-boot/tree/master/include) to `projects_libs/libubootdrivers/include/uboot/include/`.
 
