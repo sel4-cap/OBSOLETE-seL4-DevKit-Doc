@@ -137,26 +137,30 @@ The following empty template file needs to be added to the application `inlcude/
 
 As support for devices are added for a platform this file will be updated to reference those devices from the platform's device tree. See the file for the Avnet MaaXBoard platform for an example providing more extensive support.
 
-## TODO
+## Guidance on next steps
 
-Demonstrate how to add a new platform and build the example application.
+At this point the library should compile cleanly for the new platform with basic support, i.e. ability to run the `dm` command (for querying the status of the Driver Model framework) and the `set` / `setenv` commands (for querying and setting environment variables).
 
-- Example application:
-  - Add folder to include/plat for the new platform.
-  - ```platform_devices.h``` provide an empty file.
+The order in which drivers need to be added is likely to depend on the intended usage of the library, e.g. support for a single device or support for multiple devices, and the internal needs of the device drivers to be added.
 
-- Library:
-  - Update the CMake file (currently any KernelPlatImx8mq based devices)
-  - Add platform specific folders to include/plat and src/plat. Can use the existing entry for 'maaxboard' as a template.
-    - ```plat_uboot_config.h``` is expected to start empty and be added to as drivers are added.
-    - ```plat_driver_data.h``` provide an empty example file.
-    - ```plat_driver_data.c``` provide an empty example file.
-  - Need a monotonic clock driver.
-    - Needs to provide the same routines as the timer provided for the maaxboard (see ```timer_imx8mq.c```)
-  - Perform a build of a simple test app that just initialises then shuts down the library (provide example).
-    - Add any required platform specific headers and source files into the existing structure based upon any resulting compiler and linker errors.
-  - When everything runs fine progress to adding drivers.
-    - Suggested order of drivers. The existence of clock, GPIO and iomux drivers is expected and relied upon by most drivers (provide examples) so suggest adding these first. Some basic drivers can be supported without any of these or through use of workarounds (e.g. setup performed by the bootloader).
-  - Add in support from existing drivers.
+The following drivers are considered to be the core of the support for a platform and underpin the capabilities of other drivers. Whilst it may be possible to support some devices without these core drivers that would need to checked on a case by case basis.
 
-- New architecture? Already covered ARM.
+### Timer
+
+As documented [in the library overview](uboot_driver_library.md#timer) some U-Boot drivers rely upon access to a monotonic timer to underpin their timing needs.
+
+By default a platform will be supported by the `dummy` timer driver (see library file `src/timer/timer_dummy.c`). Whilst this driver allows the library to build cleanly it will raise an assertion should any of the timing routines be used. Some simple drivers (e.g. GPIO drivers) typically do not require any timing routines and so can be supported without the need to provide a functional timer, however a functional timer will typically need to be provided to support more complex devices such as Ethernet or USB.
+
+The means of providing a timer driver is architecture and platform dependent so detailed guidance cannot be provided. A worked example of a timer driver for the iMX8MQ Soc is provided in file `src/timer/timer_imx8mq.c`, it is expected that this driver could be extended to cover multiple iMX SoCs.
+
+### Clock
+
+The U-Boot `CLK` subsystem is used to enable and reconfigure clocks. To enable the `CLK` subsystem, support for the platform's U-Boot clock driver will need to be added. See the configuration of the clock driver for the Avnet MaaXBoard in the library's `CMakeLists.txt` file as an example.
+
+In many cases it may be possible to support devices without the need to add support for a clock driver. Simple device, e.g. GPIO, may not use a clock source. Even for more complex devices that use a clock source it may be possible for the device to function without providing a clock driver, e.g. if the device was previously set up and used by the bootloader prior to entry to seL4 then it is likely that the required clocks have already been configured and enabled.
+
+### GPIO
+
+Many drivers rely upon the availability of a GPIO driver to function correctly. For example, an MMC driver may use GPIO for card detect and write protect sensing, an Ethernet driver may use GPIO to reset an external PHY, an SPI driver may use GPIO for the chip select signal, etc.
+
+As such it may be necessary to provide a GPIO driver for other drivers to function correctly.
