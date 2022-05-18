@@ -26,4 +26,61 @@ To further support this topic appendices have been added to provide [a worked ex
 
 ## Identification of U-Boot Device Driver
 
-The first step in adding a new device driver to the library is to positively identify the U-Boot source file providing the required support.
+The first step in adding a new device driver to the library is to positively identify the U-Boot source file providing the required support. U-Boot declares drivers through use of a macro of the following format:
+
+```c
+U_BOOT_DRIVER(<driver_id>) = {
+	.name = "<driver_name>",
+	.id = UCLASS_<driver_uclass_id>,
+    ...
+};
+```
+
+If a build of U-Boot with support for the desired device is available, the name of the device driver can be obtained through use of U-Boot's `dm tree` command.
+
+For example, to determine the GPIO device driver for a platform the following `dm tree` output would identify that the U-Boot driver with a `<driver_name>` of `gpio_mxc` provides the desired support. Note that the name of the device (as per the platform's device tree) is provided in the `Name` column whilst the `<driver_name>` is provided in the `Driver` column.
+
+```text
+u-boot=> dm tree
+ Class     Index  Probed  Driver                Name
+-----------------------------------------------------------
+ root          0  [ + ]   root_driver           root_driver
+ simple_bus    0  [ + ]   simple_bus            `-- soc@0
+ simple_bus    1  [ + ]   simple_bus                |-- bus@30000000
+ gpio          0  [ + ]   gpio_mxc                  |   |-- gpio@30200000
+ gpio          1  [   ]   gpio_mxc                  |   |-- gpio@30210000
+ gpio          2  [   ]   gpio_mxc                  |   |-- gpio@30220000
+ gpio          3  [   ]   gpio_mxc                  |   |-- gpio@30230000
+ gpio          4  [   ]   gpio_mxc                  |   |-- gpio@30240000
+ ...
+```
+
+If no such build of U-Boot is available, the device driver can be obtained through manual matching of the `compatible` strings between the platform's device tree and a device driver.
+
+For example, from the following device tree excerpt it can be seen that the GPIO device is compatible with a device driver that advertises compatibility to either `fsl,imx8mq-gpio` or `fsl,imx35-gpio` devices.
+
+```text
+gpio@30200000 {
+    compatible = "fsl,imx8mq-gpio\0fsl,imx35-gpio";
+    ...
+};
+```
+
+Performing a textual search for these compatibility strings within the U-Boot source code provides the following match for the `fsl,imx35-gpio` compatibility string:
+
+```c
+static const struct udevice_id mxc_gpio_ids[] = {
+    { .compatible = "fsl,imx35-gpio" },
+    { }
+};
+
+U_BOOT_DRIVER(gpio_mxc) = {
+    .name = "gpio_mxc",
+    .id = UCLASS_GPIO,
+    ...
+    .of_match = mxc_gpio_ids,
+    ...
+};
+```
+
+Through either method, the U-Boot source file containing the required `U_BOOT_DRIVER` can be identified.
