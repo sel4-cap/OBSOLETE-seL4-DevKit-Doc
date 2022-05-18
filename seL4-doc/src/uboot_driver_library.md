@@ -143,7 +143,7 @@ As such all architecture and platform dependent configuration is encapsulated wi
 
 - A section controlling architecture dependent settings. The settings necessary for ARM based platforms (both ARMv7 and ARMv8) hase been provided.
 
-- A section controlling platform dependent settings. This section covers platform specific macros, identification of the drivers that support the platform, and platform specific header files.
+- A section controlling platform dependent settings. Contains platform specific macros, identification of drivers supporting the platform, and setup of platform specific header files.
 
 - One section for each class of device (e.g. clock devices, USB devices, etc). For each class of device the generic settings are provided (i.e. settings required irrespective of the chosen driver) as well as the settings provided for each supported driver.
 
@@ -175,21 +175,23 @@ libubootdrivers
 └───include
 │   └───plat
 │   └───public_api
-│   └───stub
-│   └───uboot
 │   └───wrapper
 │
 └───src
-    └───plat
-    └───stub
-    └───uboot
-    └───wrapper
+|   └───plat
+|   └───timer
+|   └───wrapper
+│
+└───uboot
+│
+└───uboot_stub
 ```
 
 The following conventions are maintained for each folder name:
 
-- **plat**: Folder to hold platform specific source files. Contains one subfolder per platform.
-- **public_api**: Holds header files defining the publicly accessible API for the library.
-- **uboot**: Holds unmodified, or minimally modified, source code from U-Boot. Internal folder structure mirrors U-Boot code structure.
-- **stub**: Holds library specific replacements for U-Boot source code. Internal folder structure mirrors U-Boot code structure.
+- **plat**: Folders holding platform specific source files. Contains one subfolder per platform.
+- **public_api**: Holds header files defining the library's publicly accessible API.
 - **wrapper**: Bespoke code written for the library.
+- **timer**: Timer driver source code.
+- **uboot**: Holds an unmodified, or minimally modified, fork of the U-Boot project.
+- **uboot_stub**: Holds library specific replacements for U-Boot source code. Internal folder structure mirrors U-Boot code structure.
