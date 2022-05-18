@@ -12,15 +12,15 @@ This section provides guidance on the addition of a new device driver to support
 
 Adding support for a new device can be broken down into logical steps:
 
-1. [Identification of U-Boot Device Driver]()
+1. [Identification of U-Boot Device Driver](#identification-of-u-boot-device-driver)
 
-2. [Updating the library `CMakeLists.txt` to support the device driver]()
+2. [Updating the library `CMakeLists.txt` to support the device driver](#updating-cmakeliststxt)
 
-3. [Associating the device driver with an existing platform]()
+3. [Associating the device driver with an existing platform](#associating-driver-with-platform)
 
-4. [Resolving compilation issues]()
+4. [Resolving compilation issues](#resolving-compilation-issues)
 
-5. [Updating an seL4 application to access the device]()
+5. [Updating an seL4 application to access the device](#updating-sel4-application)
 
 To further support this topic appendices have been added to provide [a worked example](./appendices/add_driver_worked_example.md) and to discuss [troubleshooting and common issues]() that may be encountered.
 
@@ -84,3 +84,19 @@ U_BOOT_DRIVER(gpio_mxc) = {
 ```
 
 Through either method, the U-Boot source file containing the required `U_BOOT_DRIVER` can be identified.
+
+## Updating `CMakeLists.txt`
+
+TBC
+
+## Associating Driver With Platform
+
+TBC
+
+## Resolving Compilation Issues
+
+TBC
+
+## Updating seL4 application
+
+TBC
