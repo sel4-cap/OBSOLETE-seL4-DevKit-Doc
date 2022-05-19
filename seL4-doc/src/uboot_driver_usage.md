@@ -8,17 +8,17 @@ This section outlines the library's API and provides instructions for running tw
 
 ## Library API
 
-The core of the library's public API (see library folder `include/public_pai` for full details) are:
+At the core of the library's public API (see library folder `include/public_api` for full details) are:
 
-- Routines to initialise (`initialise_uboot_drivers`) and shutdown (`shutdown_uboot_drivers`) the library that must book-end the usage of all other API routines.
+- Routines to initialise (`initialise_uboot_drivers`) and shutdown (`shutdown_uboot_drivers`) the library that must book-end the usage of all other API routines;
 
 - A routine (`run_uboot_command`) to allow execution of the same textual commands as used at the [U-Boot prompt](first_boot.md#boot-to-u-boot-prompt). For example, in the [I<sup>2</sup>C worked example](uboot_library_add_driver.md#establishing-the-driver-api), it is shown how the U-Boot `i2c` command is added and used, e.g. to probe the bus.
 
-Although this provides a relatively simple API, it is intuitive as it has a direct analogue to the commands available at the U-Boot command line, there are limitations. The API can be readily developed further to expose more functionality; for example:
+Although this provides a relatively simple API, it is intuitive as it has a direct analogue to the commands available at the U-Boot command line. There are limitations, but the API can be readily developed further to expose more functionality, for example:
 
-- To accept arguments through parameter passing rather than through a textual command.
+- To accept arguments through parameter passing rather than through a textual command;
 
-- To return data or results rather than printing outcomes to the console.
+- To return data or results rather than printing outcomes to the console;
 
 - To expose lower-level interfaces than the U-Boot commands permit, for example access to raw Ethernet frames.
 
@@ -26,7 +26,7 @@ It is expected that the source code of the U-Boot commands are likely to provide
 
 A number of worked examples have been provided for extensions to the core API described above:
 
-- For accessing the `stdin` file maintained by U-Boot, routiness `uboot_stdin_<...>` have been provided to enable testing whether characters are available and to retrieve them. The `uboot-driver-example` test application demonstrates usage of these API routines for retrieving characters typed on a connected USB keyboard.
+- For accessing the `stdin` file maintained by U-Boot, routines `uboot_stdin_<...>` have been provided to enable testing whether characters are available and to retrieve them. The `uboot-driver-example` test application demonstrates usage of these API routines for retrieving characters typed on a connected USB keyboard.
 
 - For reading and sending raw Ethernet frames, routines `uboot_eth_<...>` have been provided. The `picoserver_uboot` test application demonstrates usage of these API routines to integrate the library with the picoTCP stack.
 
@@ -194,4 +194,4 @@ Connections can be re-established simply by issuing another `nc` command.
 
 #### Implementation note
 
-As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXBoard, host machine, and router), a changing MAC address for a given IP address can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over wifi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; for a period, the host machine cannot then `nc` to the MaaXBoard over wifi. This can be avoided by, for example, using a USB flash drive to serve the `picoserver_uboot` application instead of TFTP.
+As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXBoard, host machine, and router), a changing MAC address for a given IP address can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over wifi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; for a period, the host machine cannot then `nc` to the MaaXBoard over wifi. This can be improved by, for example, using a USB flash drive to serve the `picoserver_uboot` application instead of TFTP.
