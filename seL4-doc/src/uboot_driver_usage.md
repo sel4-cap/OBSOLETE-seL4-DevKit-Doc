@@ -73,8 +73,6 @@ repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
 repo sync
 ```
 
-_Temporary workaround of musllibc bug until [seL4_libs PR#63](https://github.com/seL4/seL4_libs/pull/63) is merged: Copy `memalign.c` from [https://github.com/stephen-williams-capgemini/musllibc/tree/issue_17/src/malloc](https://github.com/stephen-williams-capgemini/musllibc/tree/issue_17/src/malloc) and overwrite the version in `/host/uboot_test/projects/musllibc/src/malloc/`_
-
 The test application includes an Ethernet operation (`ping`) with hard-coded IP addresses; these need to be customised for an individual's environment. The following lines of the source file `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` should be edited:
 
 ```c
