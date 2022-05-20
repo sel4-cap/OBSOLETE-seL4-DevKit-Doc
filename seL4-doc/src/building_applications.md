@@ -30,8 +30,6 @@ repo init -u https://github.com/seL4/sel4test-manifest.git
 repo sync
 ```
 
-**NOTE**: Until MaaXBoard support has been merged back to the seL4 repos the `repo init` line in the above command block needs to be `repo init -u https://github.com/sel4devkit/sel4test-manifest.git`.
-
 ## Building
 
 To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures or other build options.
