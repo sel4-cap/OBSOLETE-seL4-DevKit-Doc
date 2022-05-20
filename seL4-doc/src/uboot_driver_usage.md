@@ -63,7 +63,7 @@ mkdir /host/uboot_test
 cd /host/uboot_test
 ```
 
-_(Note: below is currently on maaxboard-usb branch; will ultimately change)_
+_Temporary-note: below is currently on maaxboard-usb branch; it will ultimately change_
 
 ```bash
 repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
@@ -124,7 +124,7 @@ mkdir /host/uboot_pico
 cd /host/uboot_pico
 ```
 
- _(Note: below is currently on maaxboard-usb branch; will ultimately change)_
+_Temporary-note: below is currently on maaxboard-usb branch; it will ultimately change_
 
 ```bash
 repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
