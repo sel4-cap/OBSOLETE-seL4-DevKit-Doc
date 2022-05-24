@@ -111,7 +111,7 @@ void initialise_driver_data(void) {
     driver_data.driver_array[1]  = _u_boot_driver__simple_bus;
 
     driver_data.cmd_array[0]  = _u_boot_cmd__dm;
-    driver_data.cmd_array[2]  = _u_boot_cmd__env;
+    driver_data.cmd_array[1]  = _u_boot_cmd__env;
     driver_data.cmd_array[3]  = _u_boot_cmd__setenv;
 }
 ```
