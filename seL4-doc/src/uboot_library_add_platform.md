@@ -141,7 +141,7 @@ As support for devices is added for a platform, this file will be updated to ref
 
 ## Guidance on next steps
 
-At this point, the library should compile cleanly for the new platform with basic support; i.e. the ability to run the `dm` command (for querying the status of the Driver Model framework) and the `set` / `setenv` commands (for querying and setting environment variables).
+At this point, the library should compile cleanly for the new platform but will fail during library initialisation due to no devices being supplied.
 
 The order in which drivers need to be added is likely to depend on the intended usage of the library; e.g. support for a single device or support for multiple devices, and the internal needs of the device drivers to be added.
 
