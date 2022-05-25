@@ -131,6 +131,14 @@ Initialisation of the library comprises:
 - Initialisation of U-Boot's MMC subsystem (if SD/MMC drivers are used by the platform);
 - Initialisation of U-Boot's Network subsystem (if Ethernet drivers are used by the platform).
 
+When calling the `initialise_uboot_wrapper` routine the following must be provided:
+
+- The I/O operations data structure from the platform support library. These routines enable the library to access the seL4 device tree and to perform memory mapping and DMA operations. The routines are provided by CAmkES on creation of a single threaded component.
+- The list of device tree paths containing physical addresses to be memory mapped (through the `reg` property).
+- The list of device tree paths for the devices to enable. Note that all sub-nodes of the device tree paths will be automatically enabled; only the root node for the required devices need to be listed. All other nodes in the device tree will be marked as disabled.
+
+A worked example for use of the `initialise_uboot_wrapper` routine is provided by the [`uboot-driver-example` test application](uboot_driver_usage.md#test-application-uboot-driver-example) for the Avnet MaaXBoard.
+
 ## Build System
 
 U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. The U-Boot source code relies upon a KConfig build system that results in the definition of a set of macros (typically named `CONFIG_xxx`), together with the identification of the required source code files, to manage this configuration. However, seL4 relies upon the CMake build system. To resolve this issue the following approach has been taken:
