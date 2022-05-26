@@ -147,6 +147,7 @@ File `src/plat/foo/plat_driver_data.c`:
 
 ```c
 #include <uboot_helper.h>
+#include <driver_data.h>
 
 #include <dm/device.h>
 #include <dm/uclass.h>
