@@ -201,5 +201,5 @@ The following conventions are maintained for each folder name:
 - **public_api**: Holds header files defining the library's publicly accessible API.
 - **wrapper**: Bespoke code written for the library.
 - **timer**: Timer driver source code.
-- **uboot**: Holds an unmodified, or minimally modified, fork of the U-Boot project.
+- **uboot**: A symlink to an unmodified, or minimally modified, fork of the U-Boot project. Note that the build system is responsible for creation of the symlink; for the [example test applications](uboot_driver_usage.md) the symlink is created by the `repo` tool.
 - **uboot_stub**: Holds library specific replacements for U-Boot source code. Internal folder structure mirrors U-Boot code structure.
