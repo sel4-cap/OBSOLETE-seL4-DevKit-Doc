@@ -28,6 +28,8 @@ U_BOOT_DRIVER(<driver_id>) = {
 };
 ```
 
+An example of such a declaration from the GPIO driver for the Avnet MaaXBoard can be found in the U-Boot source code within file `drivers/gpio/mxc_gpio.c`.
+
 If a build of U-Boot with support for the desired device is available, the name of the device driver can be obtained through use of U-Boot's `dm tree` command.
 
 For example, to determine the GPIO device driver for a platform the following `dm tree` output would identify that the U-Boot driver with a `<driver_name>` of `gpio_mxc` provides the desired support. Note that the name of the device (as per the platform's device tree) is provided in the `Name` column whilst the `<driver_name>` is provided in the `Driver` column.
