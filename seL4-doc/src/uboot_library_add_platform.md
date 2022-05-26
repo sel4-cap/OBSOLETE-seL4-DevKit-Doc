@@ -4,13 +4,51 @@ This section documents the required actions and guidance to add support for a ne
 
 By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform.
 
+Throughout the sections of this guide devoted to extension of the U-Boot driver library it is expected the engineer is working within the folder structure created by the `repo` tool (e.g. as used to build the [test applications](uboot_driver_usage.md)). Key folders and files within the hierarchy are shown below:
+
+```text
+<manifest root>
+|
+└───kernel
+│   └───tools
+│       └───dts
+│
+└───projects
+    └───camkes
+    |   └───apps
+    |       └───uboot-driver-example
+    |           └───include
+    |               └───plat
+    |                   └───<platform name>
+    |                       └───platform_devices.h
+    |
+    └───projects_libs
+    |   └───libubootdrivers
+    |       └───include
+    |       |   └───plat
+    |       |       └───<platform name>
+    |       |           └───plat_driver_data.h
+    |       └───src
+    |       |   └───plat
+    |       |       └───<platform name>
+    |       |           └───plat_driver_data.c
+    |       └───CMakeLists.txt
+    |
+    └───uboot
+```
+
+- `kernel/tools/dts`: Location of platform device trees.
+- `projects/project_libs/camkes/apps/uboot-driver-example`: [The test application](uboot_driver_usage.md).
+- `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/maaxboard-usb/libubootdrivers).
+- `projects/uboot`: Fork of the U-Boot project source code (note, this is also symlinked to `projects/project_libs/libubootdrivers/uboot`).
+
 ## Add basic support to library
 
 To allow the library to be successfully compiled for a new platform, the following changes will need to be made to the library.
 
 ### Update the library's CMake file to support the platform
 
-The library's `CMakeLists.txt` file contains a section titled `Platform specific settings` to control the settings for each platform. This section:
+The library's CMake file (located at `projects/project_libs/libubootdrivers/CMakeLists.txt`) contains a section titled `Platform specific settings` to control the settings for each platform. This section:
 
 1. Declares a set of variables to control which drivers and optional capabilities are to be built for each platform. The default values produce a build including only a dummy timer driver; this is the minimum necessary to allow the library to be built.
 
