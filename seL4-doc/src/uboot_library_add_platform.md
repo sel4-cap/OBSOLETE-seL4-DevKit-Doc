@@ -188,8 +188,19 @@ The following empty template file needs to be added to the application `include/
 ```c
 #pragma once
 
-#define DEVICE_PATHS {};
-#define DEVICE_PATHS_LENGTH 0
+/* List the set of device tree paths that include the 'reg' entries
+ * for memory regions that will need to be mapped */
+#define REG_PATHS {};
+#define REG_PATH_COUNT 0
+
+/* List the set of device tree paths for the devices we wish to access.
+ * Note these need to be the root nodes of each device to be accessed */
+#define DEV_PATHS {};
+#define DEV_PATH_COUNT 0
+
+/* Provide the hardware settings for CAmkES. Note that we only need to inform
+ * CAmkES of the devices with memory mapped regions, i.e. the REG_xxx
+ * devices. See https://docs.sel4.systems/projects/camkes for syntax */
 
 #define HARDWARE_INTERFACES
 
