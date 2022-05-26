@@ -42,6 +42,16 @@ Throughout the sections of this guide devoted to extension of the U-Boot driver 
 - `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/maaxboard-usb/libubootdrivers).
 - `projects/uboot`: Fork of the U-Boot project source code (note, this is also symlinked to `projects/project_libs/libubootdrivers/uboot`).
 
+## Required Reading
+
+The engineer should be familiar with the following tools and concepts in order to add platform and driver support to the library.
+
+- *Device Tree*: An introduction to device tree data is [provided by the Linux documentation](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html) and by the [Zephyr project](https://docs.zephyrproject.org/2.6.0/guides/dts/intro.html).
+
+- *CMake*: Reference documentation is provided by [the CMake project](https://cmake.org/cmake/help/latest/), including details of the structure and syntax of the CMakeLists.txt file.
+
+- *CAmkES*: The seL4 foundation provides [documentation on its use of CAmkES](https://docs.sel4.systems/projects/camkes/) including tutorials.
+
 ## Add basic support to library
 
 To allow the library to be successfully compiled for a new platform, the following changes will need to be made to the library.
