@@ -156,15 +156,21 @@ File `src/plat/foo/plat_driver_data.c`:
 #include <part.h>
 
 void initialise_driver_data(void) {
+    /* The number of elements in the uclass_driver_array must match the
+     * _u_boot_uclass_driver_count constant (see plat_driver_data.h) */
     driver_data.uclass_driver_array[0]  = _u_boot_uclass_driver__nop;
     driver_data.uclass_driver_array[1]  = _u_boot_uclass_driver__root;
     driver_data.uclass_driver_array[2]  = _u_boot_uclass_driver__simple_bus;
     driver_data.uclass_driver_array[3]  = _u_boot_uclass_driver__phy;
     driver_data.uclass_driver_array[4]  = _u_boot_uclass_driver__blk;
 
+    /* The number of elements in the driver_array must match the
+     * _u_boot_driver_count constant (see plat_driver_data.h) */
     driver_data.driver_array[0]  = _u_boot_driver__root_driver;
     driver_data.driver_array[1]  = _u_boot_driver__simple_bus;
 
+    /* The number of elements in the cmd_array must match the
+     * _u_boot_cmd_count constant (see plat_driver_data.h) */
     driver_data.cmd_array[0]  = _u_boot_cmd__dm;
     driver_data.cmd_array[1]  = _u_boot_cmd__env;
     driver_data.cmd_array[2]  = _u_boot_cmd__setenv;
