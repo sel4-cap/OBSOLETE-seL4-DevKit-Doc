@@ -183,7 +183,7 @@ As support for additional optional objects (e.g. drivers, driver classes, comman
 
 Section [Using the U-Boot Driver Library](uboot_driver_usage.md) introduced the demonstration application  `uboot-driver-example`. This section documents the changes required to the `uboot-driver-example` application to allow it to be built for the new platform.
 
-The following empty template file needs to be added to the application `include/plat/platform_devices.h`:
+The following empty template file needs to be added to the application `include/plat/foo/platform_devices.h`:
 
 ```c
 #pragma once
