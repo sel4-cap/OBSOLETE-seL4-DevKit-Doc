@@ -114,27 +114,33 @@ File `include/plat/foo/plat_driver_data.h`:
 #define _u_boot_driver_info_count       0
 #define _u_boot_udevice_count           0
 
-/* Define the uclass drivers to be used on this platform */
+/* Define the uclass drivers to be used on this platform. The count of declarations
+ * in this section must match the value of _u_boot_uclass_driver_count */
 extern struct uclass_driver _u_boot_uclass_driver__nop;
 extern struct uclass_driver _u_boot_uclass_driver__root;
 extern struct uclass_driver _u_boot_uclass_driver__simple_bus;
 extern struct uclass_driver _u_boot_uclass_driver__phy;
 extern struct uclass_driver _u_boot_uclass_driver__blk;
 
-/* Define the drivers to be used on this platform */
+/* Define the drivers to be used on this platform. The count of declarations
+ * in this section must match the value of _u_boot_driver_count */
 extern struct driver _u_boot_driver__root_driver;
 extern struct driver _u_boot_driver__simple_bus;
 
-/* Define the driver entries to be used on this platform */
+/* Define the driver entries to be used on this platform. The count of declarations
+ * in this section must match the value of _u_boot_usb_driver_entry_count */
 
-/* Define the disk partition types to be used */
+/* Define the disk partition types to be used. The count of declarations
+ * in this section must match the value of _u_boot_part_driver_count */
 
-/* Define the u-boot commands to be used on this platform */
+/* Define the u-boot commands to be used on this platform. The count of declarations
+ * in this section must match the value of _u_boot_cmd_count */
 extern struct cmd_tbl _u_boot_cmd__dm;
 extern struct cmd_tbl _u_boot_cmd__env;
 extern struct cmd_tbl _u_boot_cmd__setenv;
 
-/* Define the u-boot environment variables callbacks to be used on this platform */
+/* Define the u-boot environment variables callbacks to be used on this platform. The
+ * count of declarations in this section must match the value of _u_boot_env_clbk_count */
 ```
 
 File `src/plat/foo/plat_driver_data.c`:
