@@ -46,3 +46,4 @@
 - [Optional Extra - SPI Bus BMP280 Pressure Sensor](./appendices/spi_bmp280.md)
 - [Library Extension - Worked Example](./appendices/add_driver_worked_example.md)
 - [Library Extension - Troubleshooting](./appendices/driver_troubleshooting.md)
+- [ODroidC2 Platform - Worked Example](./appendices/add_odroidc2.md)
