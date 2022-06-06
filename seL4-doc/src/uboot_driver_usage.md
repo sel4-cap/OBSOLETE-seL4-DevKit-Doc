@@ -36,7 +36,7 @@ Sections below give a basic overview of the test applications and how to build a
 
 ### Overview of the `uboot-driver-example` test application
 
-Having followed the build instructions in the [following section](#instructions-for-running-uboot-driver-example), the source file at `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c` represents the script for the test application. It contains `run_uboot_cmd("...")` calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the `cmd_tbl` entries of `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`.
+The source file at `camkes/apps/uboot-driver-example/components/Test/src/test.c` represents the script for the test application. It contains `run_uboot_cmd("...")` calls to U-Boot commands that are supported by the library. The set of supported commands can be readily seen in the `cmd_tbl` entries of `projects_libs/libubootdrivers/include/plat/maaxboard/plat_driver_data.h`.
 
 It is left to the reader to look through the test script in detail, but the features demonstrated include the following.
 
