@@ -2,29 +2,13 @@
 
 As part of the review of the [New Platform](uboot_library_add_platform.md)
 and [New Driver](uboot_library_add_driver.md) sections of this guide, we ported the
-UBoot Driver Library to build on the ODroidC2 platform.
+UBoot Driver Library to build with seL4 on the ODroidC2 platform.
 
 This appendix gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.
 
 Our goal is to get the UBoot [test applications](uboot_driver_usage.md)) running
 on the ODroidC2.
-
-## Root Directory, Platform Name, and basic Platform Details
-
-To build the test application, we need to create a new root directory
-in which to create a "repo" structure and perform the build.
-
-The root directory name is "c2new". From here on, all directory names given in this section
-are relative to that new root directory.
-
-We also know that the ODroidC2 is already supported by seL4. Its device tree
-appears in kernel/tools/dts/odroidc2.dts
-
-The seL4 "platform name" is "odroidc2"
-
-The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
-a "meson" SoC.
 
 ## Repository setup and forks
 
@@ -117,3 +101,374 @@ repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 ```
 
 Assuming that works, then we can start to make modification to support the ODroidC2.
+
+## Root Directory, Platform Name, and basic Platform Details
+
+To build the test application, we need to create a new root directory
+in which to create a "repo" structure and perform the build.
+
+The root directory name is "c2new". From here on, all directory names given in this section
+are relative to that new root directory.
+
+We also know that the ODroidC2 is already supported by seL4. Its device tree
+appears in kernel/tools/dts/odroidc2.dts
+
+The seL4 "platform name" is "odroidc2"
+
+The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
+a "meson" SoC.
+
+We create that root directory, and initialize our build environment. Remember to use the
+Docker container from here on:
+
+```bash
+# In the docker container with working directory at /host
+mkdir c2new
+cd c2new
+git config --global credential.helper cache
+repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
+repo sync
+```
+
+At this point, we return to the structure of the [New Platform](uboot_library_add_platform.md)
+section.
+
+## Update the library's CMake file to support the platform
+
+We need to update the file projects/projects_libs/libubootdrivers/CMakeLists.txt to
+include bare-minumum support for our new platform.
+
+From the seL4 documentation we can find that the value of the ${KernelPlatform}
+variable is "odroidc2". We also need to locate the correct C header files for this
+platform and create a sym-link to them, so we add:
+
+```makefile
+elseif("${KernelPlatform}" STREQUAL "odroidc2")
+    # Platform specific settings for the ODroidC2 board.
+    set(arch_source "./arch-meson")
+    set(arch_target "../projects/uboot/arch/arm/include/asm/arch")
+    execute_process(COMMAND ln -fsn ${arch_source} ${arch_target})
+```
+
+in the "Platform specific settings" section of the file.
+
+## Adding the GPIO Driver
+
+At this point, we decided to add support for the UBoot "General Purpose IO" device
+driver, also known as "GPIO".
+
+We start by searching the ODroidC2 device tree file for the string "gpio-controller" in
+the file kernel/tools/dts/odroidc2.dts
+
+This appears in two places in the Device Tree, with path-names "/soc/bus@c8100000/pinctrl@14/bank@14"
+and "/soc/periphs@c8834000/pinctrl@4b0/bank@4b0".
+
+From those nodes of the tree we search "up" the tree (towards the "soc" root node) for a
+"compatible" string. We find
+
+```text
+compatible = "amlogic,meson-gxbb-aobus-pinctrl";
+```
+
+for the former entry, and
+
+```text
+compatible = "amlogic,meson-gxbb-periphs-pinctrl";
+```
+
+for the latter.
+
+## Finding the driver source code
+
+Those "compatible" strings give us the key to finding the correct source file from the UBoot sources
+that we need to support the C2's GPIO device(s).
+
+We can search the sources for all the UBoot drivers for either of those strings with:
+
+```bash
+cd projects/uboot/drivers
+grep -r "meson-gxbb-.*-pinctrl"
+```
+
+which yields a result:
+
+```text
+./pinctrl/meson/pinctrl-meson-gxbb.c:		.compatible = "amlogic,meson-gxbb-periphs-pinctrl",
+./pinctrl/meson/pinctrl-meson-gxbb.c:		.compatible = "amlogic,meson-gxbb-aobus-pinctrl",
+```
+
+showing us that the single source file pinctrl-meson-gxbb.c implements a
+driver that is compatible with both of the devices we're interested in.
+
+At the bottom of that source file, we find the declarations:
+
+```c
+static const struct udevice_id meson_gxbb_pinctrl_match[] = {
+	{
+		.compatible = "amlogic,meson-gxbb-periphs-pinctrl",
+		.data = (ulong)&meson_gxbb_periphs_pinctrl_data,
+	},
+	{
+		.compatible = "amlogic,meson-gxbb-aobus-pinctrl",
+		.data = (ulong)&meson_gxbb_aobus_pinctrl_data,
+	},
+	{ /* sentinel */ }
+};
+
+U_BOOT_DRIVER(meson_gxbb_pinctrl) = {
+	.name = "meson-gxbb-pinctrl",
+	.id = UCLASS_PINCTRL,
+	.of_match = of_match_ptr(meson_gxbb_pinctrl_match),
+	.probe = meson_pinctrl_probe,
+	.priv_auto	= sizeof(struct meson_pinctrl),
+	.ops = &meson_gx_pinctrl_ops,
+};
+```
+
+so we know the driver is called "meson-gxbb-pinctrl" and it is compatible with both
+the "aobus" and "periphs" instances of that device on the C2.
+
+## Adding a source dependency for the GPIO driver
+
+Having identified which source file we need to build, we can add it to the CMake file.
+
+Firstly, we set the variable "iomux_driver" to the value we just found - "meson-gxbb-pinctrl" -
+by adding
+
+```makefile
+    set(iomux_driver "meson-gxbb-pinctrl")
+```
+
+in the "Platform Specific Settings" section of the CMakeLists.txt file as above.
+
+In the same file, we then go to the "Settings for IOMUX Drivers" section and add
+an "elseif" branch to add the required source code dependencies when that driver is selected:
+
+```makefile
+    elseif(iomux_driver MATCHES "meson-gxbb-pinctrl")
+        list(APPEND uboot_deps uboot/drivers/pinctrl/meson/pinctrl-meson-gxbb.c)
+```
+
+## Resolving Compilation Issues
+
+An attempt to compile the UBoot Driver Test application fails owing to missing sources, where
+our new driver code depends on some other code that we have not included yet.
+
+Identification of the missing units (and further searching of the UBoot driver sources) shows that
+we additionally need the pinctrl-meson.c and pinctrl-meson-gx-pmx.c source file to be included, so
+we update CMakeLists.txt to include them:
+
+```makefile
+    elseif(iomux_driver MATCHES "meson-gxbb-pinctrl")
+        list(APPEND uboot_deps uboot/drivers/pinctrl/meson/pinctrl-meson-gxbb.c)
+        list(APPEND uboot_deps uboot/drivers/pinctrl/meson/pinctrl-meson.c)
+        list(APPEND uboot_deps uboot/drivers/pinctrl/meson/pinctrl-meson-gx-pmx.c)
+```
+
+The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
+
+## Platform Specific Linker Lists
+
+Next, we need to add the "Linker Lists" data structures for this platform
+and for the set of device drivers that we want to support.
+
+First, we create two new directories in our fork of the projects_libs repository:
+
+```text
+projects_libs/libubootdrivers/include/plat/odroidc2
+```
+
+and
+
+```text
+projects_libs/libubootdrivers/src/plat/odroidc2
+```
+
+Following the templates from the [New Platform](uboot_library_add_platform.md) section,
+we create plat_driver_data.h in the former of those directories.
+
+There are five UClass Drivers that are effectively mandatory (nop, root, simple_bus, phy and blk),
+and we want to add two more (pinconfig and pinctrl), making a total of 7, so we declare in
+plat_driver_data.h
+
+
+```c
+#define _u_boot_uclass_driver_count     7
+
+/* Define the uclass drivers to be used on this platform */
+extern struct uclass_driver _u_boot_uclass_driver__nop;
+extern struct uclass_driver _u_boot_uclass_driver__root;
+extern struct uclass_driver _u_boot_uclass_driver__simple_bus;
+extern struct uclass_driver _u_boot_uclass_driver__phy;
+extern struct uclass_driver _u_boot_uclass_driver__blk;
+extern struct uclass_driver _u_boot_uclass_driver__pinconfig;
+extern struct uclass_driver _u_boot_uclass_driver__pinctrl;
+```
+
+We require a total of 4 drivers, so:
+
+```c
+#define _u_boot_driver_count            4
+
+/* Define the drivers to be used on this platform */
+extern struct driver _u_boot_driver__root_driver;
+extern struct driver _u_boot_driver__simple_bus;
+extern struct driver _u_boot_driver__pinconfig_generic;
+extern struct driver _u_boot_driver__meson_gxbb_pinctrl;
+```
+
+and 4 commands:
+
+```c
+#define _u_boot_cmd_count               4
+
+/* Define the u-boot commands to be used on this platform */
+extern struct cmd_tbl _u_boot_cmd__dm;
+extern struct cmd_tbl _u_boot_cmd__env;
+extern struct cmd_tbl _u_boot_cmd__setenv;
+extern struct cmd_tbl _u_boot_cmd__pinmux;
+```
+
+We can now create plat_driver_data.c in the src/plat/odroidc2 directory to initialize
+the actual data structures thus:
+
+```c
+void initialise_driver_data(void) {
+    driver_data.uclass_driver_array[0]  = _u_boot_uclass_driver__nop;
+    driver_data.uclass_driver_array[1]  = _u_boot_uclass_driver__root;
+    driver_data.uclass_driver_array[2]  = _u_boot_uclass_driver__simple_bus;
+    driver_data.uclass_driver_array[3]  = _u_boot_uclass_driver__phy;
+    driver_data.uclass_driver_array[4]  = _u_boot_uclass_driver__blk;
+    driver_data.uclass_driver_array[5]  = _u_boot_uclass_driver__pinconfig;
+    driver_data.uclass_driver_array[6]  = _u_boot_uclass_driver__pinctrl;
+
+    driver_data.driver_array[0]  = _u_boot_driver__root_driver;
+    driver_data.driver_array[1]  = _u_boot_driver__simple_bus;
+    driver_data.driver_array[2]  = _u_boot_driver__pinconfig_generic;
+    driver_data.driver_array[3]  = _u_boot_driver__meson_gxbb_pinctrl;
+
+    driver_data.cmd_array[0]  = _u_boot_cmd__dm;
+    driver_data.cmd_array[1]  = _u_boot_cmd__env;
+    driver_data.cmd_array[2]  = _u_boot_cmd__setenv;
+    driver_data.cmd_array[3]  = _u_boot_cmd__pinmux;
+}
+```
+
+Note how the number of assignments and array elements initialized must exactly match
+the values of the constants defined in the plat_driver_data.h file.
+
+The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
+
+
+## Add ODroidC2 support in the UBoot Driver Example test program
+
+We now need to modify the CAmkES configutation of our test program to tell CAmkES that our program is
+configured for this platform and our code can have capabilities allocation to access certain devices.
+
+This is done by creating a specific "platform_devices.h" file for the ODroidC2 in the example application.
+
+We create camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h with the following
+content:
+
+```c
+#pragma once
+
+/* List the set of device tree paths that include the 'reg' entries
+ * for memory regions that will need to be mapped */
+#define BUS_PATH     "/soc/bus@c8100000"
+#define PERIPHS_PATH "/soc/periphs@c8834000"
+#define REG_PATHS { BUS_PATH, PERIPHS_PATH };
+#define REG_PATH_COUNT 2
+
+/* List the set of device tree paths for the devices we wish to access.
+ * Note these need to be the root nodes of each device to be accessed */
+#define PINCTRL1_PATH "/soc/bus@c8100000/pinctrl@14"
+#define PINCTRL2_PATH "/soc/periphs@c8834000/pinctrl@4b0"
+#define DEV_PATHS { PINCTRL1_PATH, PINCTRL2_PATH };
+#define DEV_PATH_COUNT 2
+
+/* Provide the hardware settings for CAmkES. Note that we only need to inform
+ * CAmkES of the devices with memory mapped regions, i.e. the REG_xxx
+ * devices. See https://docs.sel4.systems/projects/camkes for syntax */
+
+#define HARDWARE_INTERFACES                                                   \
+    consumes Dummy bus;                                                       \
+    consumes Dummy periphs;                                                   \
+    emits Dummy dummy_source;
+
+#define HARDWARE_COMPOSITION                                                \
+    connection seL4DTBHardware bus_conn(from dummy_source, to bus);         \
+    connection seL4DTBHardware periphs_conn(from dummy_source, to periphs);
+
+#define HARDWARE_CONFIGURATION                                              \
+    bus.dtb     = dtb({ "path" : BUS_PATH });                               \
+    periphs.dtb = dtb({ "path" : PERIPHS_PATH });                           \
+```
+
+Refer to the [CAmkES tutorial](https://docs.sel4.systems/Tutorials/hello-camkes-0.html)
+and [documentation](https://docs.sel4.systems/projects/camkes/) for the exact syntax
+and semantics of these declarations.
+
+
+## Compilation
+
+At this point, the UBoot Driver Example test program should build OK for the C2.
+
+Make sure all your changes are committed and pushed to GitHub, then (in the Docker container)
+
+```bash
+cd /host/c2new
+repo sync
+mkdir build
+cd build
+../init-build.sh -DCAMKES_APP=uboot-driver-example -DPLATFORM=odroidc2 -DSIMULATION=FALSE
+ninja
+```
+
+This should result in a binary image in the images subdirectory that can be copied to a
+USB memory stick or a TFTP server of your choice.
+
+In our case, we download using TFTP, so we start the TFTP_Server as before, start CoolTerm,
+reboot the ODroidC2, and hit "Return" immediately to interrupt whatever default boot
+sequence is installed.  Then we set the "ipaddr" and "serverip" environment variables in
+UBoot, and use the "tftpboot sel4_image" command to download the image.
+
+On our system, the image is built to run with a start address of 0x20000000, so we can
+start seL4 and our test application with
+
+```bash
+odroidc2# go 0x20000000
+```
+
+The test program run various UBoot commands from within seL4, most of which are expected to fail on the ODroidC2
+owing to missing UBoot command and drivers. We do expect the first "dm tree" command to succeed though.
+The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
+
+```text
+Starting U-Boot driver example
+run_uboot_command@uboot_wrapper.c:176 --- running command 'dm tree' ---
+ Class     Index  Probed  Driver                Name
+-----------------------------------------------------------
+ root          0  [ + ]   root_driver           root_driver
+ simple_bus    0  [   ]   simple_bus            `-- soc
+ simple_bus    1  [   ]   simple_bus                |-- bus@c8100000
+ pinctrl       0  [   ]   meson-gxbb-pinctrl        |   `-- pinctrl@14
+ pinconfig     0  [   ]   pinconfig                 |       |-- uart_ao_a
+ pinconfig     1  [   ]   pinconfig                 |       |   `-- mux
+ pinconfig     2  [   ]   pinconfig                 |       |-- # and many more - truncated here
+ pinconfig     3  [   ]   pinconfig                 |       |   `-- mux
+ simple_bus    2  [   ]   simple_bus                `-- periphs@c8834000
+ pinctrl       1  [   ]   meson-gxbb-pinctrl            `-- pinctrl@4b0
+ pinconfig    40  [   ]   pinconfig                         |-- emmc
+ pinconfig    41  [   ]   pinconfig                         |   `-- mux
+ pinconfig    42  [   ]   pinconfig                         |-- # and many more - truncated here
+ pinconfig    43  [   ]   pinconfig                         |   `-- mux
+run_uboot_command@uboot_wrapper.c:181 --- command 'dm tree' completed with return code 0 ---
+run_uboot_command@uboot_wrapper.c:176 --- running command 'clk dump' ---
+Unknown command 'clk' - try 'help'
+run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with return code 1 ---
+Completed U-Boot driver example
+```
+
+Note how the "clk dump" command fails because we did not choose to implement the UBoot "clk"
+command in our configuration.
