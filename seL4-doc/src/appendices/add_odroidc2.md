@@ -441,7 +441,7 @@ odroidc2# go 0x20000000
 ```
 
 The test program run various UBoot commands from within seL4, most of which are expected to fail on the ODroidC2
-owing to missing UBoot command and drivers. We do expect the first "dm tree" command to succeed though.
+owing to missing UBoot commands and drivers. We do expect the first "dm tree" command to succeed though.
 The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
 
 ```text
