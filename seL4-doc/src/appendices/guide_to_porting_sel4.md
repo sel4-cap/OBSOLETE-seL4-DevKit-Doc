@@ -16,7 +16,7 @@ Support has not been incorporated into the mainline Linux kernel for the Avnet M
 
 Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named `maaxboard.dts`. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the [build environment](../build_environment_setup.md) (i.e. the Docker container).
 
-```sh
+```text
 git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
@@ -76,7 +76,7 @@ To build and execute seL4Test for testing purposes against forks of the seL4 git
 
 3. Check out the newly updated manifest within the build environment:
 
-    ```sh
+    ```text
     mkdir /host/seL4test
     cd /host/seL4test
     repo init -u https://github.com/work_account/sel4test-manifest.git -b my_port
