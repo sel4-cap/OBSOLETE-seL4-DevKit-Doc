@@ -58,7 +58,7 @@ Other utility commands are exercised, such as `dm tree`, which is useful to foll
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
-```bash
+```text
 mkdir /host/uboot_test
 cd /host/uboot_test
 ```
@@ -90,7 +90,7 @@ run_uboot_command("ping 8.8.8.8"); // An example internet IP address (Google DNS
 
 From the `/host/uboot_test` directory, execute the following commands:
 
-```bash
+```text
 mkdir build
 cd build
 ```
@@ -119,7 +119,7 @@ Ethdriver is a simple implementation of an Ethernet driver that has been ported 
 
 As usual, this assumes that the user is already running a Docker container within the [build environment](build_environment_setup.md), where we can create a directory and clone the code and dependencies.
 
-```bash
+```text
 mkdir /host/uboot_pico
 cd /host/uboot_pico
 ```
@@ -136,7 +136,7 @@ repo sync
 
 From the `/host/uboot_pico` directory, execute the following commands:
 
-```bash
+```text
 mkdir build
 cd build
 ```
