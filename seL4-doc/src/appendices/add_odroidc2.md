@@ -22,13 +22,13 @@ own forked repositories (so that the `repo sync` step gets the sources from
 our forks, not from the upstream repositories).
 
 You'll need to your own GitHub account to do this. From here on, we'll be using the
-GitHub account name "rod-chapman" for our local forks.
+GitHub account name `rod-chapman` for our local forks.
 
-1. Using the GitHub web GUI, create your own forks of the "camkes-manifest", "camkes",
-and "projects_libs" repositories.
+1. Using the GitHub web GUI, create your own forks of the `camkes-manifest`, `camkes`,
+and `projects_libs` repositories.
 
-2. Clone the "camkes-manifest" fork into your local machine, and create
-a new branch called "addc2" to make our changes:
+2. Clone the `camkes-manifest` fork into your local machine, and create
+a new branch called `addc2` to make our changes:
 
 ```text
 git clone https://github.com/rod-chapman/camkes-manifest.git
@@ -38,8 +38,9 @@ git push --set-upstream origin addc2
 cd ..
 ```
 
-3. Similarly, clone the "camkes" and "projects_libs" forks, and add a new branch
-to each with the same name:
+3. Similarly, clone the `camkes` and `projects_libs` forks, and add a new branch
+to each with the same name. In the following commands, remember to change `rod-chapman` to your
+own GitHub user name.
 
 ```text
 git clone https://github.com/rod-chapman/camkes.git
@@ -57,8 +58,8 @@ git push --set-upstream origin addc2
 cd ..
 ```
 
-4. Edit the default.xml file in the "camkes-manifest" repository to add a new remote (in our
-case called "rod") pointing at our own GitHub account.
+4. Edit the `default.xml` file in the `camkes-manifest` repository to add a new remote (in our
+case called `rod`) pointing at our own GitHub account.
 
 For example, the line to add is
 
@@ -68,9 +69,9 @@ For example, the line to add is
 
 The exact diff can be seen at this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/eae32a5d03064b43bda5c124a794ce2471cf5c5f).
 
-5. Similarly, edit the default.xml file to specify that the "camkes" and "projects_libs" repositories
-should come from the "addc2" branches of our own forked repositories. Find the "project" line for each
-repository and modify its entry to specify our own remote ("rod") and branch ("addc2").
+5. Similarly, edit the `default.xml` file to specify that the `camkes` and `projects_libs` repositories
+should come from the `addc2` branches of our own forked repositories. Find the `project` line for each
+repository and modify its entry to specify our own remote (`rod`) and branch (`addc2`).
 
 For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/88d83b8357db801d54d4798b58d95e297e2cc112).
 
@@ -92,7 +93,7 @@ repositories, just to make sure that creating the forks hasn't broken anything.
 
 The earlier instructions in the [New Platform](../uboot_library_add_platform.md)
 section should be followed with one significant change: the first `repo init` command
-specifies our fork and branch of the "camkes-manifest" repository.
+specifies our fork and branch of the `camkes-manifest` repository.
 
 For example:
 
@@ -107,13 +108,13 @@ Assuming that works, then we can start to make modifications to support the Odro
 To build the test application, we need to create a new root directory
 to hold a `repo` structure and perform the build.
 
-The root directory name is "c2new". From here on, all directory names given in this section
+The root directory name is `c2new`. From here on, all directory names given in this section
 are relative to that new root directory.
 
 We also know that the Odroid-C2 is already supported by seL4. Its device tree
-appears in kernel/tools/dts/odroidc2.dts
+appears in `kernel/tools/dts/odroidc2.dts`.
 
-The seL4 "platform name" is "odroidc2"
+The seL4 "platform name" is `odroidc2`
 
 The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
 a "meson" SoC.
@@ -135,11 +136,11 @@ section.
 
 ## Update the library's CMake file to support the platform
 
-We need to update the file projects/projects_libs/libubootdrivers/CMakeLists.txt to
+We need to update the file `projects/projects_libs/libubootdrivers/CMakeLists.txt` to
 include bare-minumum support for our new platform.
 
-From the seL4 documentation we can find that the value of the ${KernelPlatform}
-variable is "odroidc2". We also need to locate the correct C header files for this
+From the seL4 documentation we can find that the value of the `${KernelPlatform}`
+variable is `odroidc2`. We also need to locate the correct C header files for this
 platform and create a sym-link to them, so we add:
 
 ```makefile
@@ -158,10 +159,10 @@ At this point, we decided to add support for the U-Boot "General Purpose IO" dev
 driver, also known as "GPIO".
 
 We start by searching the Odroid-C2 device tree file for the string "gpio-controller" in
-the file kernel/tools/dts/odroidc2.dts
+the file `kernel/tools/dts/odroidc2.dts`.
 
-This appears in two places in the Device Tree, with path-names "/soc/bus@c8100000/pinctrl@14/bank@14"
-and "/soc/periphs@c8834000/pinctrl@4b0/bank@4b0".
+This appears in two places in the Device Tree, with path-names `/soc/bus@c8100000/pinctrl@14/bank@14`
+and `/soc/periphs@c8834000/pinctrl@4b0/bank@4b0`.
 
 From those nodes of the tree we search "up" the tree (towards the "soc" root node) for a
 "compatible" string. We find
@@ -239,7 +240,7 @@ by adding
     set(iomux_driver "meson-gxbb-pinctrl")
 ```
 
-in the "Platform Specific Settings" section of the CMakeLists.txt file as above.
+in the "Platform Specific Settings" section of the `CMakeLists.txt` file as above.
 
 In the same file, we then go to the "Settings for IOMUX Drivers" section and add
 an "elseif" branch to add the required source code dependencies when that driver is selected:
@@ -256,7 +257,7 @@ our new driver code depends on some other code that we have not included yet.
 
 Identification of the missing units (and further searching of the U-Boot driver sources) shows that
 we additionally need the pinctrl-meson.c and pinctrl-meson-gx-pmx.c source file to be included, so
-we update CMakeLists.txt to include them:
+we update `CMakeLists.txt` to include them:
 
 ```makefile
     elseif(iomux_driver MATCHES "meson-gxbb-pinctrl")
@@ -285,11 +286,11 @@ projects_libs/libubootdrivers/src/plat/odroidc2
 ```
 
 Following the templates from the [New Platform](uboot_library_add_platform.md) section,
-we create plat_driver_data.h in the former of those directories.
+we create `plat_driver_data.h` in the former of those directories.
 
 There are five UClass Drivers that are effectively mandatory (nop, root, simple_bus, phy and blk),
 and we want to add two more (pinconfig and pinctrl), making a total of 7, so we declare in
-plat_driver_data.h
+`plat_driver_data.h`.
 
 
 ```c
@@ -329,7 +330,7 @@ extern struct cmd_tbl _u_boot_cmd__setenv;
 extern struct cmd_tbl _u_boot_cmd__pinmux;
 ```
 
-We can now create plat_driver_data.c in the src/plat/odroidc2 directory to initialize
+We can now create `plat_driver_data.c` in the `src/plat/odroidc2` directory to initialize
 the actual data structures thus:
 
 ```c
@@ -355,7 +356,7 @@ void initialise_driver_data(void) {
 ```
 
 Note how the number of assignments and array elements initialized must exactly match
-the values of the constants defined in the plat_driver_data.h file.
+the values of the constants defined in the `plat_driver_data.h` file.
 
 The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
 
@@ -365,9 +366,9 @@ The full details of the file changes can be seen at this [GitHub commit](https:/
 We now need to modify the CAmkES configutation of our test program to tell CAmkES that our program is
 configured for this platform and our code can have capabilities allocation to access certain devices.
 
-This is done by creating a specific "platform_devices.h" file for the Odroid-C2 in the example application.
+This is done by creating a specific `platform_devices.h` file for the Odroid-C2 in the example application.
 
-We create camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h with the following
+We create `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` with the following
 content:
 
 ```c
@@ -428,12 +429,12 @@ ninja
 This should result in a binary image in the images subdirectory that can be copied to a
 USB memory stick or a TFTP server of your choice.
 
-In our case, we download using TFTP, so we start the TFTP_Server as before, start CoolTerm,
+In our case, we download using TFTP, so we start the TFTP Server as before, start CoolTerm,
 reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default boot
-sequence is installed.  Then we set the "ipaddr" and "serverip" environment variables in
+sequence is installed.  Then we set the `ipaddr` and `serverip` environment variables in
 U-Boot, and use the `tftpboot sel4_image` command to download the image.
 
-On our system, the image is built to run with a start address of 0x20000000, so we can
+On our system, the image is built to run with a start address of `0x20000000`, so we can
 start seL4 and our test application with
 
 ```text
