@@ -434,10 +434,13 @@ reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default
 sequence is installed.  Then we set the `ipaddr` and `serverip` environment variables in
 U-Boot, and use the `tftpboot sel4_image` command to download the image.
 
-On our system, the image is built to run with a start address of `0x20000000`, so we can
-start seL4 and our test application with
+On our system, the image is built to run with a start address of `0x20000000`, so the entire
+sequence of commands to setup, download and start the test program is:
 
 ```text
+odroidc2# setenv ipaddr 192.168.2.2
+odroidc2# setenv serverip 192.168.2.1
+odroidc2# tftpboot sel4_image
 odroidc2# go 0x20000000
 ```
 
