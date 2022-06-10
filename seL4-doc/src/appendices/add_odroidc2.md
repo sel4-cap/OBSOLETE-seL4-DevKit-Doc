@@ -429,7 +429,7 @@ ninja
 This should result in a binary image in the images subdirectory that can be copied to a
 USB memory stick or a TFTP server of your choice.
 
-In our case, we download using TFTP, so we start the TFTP Server as before, start CoolTerm,
+In our case, we download using TFTP, so we start the TFTP Server Application as before, start CoolTerm,
 reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default boot
 sequence is installed.  Then we set the `ipaddr` and `serverip` environment variables in
 U-Boot, and use the `tftpboot sel4_image` command to download the image.
