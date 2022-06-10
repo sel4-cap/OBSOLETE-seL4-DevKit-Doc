@@ -413,7 +413,7 @@ and semantics of these declarations.
 
 ## Compilation
 
-At this point, the U-Boot Driver Example test program should build OK for the C2.
+At this point, the U-Boot Driver Example test program should build for the C2.
 
 Make sure all your changes are committed and pushed to GitHub, then (in the Docker container)
 
