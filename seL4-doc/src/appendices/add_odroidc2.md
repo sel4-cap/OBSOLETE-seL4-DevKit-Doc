@@ -131,7 +131,7 @@ repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 repo sync
 ```
 
-At this point, we return to the structure of the [New Platform](uboot_library_add_platform.md)
+At this point, we return to the structure of the [New Platform](../uboot_library_add_platform.md)
 section.
 
 ## Update the library's CMake file to support the platform
