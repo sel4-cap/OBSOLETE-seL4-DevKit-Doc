@@ -88,7 +88,7 @@ cd ..
 
 Having made no other changes at this point, we should be able to build and run
 the U-Boot Driver Example program for the MaaxBoard from those newly forked
-repositories.
+repositories, just to make sure that creating the forks hasn't broken anything.
 
 The earlier instructions in the [New Platform](../uboot_library_add_platform.md)
 section should be followed with one significant change: the first `repo init` command
@@ -100,7 +100,7 @@ For example:
 repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 ```
 
-Assuming that works, then we can start to make modification to support the Odroid-C2.
+Assuming that works, then we can start to make modifications to support the Odroid-C2.
 
 ## Root Directory, Platform Name, and basic Platform Details
 
