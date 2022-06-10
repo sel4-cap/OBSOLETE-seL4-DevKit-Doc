@@ -120,7 +120,8 @@ The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
 a "meson" SoC.
 
 We create that root directory, and initialise our build environment. Remember to use the
-Docker container from here on:
+Docker container from the [build environment setup](../build_environment_setup.md#usage) section
+from here on:
 
 ```text
 # In the docker container with working directory at /host
