@@ -17,8 +17,8 @@ To do that, we need to "fork" those repositores and do the work in our own local
 branches until it's all working. Finally, we would need to open a "Pull Request"
 to merge our changes back into the "upstream" repositories.
 
-Additionally, we need to tell the "repo" tool that we want to build from our
-own forked repositories (so that the "repo sync" step gets the sources from
+Additionally, we need to tell the `repo` tool that we want to build from our
+own forked repositories (so that the `repo sync` step gets the sources from
 our forks, not from the upstream repositories).
 
 You'll need to your own GitHub account to do this. From here on, we'll be using the
@@ -91,7 +91,7 @@ the U-Boot Driver Example program for the MaaxBoard from those newly forked
 repositories.
 
 The earlier instructions in the [New Platform](uboot_library_add_platform.md)
-section should be followed with one significant change: the first "repo init" command
+section should be followed with one significant change: the first `repo init` command
 specifies our fork and branch of the "camkes-manifest" repository.
 
 For example:
@@ -105,7 +105,7 @@ Assuming that works, then we can start to make modification to support the Odroi
 ## Root Directory, Platform Name, and basic Platform Details
 
 To build the test application, we need to create a new root directory
-in which to create a "repo" structure and perform the build.
+in which to create a `repo` structure and perform the build.
 
 The root directory name is "c2new". From here on, all directory names given in this section
 are relative to that new root directory.
@@ -429,9 +429,9 @@ This should result in a binary image in the images subdirectory that can be copi
 USB memory stick or a TFTP server of your choice.
 
 In our case, we download using TFTP, so we start the TFTP_Server as before, start CoolTerm,
-reboot the Odroid-C2, and hit "Return" immediately to interrupt whatever default boot
+reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default boot
 sequence is installed.  Then we set the "ipaddr" and "serverip" environment variables in
-U-Boot, and use the "tftpboot sel4_image" command to download the image.
+U-Boot, and use the `tftpboot sel4_image` command to download the image.
 
 On our system, the image is built to run with a start address of 0x20000000, so we can
 start seL4 and our test application with
@@ -441,7 +441,7 @@ odroidc2# go 0x20000000
 ```
 
 The test program run various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
-owing to missing U-Boot commands and drivers. We do expect the first "dm tree" command to succeed though.
+owing to missing U-Boot commands and drivers. We do expect the first `dm tree` command to succeed though.
 The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
 
 ```text
@@ -470,5 +470,5 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with retu
 Completed U-Boot driver example
 ```
 
-Note how the "clk dump" command fails because we did not choose to implement the U-Boot "clk"
+Note how the `clk dump` command fails because we did not choose to implement the U-Boot "clk"
 command in our configuration.
