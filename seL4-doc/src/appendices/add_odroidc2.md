@@ -243,7 +243,7 @@ by adding
 in the "Platform Specific Settings" section of the `CMakeLists.txt` file as above.
 
 In the same file, we then go to the "Settings for IOMUX Drivers" section and add
-an "elseif" branch to add the required source code dependencies when that driver is selected:
+an `elseif` branch to add the required source code dependencies when that driver is selected:
 
 ```makefile
     elseif(iomux_driver MATCHES "meson-gxbb-pinctrl")
