@@ -114,7 +114,7 @@ are relative to that new root directory.
 We also know that the Odroid-C2 is already supported by seL4. Its device tree
 appears in `kernel/tools/dts/odroidc2.dts`.
 
-The seL4 "platform name" is `odroidc2`
+The seL4 "platform name" is `odroidc2`.
 
 The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
 a "meson" SoC.
