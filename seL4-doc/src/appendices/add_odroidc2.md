@@ -19,7 +19,7 @@ to merge our changes back into the "upstream" repositories.
 
 Additionally, we need to tell the "repo" tool that we want to build from our
 own forked repositories (so that the "repo sync" step gets the sources from
-our forks, not from the upstream repositories.)
+our forks, not from the upstream repositories).
 
 You'll need to your own GitHub account to do this. From here on, we'll be using the
 GitHub account name "rod-chapman" for our local forks.
