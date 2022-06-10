@@ -427,14 +427,16 @@ ninja
 ```
 
 This should result in a binary image in the images subdirectory that can be copied to a
-USB memory stick or a TFTP server of your choice.
+USB memory stick or a TFTP server of your choice. As before, we assume that the image is renamed
+to `sel4_image` if that is the default set up in your U-Boot configuration.
 
 In our case, we download using TFTP, so we start the TFTP Server Application as before, start CoolTerm,
 reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default boot
 sequence is installed.  Then we set the `ipaddr` and `serverip` environment variables in
 U-Boot, and use the `tftpboot sel4_image` command to download the image.
 
-On our system, the image is built to run with a start address of `0x20000000`, so the entire
+On our system, our ethernet subnet is `192.168.2.x` and the image is built to
+run with a start address of `0x20000000`, so the entire
 sequence of commands to setup, download and start the test program is:
 
 ```text
