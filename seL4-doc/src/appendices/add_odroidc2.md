@@ -127,7 +127,6 @@ from here on:
 # In the docker container with working directory at /host
 mkdir c2new
 cd c2new
-git config --global credential.helper cache
 repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 repo sync
 ```
