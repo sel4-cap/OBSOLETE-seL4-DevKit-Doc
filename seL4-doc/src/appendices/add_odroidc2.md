@@ -105,7 +105,7 @@ Assuming that works, then we can start to make modifications to support the Odro
 ## Root Directory, Platform Name, and basic Platform Details
 
 To build the test application, we need to create a new root directory
-in which to create a `repo` structure and perform the build.
+to hold a `repo` structure and perform the build.
 
 The root directory name is "c2new". From here on, all directory names given in this section
 are relative to that new root directory.
