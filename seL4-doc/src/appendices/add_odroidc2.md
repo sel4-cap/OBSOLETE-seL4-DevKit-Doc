@@ -444,9 +444,9 @@ odroidc2# tftpboot sel4_image
 odroidc2# go 0x20000000
 ```
 
-The test program run various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
+The test program runs various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
 owing to missing U-Boot commands and drivers. We do expect the first `dm tree` command to succeed though.
-The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
+The output that we see, truncated to only show the first 4 levels of the device-tree, is as follows:
 
 ```text
 Starting U-Boot driver example
