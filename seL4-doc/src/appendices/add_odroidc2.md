@@ -30,7 +30,7 @@ and "projects_libs" repositories.
 2. Clone the "camkes-manifest" fork into your local machine, and create
 a new branch called "addc2" to make our changes:
 
-```bash
+```text
 git clone https://github.com/rod-chapman/camkes-manifest.git
 cd camkes-manifest
 git checkout -b addc2
@@ -41,7 +41,7 @@ cd ..
 3. Similarly, clone the "camkes" and "projects_libs" forks, and add a new branch
 to each with the same name:
 
-```bash
+```text
 git clone https://github.com/rod-chapman/camkes.git
 cd camkes
 git checkout -b addc2
@@ -49,7 +49,7 @@ git push --set-upstream origin addc2
 cd ..
 ```
 
-```bash
+```text
 git clone https://github.com/rod-chapman/projects_libs.git
 cd projects_libs
 git checkout -b addc2
@@ -76,7 +76,7 @@ For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-
 
 6. Commit and push that change:
 
-```bash
+```text
 cd camkes-manifest
 git add default.xml
 git commit -m "Add remote and forked repositories for adding Odroid-C2 platform."
@@ -96,7 +96,7 @@ specifies our fork and branch of the "camkes-manifest" repository.
 
 For example:
 
-```bash
+```text
 repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 ```
 
@@ -121,7 +121,7 @@ a "meson" SoC.
 We create that root directory, and initialize our build environment. Remember to use the
 Docker container from here on:
 
-```bash
+```text
 # In the docker container with working directory at /host
 mkdir c2new
 cd c2new
@@ -185,7 +185,7 @@ that we need to support the C2's GPIO device(s).
 
 We can search the sources for all the U-Boot drivers for either of those strings with:
 
-```bash
+```text
 cd projects/uboot/drivers
 grep -r "meson-gxbb-.*-pinctrl"
 ```
@@ -416,7 +416,7 @@ At this point, the U-Boot Driver Example test program should build OK for the C2
 
 Make sure all your changes are committed and pushed to GitHub, then (in the Docker container)
 
-```bash
+```text
 cd /host/c2new
 repo sync
 mkdir build
@@ -436,7 +436,7 @@ U-Boot, and use the `tftpboot sel4_image` command to download the image.
 On our system, the image is built to run with a start address of 0x20000000, so we can
 start seL4 and our test application with
 
-```bash
+```text
 odroidc2# go 0x20000000
 ```
 
