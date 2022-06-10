@@ -363,7 +363,7 @@ The full details of the file changes can be seen at this [GitHub commit](https:/
 
 ## Add Odroid-C2 support in the U-Boot Driver Example test program
 
-We now need to modify the CAmkES configutation of our test program to tell CAmkES that our program is
+We now need to modify the CAmkES configuration of our test program to tell CAmkES that our program is
 configured for this platform and our code can have capabilities allocation to access certain devices.
 
 This is done by creating a specific `platform_devices.h` file for the Odroid-C2 in the example application.
