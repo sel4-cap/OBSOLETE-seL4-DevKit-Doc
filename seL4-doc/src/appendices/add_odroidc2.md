@@ -90,7 +90,7 @@ Having made no other changes at this point, we should be able to build and run
 the U-Boot Driver Example program for the MaaxBoard from those newly forked
 repositories.
 
-The earlier instructions in the [New Platform](uboot_library_add_platform.md)
+The earlier instructions in the [New Platform](../uboot_library_add_platform.md)
 section should be followed with one significant change: the first `repo init` command
 specifies our fork and branch of the "camkes-manifest" repository.
 
