@@ -290,7 +290,7 @@ we create `plat_driver_data.h` in the former of those directories.
 
 There are five UClass Drivers that are effectively mandatory (`nop`, `root`, `simple_bus`, `phy` and `blk`),
 and we want to add two more (`pinconfig` and `pinctrl`), making a total of 7, so we declare in
-`plat_driver_data.h`.
+`plat_driver_data.h`:
 
 
 ```c
