@@ -2,12 +2,12 @@
 
 As part of the review of the [New Platform](uboot_library_add_platform.md)
 and [New Driver](uboot_library_add_driver.md) sections of this guide, we ported the
-UBoot Driver Library to build with seL4 on the Odroid-C2 platform.
+U-Boot Driver Library to build with seL4 on the Odroid-C2 platform.
 
 This appendix gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.
 
-Our goal is to get the UBoot [test applications](uboot_driver_usage.md)) running
+Our goal is to get the U-Boot [test applications](uboot_driver_usage.md)) running
 on the Odroid-C2.
 
 ## Repository setup and forks
@@ -87,7 +87,7 @@ cd ..
 ## Test Application Build for the MaaxBoard
 
 Having made no other changes at this point, we should be able to build and run
-the UBoot Driver Example program for the MaaxBoard from those newly forked
+the U-Boot Driver Example program for the MaaxBoard from those newly forked
 repositories.
 
 The earlier instructions in the [New Platform](uboot_library_add_platform.md)
@@ -154,7 +154,7 @@ in the "Platform specific settings" section of the file.
 
 ## Adding the GPIO Driver
 
-At this point, we decided to add support for the UBoot "General Purpose IO" device
+At this point, we decided to add support for the U-Boot "General Purpose IO" device
 driver, also known as "GPIO".
 
 We start by searching the Odroid-C2 device tree file for the string "gpio-controller" in
@@ -180,10 +180,10 @@ for the latter.
 
 ## Finding the driver source code
 
-Those "compatible" strings give us the key to finding the correct source file from the UBoot sources
+Those "compatible" strings give us the key to finding the correct source file from the U-Boot sources
 that we need to support the C2's GPIO device(s).
 
-We can search the sources for all the UBoot drivers for either of those strings with:
+We can search the sources for all the U-Boot drivers for either of those strings with:
 
 ```bash
 cd projects/uboot/drivers
@@ -251,10 +251,10 @@ an "elseif" branch to add the required source code dependencies when that driver
 
 ## Resolving Compilation Issues
 
-An attempt to compile the UBoot Driver Test application fails owing to missing sources, where
+An attempt to compile the U-Boot Driver Test application fails owing to missing sources, where
 our new driver code depends on some other code that we have not included yet.
 
-Identification of the missing units (and further searching of the UBoot driver sources) shows that
+Identification of the missing units (and further searching of the U-Boot driver sources) shows that
 we additionally need the pinctrl-meson.c and pinctrl-meson-gx-pmx.c source file to be included, so
 we update CMakeLists.txt to include them:
 
@@ -360,7 +360,7 @@ the values of the constants defined in the plat_driver_data.h file.
 The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
 
 
-## Add Odroid-C2 support in the UBoot Driver Example test program
+## Add Odroid-C2 support in the U-Boot Driver Example test program
 
 We now need to modify the CAmkES configutation of our test program to tell CAmkES that our program is
 configured for this platform and our code can have capabilities allocation to access certain devices.
@@ -412,7 +412,7 @@ and semantics of these declarations.
 
 ## Compilation
 
-At this point, the UBoot Driver Example test program should build OK for the C2.
+At this point, the U-Boot Driver Example test program should build OK for the C2.
 
 Make sure all your changes are committed and pushed to GitHub, then (in the Docker container)
 
@@ -431,7 +431,7 @@ USB memory stick or a TFTP server of your choice.
 In our case, we download using TFTP, so we start the TFTP_Server as before, start CoolTerm,
 reboot the Odroid-C2, and hit "Return" immediately to interrupt whatever default boot
 sequence is installed.  Then we set the "ipaddr" and "serverip" environment variables in
-UBoot, and use the "tftpboot sel4_image" command to download the image.
+U-Boot, and use the "tftpboot sel4_image" command to download the image.
 
 On our system, the image is built to run with a start address of 0x20000000, so we can
 start seL4 and our test application with
@@ -440,8 +440,8 @@ start seL4 and our test application with
 odroidc2# go 0x20000000
 ```
 
-The test program run various UBoot commands from within seL4, most of which are expected to fail on the Odroid-C2
-owing to missing UBoot commands and drivers. We do expect the first "dm tree" command to succeed though.
+The test program run various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
+owing to missing U-Boot commands and drivers. We do expect the first "dm tree" command to succeed though.
 The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
 
 ```text
@@ -470,5 +470,5 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with retu
 Completed U-Boot driver example
 ```
 
-Note how the "clk dump" command fails because we did not choose to implement the UBoot "clk"
+Note how the "clk dump" command fails because we did not choose to implement the U-Boot "clk"
 command in our configuration.
