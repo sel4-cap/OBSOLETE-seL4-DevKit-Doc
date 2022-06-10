@@ -137,7 +137,7 @@ section.
 ## Update the library's CMake file to support the platform
 
 We need to update the file `projects/projects_libs/libubootdrivers/CMakeLists.txt` to
-include bare-minumum support for our new platform.
+include bare-minimum support for our new platform.
 
 From the seL4 documentation we can find that the value of the `${KernelPlatform}`
 variable is `odroidc2`. We also need to locate the correct C header files for this
