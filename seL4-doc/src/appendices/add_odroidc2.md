@@ -7,7 +7,7 @@ U-Boot Driver Library to build with seL4 on the Odroid-C2 platform.
 This appendix gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.
 
-Our goal is to get the U-Boot [test applications](uboot_driver_usage.md)) running
+Our goal is to get the U-Boot [test applications](../uboot_driver_usage.md) running
 on the Odroid-C2.
 
 ## Repository setup and forks
