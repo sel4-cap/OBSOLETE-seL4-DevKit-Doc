@@ -66,13 +66,13 @@ For example, the line to add is
 <remote name="rod" fetch="https://github.com/rod-chapman"/>
 ```
 
-The exact diff can be seen at this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/eae32a5d03064b43bda5c124a794ce2471cf5c5f)
+The exact diff can be seen at this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/eae32a5d03064b43bda5c124a794ce2471cf5c5f).
 
 5. Similarly, edit the default.xml file to specify that the "camkes" and "projects_libs" repositories
 should come from the "addc2" branches of our own forked repositories. Find the "project" line for each
 repository and modify its entry to specify our own remote ("rod") and branch ("addc2").
 
-For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/88d83b8357db801d54d4798b58d95e297e2cc112)
+For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/88d83b8357db801d54d4798b58d95e297e2cc112).
 
 6. Commit and push that change:
 
