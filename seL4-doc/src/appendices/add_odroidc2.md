@@ -1,14 +1,14 @@
-# Worked Example - Adding support for the ODroidC2 Platform
+# Worked Example - Adding support for the Odroid-C2 Platform
 
 As part of the review of the [New Platform](uboot_library_add_platform.md)
 and [New Driver](uboot_library_add_driver.md) sections of this guide, we ported the
-UBoot Driver Library to build with seL4 on the ODroidC2 platform.
+UBoot Driver Library to build with seL4 on the Odroid-C2 platform.
 
 This appendix gives details of how this was achieved, following the structure
 of those earlier sections, but adding details of exact changes to each file.
 
 Our goal is to get the UBoot [test applications](uboot_driver_usage.md)) running
-on the ODroidC2.
+on the Odroid-C2.
 
 ## Repository setup and forks
 
@@ -79,7 +79,7 @@ For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-
 ```bash
 cd camkes-manifest
 git add default.xml
-git commit -m "Add remote and forked repositories for adding ODroidC2 platform."
+git commit -m "Add remote and forked repositories for adding Odroid-C2 platform."
 git push
 cd ..
 ```
@@ -100,7 +100,7 @@ For example:
 repo init -u https://github.com/rod-chapman/camkes-manifest.git -b addc2
 ```
 
-Assuming that works, then we can start to make modification to support the ODroidC2.
+Assuming that works, then we can start to make modification to support the Odroid-C2.
 
 ## Root Directory, Platform Name, and basic Platform Details
 
@@ -110,7 +110,7 @@ in which to create a "repo" structure and perform the build.
 The root directory name is "c2new". From here on, all directory names given in this section
 are relative to that new root directory.
 
-We also know that the ODroidC2 is already supported by seL4. Its device tree
+We also know that the Odroid-C2 is already supported by seL4. Its device tree
 appears in kernel/tools/dts/odroidc2.dts
 
 The seL4 "platform name" is "odroidc2"
@@ -144,7 +144,7 @@ platform and create a sym-link to them, so we add:
 
 ```makefile
 elseif("${KernelPlatform}" STREQUAL "odroidc2")
-    # Platform specific settings for the ODroidC2 board.
+    # Platform specific settings for the Odroid-C2 board.
     set(arch_source "./arch-meson")
     set(arch_target "../projects/uboot/arch/arm/include/asm/arch")
     execute_process(COMMAND ln -fsn ${arch_source} ${arch_target})
@@ -157,7 +157,7 @@ in the "Platform specific settings" section of the file.
 At this point, we decided to add support for the UBoot "General Purpose IO" device
 driver, also known as "GPIO".
 
-We start by searching the ODroidC2 device tree file for the string "gpio-controller" in
+We start by searching the Odroid-C2 device tree file for the string "gpio-controller" in
 the file kernel/tools/dts/odroidc2.dts
 
 This appears in two places in the Device Tree, with path-names "/soc/bus@c8100000/pinctrl@14/bank@14"
@@ -360,12 +360,12 @@ the values of the constants defined in the plat_driver_data.h file.
 The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
 
 
-## Add ODroidC2 support in the UBoot Driver Example test program
+## Add Odroid-C2 support in the UBoot Driver Example test program
 
 We now need to modify the CAmkES configutation of our test program to tell CAmkES that our program is
 configured for this platform and our code can have capabilities allocation to access certain devices.
 
-This is done by creating a specific "platform_devices.h" file for the ODroidC2 in the example application.
+This is done by creating a specific "platform_devices.h" file for the Odroid-C2 in the example application.
 
 We create camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h with the following
 content:
@@ -429,7 +429,7 @@ This should result in a binary image in the images subdirectory that can be copi
 USB memory stick or a TFTP server of your choice.
 
 In our case, we download using TFTP, so we start the TFTP_Server as before, start CoolTerm,
-reboot the ODroidC2, and hit "Return" immediately to interrupt whatever default boot
+reboot the Odroid-C2, and hit "Return" immediately to interrupt whatever default boot
 sequence is installed.  Then we set the "ipaddr" and "serverip" environment variables in
 UBoot, and use the "tftpboot sel4_image" command to download the image.
 
@@ -440,7 +440,7 @@ start seL4 and our test application with
 odroidc2# go 0x20000000
 ```
 
-The test program run various UBoot commands from within seL4, most of which are expected to fail on the ODroidC2
+The test program run various UBoot commands from within seL4, most of which are expected to fail on the Odroid-C2
 owing to missing UBoot commands and drivers. We do expect the first "dm tree" command to succeed though.
 The output that we see, truncated to only show the first 4 levels of the device-tree, are as follows:
 
