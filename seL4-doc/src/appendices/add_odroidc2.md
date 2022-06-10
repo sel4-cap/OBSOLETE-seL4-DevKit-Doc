@@ -119,7 +119,7 @@ The seL4 "platform name" is `odroidc2`.
 The system-on-chip device at the heart of the C2 is Amlogic S905, also known as
 a "meson" SoC.
 
-We create that root directory, and initialize our build environment. Remember to use the
+We create that root directory, and initialise our build environment. Remember to use the
 Docker container from here on:
 
 ```text
@@ -330,7 +330,7 @@ extern struct cmd_tbl _u_boot_cmd__setenv;
 extern struct cmd_tbl _u_boot_cmd__pinmux;
 ```
 
-We can now create `plat_driver_data.c` in the `src/plat/odroidc2` directory to initialize
+We can now create `plat_driver_data.c` in the `src/plat/odroidc2` directory to initialise
 the actual data structures thus:
 
 ```c
@@ -355,7 +355,7 @@ void initialise_driver_data(void) {
 }
 ```
 
-Note how the number of assignments and array elements initialized must exactly match
+Note how the number of assignments and array elements initialised must exactly match
 the values of the constants defined in the `plat_driver_data.h` file.
 
 The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
