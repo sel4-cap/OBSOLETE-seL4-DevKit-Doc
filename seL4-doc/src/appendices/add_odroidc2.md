@@ -415,7 +415,7 @@ and semantics of these declarations.
 
 At this point, the U-Boot Driver Example test program should build for the C2.
 
-Make sure all your changes are committed and pushed to GitHub, then (in the Docker container)
+Make sure all your changes are committed and pushed to GitHub, then (in the Docker container):
 
 ```text
 cd /host/c2new
