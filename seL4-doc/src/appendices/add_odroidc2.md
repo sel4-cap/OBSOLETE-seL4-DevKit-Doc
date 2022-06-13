@@ -488,6 +488,6 @@ command in our configuration.
 This section has given a detailed walkthrough of how the U-Boot driver framework and test application
 have been built and run under seL4 on the Odroid-C2. We've also shown how the basic GPIO "pinctrl"
 driver from U-Boot can be added to our configuration for that platform and how the
-U-Boot "dm tree" command works and shows the presence of that device.
+U-Boot `dm tree` command works and shows the presence of that device.
 
 ![C2_Boots](../figures/odroidc2_boots.png)
