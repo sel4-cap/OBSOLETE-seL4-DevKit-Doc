@@ -214,24 +214,30 @@ We have established the underlying driver code, but it is not yet integrated wit
 Firstly, we need to add path definitions so that the devices can be located in the device tree:
 
 ```c
-#define I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
-#define I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
-#define I2C_2_PATH      "/soc@0/bus@30800000/i2c@30a40000"
-#define I2C_3_PATH      "/soc@0/bus@30800000/i2c@30a50000"
+#define REG_I2C_0_PATH      "/soc@0/bus@30800000/i2c@30a20000"
+#define REG_I2C_1_PATH      "/soc@0/bus@30800000/i2c@30a30000"
+#define REG_I2C_2_PATH      "/soc@0/bus@30800000/i2c@30a40000"
+#define REG_I2C_3_PATH      "/soc@0/bus@30800000/i2c@30a50000"
+...
+#define DEV_I2C_0_PATH      REG_I2C_0_PATH
+#define DEV_I2C_1_PATH      REG_I2C_1_PATH
+#define DEV_I2C_2_PATH      REG_I2C_2_PATH
+#define DEV_I2C_3_PATH      REG_I2C_3_PATH
 ```
 
-These need to be added to `DEVICE_PATHS` and then `DEVICE_PATHS_LENGTH` should be modified accordingly:
+These need to be added to `DEV_PATHS` and `DEV_PATH_COUNT` should be modified accordingly:
 
 ```c
-#define DEVICE_PATHS {  \
-    ...                 \
-    I2C_0_PATH,         \
-    I2C_1_PATH,         \
-    I2C_2_PATH,         \
-    I2C_3_PATH,         \
+#define DEV_PATH_COUNT 19 // In this example previous size was 15 so +4
+
+#define DEV_PATHS {   \
+    ...               \
+    DEV_I2C_0_PATH,   \
+    DEV_I2C_1_PATH,   \
+    DEV_I2C_2_PATH,   \
+    DEV_I2C_3_PATH,   \
     ...
     };
-#define DEVICE_PATHS_LENGTH 19 // In this example previous size was 15 so +4
 ```
 
 Entries for the devices need to be added to `HARDWARE_INTERFACES`:
@@ -262,12 +268,12 @@ And also added to `HARDWARE_COMPOSITION`:
 And also added to `HARDWARE_CONFIGURATION`:
 
 ```c
-#define HARDWARE_CONFIGURATION                                                  \
-    ...                                            \
-    i2c_0.dtb     = dtb({ "path" : I2C_0_PATH });  \
-    i2c_1.dtb     = dtb({ "path" : I2C_1_PATH });  \
-    i2c_2.dtb     = dtb({ "path" : I2C_2_PATH });  \
-    i2c_3.dtb     = dtb({ "path" : I2C_3_PATH });  \
+#define HARDWARE_CONFIGURATION                         \
+    ...                                                \
+    i2c_0.dtb     = dtb({ "path" : REG_I2C_0_PATH });  \
+    i2c_1.dtb     = dtb({ "path" : REG_I2C_1_PATH });  \
+    i2c_2.dtb     = dtb({ "path" : REG_I2C_2_PATH });  \
+    i2c_3.dtb     = dtb({ "path" : REG_I2C_3_PATH });  \
     ...
 ```
 
