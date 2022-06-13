@@ -430,6 +430,8 @@ This should result in a binary image in the images subdirectory that can be copi
 USB memory stick or a TFTP server of your choice. As before, we assume that the image is renamed
 to `sel4_image` if that is the default set up in your U-Boot configuration.
 
+## Running the test application
+
 In our case, we download using TFTP, so we start the TFTP Server Application as before, start CoolTerm,
 reboot the Odroid-C2, and hit `Return` immediately to interrupt whatever default boot
 sequence is installed.  Then we set the `ipaddr` and `serverip` environment variables in
@@ -445,6 +447,8 @@ odroidc2# setenv serverip 192.168.2.1
 odroidc2# tftpboot sel4_image
 odroidc2# go 0x20000000
 ```
+
+## Test results
 
 The test program runs various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
 owing to missing U-Boot commands and drivers. We do expect the first `dm tree` command to succeed though.
@@ -478,3 +482,12 @@ Completed U-Boot driver example
 
 Note how the `clk dump` command fails because we did not choose to implement the U-Boot "clk"
 command in our configuration.
+
+## Wrapping up
+
+This section has given a detailed walkthrough of how the U-Boot driver framework and test application
+have been built and run under seL4 on the Odroid-C2. We've also shown how the basic GPIO "pinctrl"
+driver from U-Boot can be added to our configuration for that platform and how the
+U-Boot "dm tree" command works and shows the presence of that device.
+
+![C2_Boots](../figures/odroidc2_boots.png)
