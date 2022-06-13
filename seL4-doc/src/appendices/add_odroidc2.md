@@ -426,7 +426,7 @@ cd build
 ninja
 ```
 
-This should result in a binary image in the images subdirectory that can be copied to a
+This should result in a binary image in the `images` subdirectory that can be copied to a
 USB memory stick or a TFTP server of your choice. As before, we assume that the image is renamed
 to `sel4_image` if that is the default set up in your U-Boot configuration.
 
