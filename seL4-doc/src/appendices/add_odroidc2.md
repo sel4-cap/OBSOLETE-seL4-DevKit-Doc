@@ -198,7 +198,7 @@ which yields a result:
 ./pinctrl/meson/pinctrl-meson-gxbb.c:		.compatible = "amlogic,meson-gxbb-aobus-pinctrl",
 ```
 
-showing us that the single source file pinctrl-meson-gxbb.c implements a
+showing us that the single source file `pinctrl-meson-gxbb.c` implements a
 driver that is compatible with both of the devices we're interested in.
 
 At the bottom of that source file, we find the declarations:
