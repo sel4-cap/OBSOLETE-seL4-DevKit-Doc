@@ -256,7 +256,7 @@ An attempt to compile the U-Boot Driver Test application fails owing to missing 
 our new driver code depends on some other code that we have not included yet.
 
 Identification of the missing units (and further searching of the U-Boot driver sources) shows that
-we additionally need the pinctrl-meson.c and pinctrl-meson-gx-pmx.c source files to be included, so
+we additionally need the `pinctrl-meson.c` and `pinctrl-meson-gx-pmx.c` source files to be included, so
 we update `CMakeLists.txt` to include them:
 
 ```makefile
