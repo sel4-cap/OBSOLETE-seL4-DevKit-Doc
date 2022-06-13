@@ -188,7 +188,7 @@ We can search the sources for all the U-Boot drivers for either of those strings
 
 ```text
 cd projects/uboot/drivers
-grep -r "meson-gxbb-.*-pinctrl"
+grep -r "meson-gxbb-.*-pinctrl" .
 ```
 
 which yields a result:
