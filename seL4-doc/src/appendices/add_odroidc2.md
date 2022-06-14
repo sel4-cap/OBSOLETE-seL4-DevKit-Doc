@@ -450,8 +450,11 @@ odroidc2# go 0x20000000
 
 ## Test results
 
-The test program runs various U-Boot commands from within seL4, most of which are expected to fail on the Odroid-C2
-owing to missing U-Boot commands and drivers. We do expect the first `dm tree` command to succeed though.
+The test program has been modified so its behaviour depends on the platform
+that it is being compiled for. Most of the commands that are expected to work on the MaaxBoard
+will fail on the Odroid-C2 owing to missing drivers, but the `dm tree` command should work and show
+the `pinctrl` devices that we have added. The test also runs a `clk dump` command to show the
+output of a command that is expected to fail since we did not (yet) implement the U-Boot `clk` command.
 The output that we see, truncated to only show the first 4 levels of the device tree, is as follows:
 
 ```text
@@ -479,9 +482,6 @@ Unknown command 'clk' - try 'help'
 run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with return code 1 ---
 Completed U-Boot driver example
 ```
-
-Note how the `clk dump` command fails because we did not choose to implement the U-Boot "clk"
-command in our configuration.
 
 ## Wrapping up
 
