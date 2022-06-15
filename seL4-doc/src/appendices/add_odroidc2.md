@@ -534,7 +534,7 @@ A summary of these changes can be seen at [this GitHub commit](https://github.co
 
 Next, we declare the `/leds` device tree path in the configuration of the U-Boot Driver Example program in `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` and add that to the list of `DEV_PATHS` that are required by our test application. The exact change can be seen [here](https://github.com/sel4devkit/camkes/commit/a4b861ba380c8ec96fb917a640eebbccecd39963).
 
-Finally, the main test program itself was generalized to select which tests to run based on the platform being compiled for. For the Odroid-C2, the test program now runs the `dm tree`, `pinmux`, `gpio` and `led` commands. See [here](https://github.com/sel4devkit/camkes/commit/1e1afacd335f57a1c929b5cbc89af949ff19791b) for details.
+Finally, the main test program itself was generalised to select which tests to run based on the platform being compiled for. For the Odroid-C2, the test program now runs the `dm tree`, `pinmux`, `gpio` and `led` commands. See [here](https://github.com/sel4devkit/camkes/commit/1e1afacd335f57a1c929b5cbc89af949ff19791b) for details.
 
 If we run the test program, we first notice the tail of the output of the `dm tree` command now includes:
 
