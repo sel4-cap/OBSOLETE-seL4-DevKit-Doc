@@ -450,12 +450,10 @@ odroidc2# go 0x20000000
 
 ## Test results
 
-The test program has been modified so its behaviour depends on the platform
-that it is being compiled for. Most of the commands that are expected to work on the MaaxBoard
-will fail on the Odroid-C2 owing to missing drivers, but the `dm tree` command should work and show
-the `pinctrl` devices that we have added. The test also runs a `clk dump` command to show the
-output of a command that is expected to fail since we did not (yet) implement the U-Boot `clk` command.
-The output that we see, truncated to only show the first 4 levels of the device tree, is as follows:
+Most of the commands that are expected to work on the MaaxBoard
+will fail on the Odroid-C2 owing to missing drivers, but the `dm tree` command
+should work and show the `pinctrl` devices that we have added. The output that we see,
+truncated to only show the first 4 levels of the device tree, is as follows:
 
 ```text
 Starting U-Boot driver example
@@ -477,9 +475,6 @@ run_uboot_command@uboot_wrapper.c:176 --- running command 'dm tree' ---
  pinconfig    42  [   ]   pinconfig                         |-- # and many more - truncated here
  pinconfig    43  [   ]   pinconfig                         |   `-- mux
 run_uboot_command@uboot_wrapper.c:181 --- command 'dm tree' completed with return code 0 ---
-run_uboot_command@uboot_wrapper.c:176 --- running command 'clk dump' ---
-Unknown command 'clk' - try 'help'
-run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with return code 1 ---
 Completed U-Boot driver example
 ```
 
