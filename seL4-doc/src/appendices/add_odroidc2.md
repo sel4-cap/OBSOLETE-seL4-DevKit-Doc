@@ -485,16 +485,15 @@ At this point, we can go further and add support for the U-Boot `led` and `gpio`
 The LEDs are driven by the lower-level GPIO `pinctrl` and `pinmux` subsystems, so we look in the Odroid-C2's device tree for the tell-tale "compatible" string for the appropriate driver. We find:
 
 ```text
-.gpio_leds {
-..compatible = "gpio-leds";
-..pinctrl-names = "led_pins";
-..pinctrl-0 = <0x0000003f>;
-..heartbeat {
-...label = "blue:heartbeat";
-...gpios = <0x00000025 0x0000000d 0x00000001>;
-...linux,default-trigger = "heartbeat";
-..};
-.};
+leds {
+    compatible = "gpio-leds";
+    blue {
+        label = "c2:blue:alive";
+        gpios = < 0x2e 0x0d 0x01 >;
+        linux,default-trigger = "heartbeat";
+        default-state = "off";
+    };
+};
 ```
 
 This tells is to look for the declaration of a `gpio-leds` driver in the U-Boot sources. Indeed, in `uboot/drivers/led/led_gpio.c`, we find:
