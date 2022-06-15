@@ -525,7 +525,10 @@ showing that we need to add the `led_gpio` and `led_gpio_wrap` drivers to our bu
 
 In addition, we need to add the general GPIO driver which, for this platform, is called `meson_gx_gpio_driver`.
 
-In summary, we need to add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuation in `plat_driver_data.h`, initialise these structures properly in `plat_driver_data.c`, and modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process.
+In summary, we need to:
+- add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuration in `plat_driver_data.h`;
+- initialise these structures properly in `plat_driver_data.c; and
+- modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process.
 
 A summary of these changes can be seen at [this GitHub commit](https://github.com/sel4devkit/projects_libs/commit/a279204b01a5400b8c8dba21eb251af5eb486c7c).
 
