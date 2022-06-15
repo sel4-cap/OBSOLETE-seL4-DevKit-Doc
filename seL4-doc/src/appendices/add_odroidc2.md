@@ -483,11 +483,83 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'clk dump' completed with retu
 Completed U-Boot driver example
 ```
 
+## Adding support for the LED and GPIO commands
+
+At this point, we can go further and add support for the U-Boot `led` and `gpio` commands.
+
+The LEDs are driven by the lower-level GPIO `pinctrl` and `pinmux` subsystems, so we look in the Odroid-C2's device tree for the tell-tale "compatible" string for the appropriate driver. We find:
+
+```text
+.gpio_leds {
+..compatible = "gpio-leds";
+..pinctrl-names = "led_pins";
+..pinctrl-0 = <0x0000003f>;
+..heartbeat {
+...label = "blue:heartbeat";
+...gpios = <0x00000025 0x0000000d 0x00000001>;
+...linux,default-trigger = "heartbeat";
+..};
+.};
+```
+
+This tells is to look for the declaration of a `gpio-leds` driver in the U-Boot sources. Indeed, in `uboot/drivers/led/led_gpio.c`, we find:
+
+```c
+U_BOOT_DRIVER(led_gpio) = {
+	.name	= "gpio_led",
+	.id	= UCLASS_LED,
+	.ops	= &gpio_led_ops,
+	.priv_auto	= sizeof(struct led_gpio_priv),
+	.probe	= led_gpio_probe,
+	.remove	= led_gpio_remove,
+};
+
+static const struct udevice_id led_gpio_ids[] = {
+	{ .compatible = "gpio-leds" },
+	{ }
+};
+
+U_BOOT_DRIVER(led_gpio_wrap) = {
+	.name	= "gpio_led_wrap",
+	.id	= UCLASS_NOP,
+	.of_match = led_gpio_ids,
+	.bind	= led_gpio_bind,
+};
+```
+
+showing that we need to add the `led_gpio` and `led_gpio_wrap` drivers to our build.
+
+In addition, we need to add the general GPIO driver which, for this platform, is called `meson_gx_gpio_driver`.
+
+In summary, we need to add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuation in `plat_driver_data.h`, initialise these structures properly in `plat_driver_data.c`, and modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process.
+
+A summary of these changes can be seen at [this GitHub commit](https://github.com/sel4devkit/projects_libs/commit/a279204b01a5400b8c8dba21eb251af5eb486c7c).
+
+Next, we declare the `/leds` device tree path in the configuration of the U-Boot Driver Example program in `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` and add that to the list of `DEV_PATHS` that are required by our test application. The exact change can be seen [here](https://github.com/sel4devkit/camkes/commit/a4b861ba380c8ec96fb917a640eebbccecd39963).
+
+Finally, the main test program itself was generalized to select which tests to run based on the platform being compiled for. For the Odroid-C2, the test program now runs the `dm tree`, `pinmux`, `gpio` and `led` commands. See [here](https://github.com/sel4devkit/camkes/commit/1e1afacd335f57a1c929b5cbc89af949ff19791b) for details.
+
+If we run the test program, we first notice the tail of the output of the `dm tree` command now includes:
+
+```text
+ gpio          1  [ + ]   meson-gx-gpio         |           `-- meson-gpio
+ nop           0  [ + ]   gpio_led_wrap         `-- leds
+ led           0  [ + ]   gpio_led                  `-- blue
+```
+
+Secondly the `led list` command produces:
+
+```text
+c2:blue:alive   off
+```
+
+The `pinmux status -a` command also works, and lists the current assignment of the general GPIO pins to their current specific function.
+
 ## Wrapping up
 
 This section has given a detailed walkthrough of how the U-Boot driver framework and test application
 have been built and run under seL4 on the Odroid-C2. We've also shown how the basic GPIO "pinctrl"
 driver from U-Boot can be added to our configuration for that platform and how the
-U-Boot `dm tree` command works and shows the presence of that device.
+U-Boot `dm tree` command works and shows the presence of that device. We then went on to add support for the `pinmux` and `led` commands and demonstrated their use in a simple test application.
 
 ![C2_Boots](../figures/odroidc2_boots.png)
