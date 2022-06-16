@@ -28,7 +28,7 @@ GitHub account name `rod-chapman` for our local forks.
 and `projects_libs` repositories.
 
 2. Clone the `camkes-manifest` fork into your local machine, and create
-a new branch called `addc2` to make our changes:
+a new branch called `addc2` to make our changes. In the following commands, remember to change `rod-chapman` to your own GitHub user name:
 
 ```text
 git clone https://github.com/rod-chapman/camkes-manifest.git
@@ -39,8 +39,7 @@ cd ..
 ```
 
 3. Similarly, clone the `camkes` and `projects_libs` forks, and add a new branch
-to each with the same name. In the following commands, remember to change `rod-chapman` to your
-own GitHub user name.
+to each with the same name.
 
 ```text
 git clone https://github.com/rod-chapman/camkes.git
@@ -67,13 +66,18 @@ For example, the line to add is
 <remote name="rod" fetch="https://github.com/rod-chapman"/>
 ```
 
-The exact diff can be seen at this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/eae32a5d03064b43bda5c124a794ce2471cf5c5f).
-
 5. Similarly, edit the `default.xml` file to specify that the `camkes` and `projects_libs` repositories
 should come from the `addc2` branches of our own forked repositories. Find the `project` line for each
 repository and modify its entry to specify our own remote (`rod`) and branch (`addc2`).
 
-For our example, see this [GitHub commit](https://github.com/rod-chapman/camkes-manifest/commit/88d83b8357db801d54d4798b58d95e297e2cc112).
+For example, the `project` lines for our forks are:
+
+```text
+<project name="camkes.git" path="projects/camkes" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2">
+  <linkfile src="easy-settings.cmake" dest="easy-settings.cmake"/>
+</project>
+<project name="projects_libs.git" path="projects/projects_libs" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2"/>
+```
 
 6. Commit and push that change:
 
@@ -266,8 +270,6 @@ we update `CMakeLists.txt` to include them:
         list(APPEND uboot_deps uboot/drivers/pinctrl/meson/pinctrl-meson-gx-pmx.c)
 ```
 
-The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
-
 ## Platform Specific Linker Lists
 
 Next, we need to add the "Linker Lists" data structures for this platform
@@ -358,9 +360,6 @@ void initialise_driver_data(void) {
 Note how the number of assignments and array elements initialised must exactly match
 the values of the constants defined in the `plat_driver_data.h` file.
 
-The full details of the file changes can be seen at this [GitHub commit](https://github.com/rod-chapman/projects_libs/commit/ff46cad71a55e5cd9fa600ce505139e72003d5d4)
-
-
 ## Add Odroid-C2 support in the U-Boot Driver Example test program
 
 We now need to modify the CAmkES configuration of our test program to tell CAmkES that our program is
@@ -410,6 +409,15 @@ Refer to the [CAmkES tutorial](https://docs.sel4.systems/Tutorials/hello-camkes-
 and [documentation](https://docs.sel4.systems/projects/camkes/) for the exact syntax
 and semantics of these declarations.
 
+Secondly, we need to update the main test program to enable the specific tests that we want to run
+on the Odroid-C2. The source file is in `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c`.
+
+Each specific test for device `XXX` is only run if a C preprocessor symbol `TEST_XXX` is defined. A set of these are defined by testing each appropriate `CONFIG_PLAT_YYY` symbol that might be defined by CMake. `test.c` already defines a set of tests are are appropriate for the MaaxBoard, so we need to add a set for the Odroid-C2. At this point, only the `pinmux` command is implemented, so we add:
+
+```text
+#elif defined(CONFIG_PLAT_ODROIDC2)
+    #define TEST_PINMUX
+```
 
 ## Compilation
 
@@ -526,15 +534,64 @@ showing that we need to add the `led_gpio` and `led_gpio_wrap` drivers to our bu
 In addition, we need to add the general GPIO driver which, for this platform, is called `meson_gx_gpio_driver`.
 
 In summary, we need to:
-- add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuration in `plat_driver_data.h`;
-- initialise these structures properly in `plat_driver_data.c`; and
-- modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process.
 
-A summary of these changes can be seen at [this GitHub commit](https://github.com/sel4devkit/projects_libs/commit/a279204b01a5400b8c8dba21eb251af5eb486c7c).
+- add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuration in `plat_driver_data.h`:
 
-Next, we declare the `/leds` device tree path in the configuration of the U-Boot Driver Example program in `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` and add that to the list of `DEV_PATHS` that are required by our test application. The exact change can be seen [here](https://github.com/sel4devkit/camkes/commit/a4b861ba380c8ec96fb917a640eebbccecd39963).
+```text
+#define _u_boot_uclass_driver_count     9
+#define _u_boot_driver_count            7
+#define _u_boot_cmd_count               6
 
-Finally, the main test program itself was generalised to select which tests to run based on the platform being compiled for. For the Odroid-C2, the test program now runs the `dm tree`, `pinmux`, `gpio` and `led` commands. See [here](https://github.com/sel4devkit/camkes/commit/1e1afacd335f57a1c929b5cbc89af949ff19791b) for details.
+extern struct uclass_driver _u_boot_uclass_driver__gpio;
+extern struct uclass_driver _u_boot_uclass_driver__led;
+
+extern struct driver _u_boot_driver__meson_gx_gpio_driver;
+extern struct driver _u_boot_driver__led_gpio_wrap;
+extern struct driver _u_boot_driver__led_gpio;
+
+extern struct cmd_tbl _u_boot_cmd__gpio;
+extern struct cmd_tbl _u_boot_cmd__led;
+```
+
+- initialise these structures properly in `plat_driver_data.c`, adding:
+
+```text
+driver_data.uclass_driver_array[7]  = _u_boot_uclass_driver__gpio;
+driver_data.uclass_driver_array[8]  = _u_boot_uclass_driver__led;
+
+driver_data.driver_array[4]  = _u_boot_driver__meson_gx_gpio_driver;
+driver_data.driver_array[5]  = _u_boot_driver__led_gpio_wrap;
+driver_data.driver_array[6]  = _u_boot_driver__led_gpio;
+
+driver_data.cmd_array[4]  = _u_boot_cmd__gpio;
+driver_data.cmd_array[5]  = _u_boot_cmd__led;
+```
+
+- modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process:
+
+```text
+set(gpio_driver "meson_gx_gpio_driver")
+set(led_driver "gpio_led")
+```
+
+Next, we declare the `/leds` device tree path in the configuration of the U-Boot Driver Example program in `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` and add that to the list of `DEV_PATHS` that are required by our test application:
+
+```text
+#define LEDS_PATH "/leds"
+#define DEV_PATHS { PINCTRL1_PATH, PINCTRL2_PATH, LEDS_PATH };
+#define DEV_PATH_COUNT 3
+```
+
+Finally, the main test program itself is modified to run tests for the `gpio` and `led` commands
+
+```text
+#elif defined(CONFIG_PLAT_ODROIDC2)
+    #define TEST_PINMUX
+    #define TEST_GPIO
+    #define TEST_LED
+    #define TEST_LED_NAME_1 "c2:blue:alive"
+    #define TEST_LED_NAME_2 "c2:blue:alive"
+```
 
 If we run the test program, we first notice the tail of the output of the `dm tree` command now includes:
 
