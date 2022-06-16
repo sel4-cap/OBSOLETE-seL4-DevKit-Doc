@@ -30,64 +30,64 @@ and `projects_libs` repositories.
 2. Clone the `camkes-manifest` fork into your local machine, and create
 a new branch called `addc2` to make our changes. In the following commands, remember to change `rod-chapman` to your own GitHub user name:
 
-```text
-git clone https://github.com/rod-chapman/camkes-manifest.git
-cd camkes-manifest
-git checkout -b addc2
-git push --set-upstream origin addc2
-cd ..
-```
+    ```text
+    git clone https://github.com/rod-chapman/camkes-manifest.git
+    cd camkes-manifest
+    git checkout -b addc2
+    git push --set-upstream origin addc2
+    cd ..
+    ```
 
 3. Similarly, clone the `camkes` and `projects_libs` forks, and add a new branch
 to each with the same name.
 
-```text
-git clone https://github.com/rod-chapman/camkes.git
-cd camkes
-git checkout -b addc2
-git push --set-upstream origin addc2
-cd ..
-```
+    ```text
+    git clone https://github.com/rod-chapman/camkes.git
+    cd camkes
+    git checkout -b addc2
+    git push --set-upstream origin addc2
+    cd ..
+    ```
 
-```text
-git clone https://github.com/rod-chapman/projects_libs.git
-cd projects_libs
-git checkout -b addc2
-git push --set-upstream origin addc2
-cd ..
-```
+    ```text
+    git clone https://github.com/rod-chapman/projects_libs.git
+    cd projects_libs
+    git checkout -b addc2
+    git push --set-upstream origin addc2
+    cd ..
+    ```
 
 4. Edit the `default.xml` file in the `camkes-manifest` repository to add a new remote (in our
 case called `rod`) pointing at our own GitHub account.
 
-For example, the line to add is
+    For example, the line to add is
 
-```text
-<remote name="rod" fetch="https://github.com/rod-chapman"/>
-```
+    ```text
+    <remote name="rod" fetch="https://github.com/rod-chapman"/>
+    ```
 
 5. Similarly, edit the `default.xml` file to specify that the `camkes` and `projects_libs` repositories
 should come from the `addc2` branches of our own forked repositories. Find the `project` line for each
 repository and modify its entry to specify our own remote (`rod`) and branch (`addc2`).
 
-For example, the `project` lines for our forks are:
+    For example, the `project` lines for our forks are:
 
-```text
-<project name="camkes.git" path="projects/camkes" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2">
-  <linkfile src="easy-settings.cmake" dest="easy-settings.cmake"/>
-</project>
-<project name="projects_libs.git" path="projects/projects_libs" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2"/>
-```
+    ```text
+    <project name="camkes.git" path="projects/camkes" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2">
+      <linkfile src="easy-settings.cmake" dest="easy-settings.cmake"/>
+    </project>
+    <project name="projects_libs.git" path="projects/projects_libs" remote="rod" revision="addc2" upstream="addc2" dest-branch="addc2"/>
+    ```
 
 6. Commit and push that change:
 
-```text
-cd camkes-manifest
-git add default.xml
-git commit -m "Add remote and forked repositories for adding Odroid-C2 platform."
-git push
-cd ..
-```
+    ```text
+    cd camkes-manifest
+    git add default.xml
+    git commit -m "Add remote and forked repositories for adding Odroid-C2 platform."
+    git push
+    cd ..
+    ```
 
 ## Test Application Build for the MaaxBoard
 
