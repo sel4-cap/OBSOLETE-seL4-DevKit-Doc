@@ -409,14 +409,20 @@ Refer to the [CAmkES tutorial](https://docs.sel4.systems/Tutorials/hello-camkes-
 and [documentation](https://docs.sel4.systems/projects/camkes/) for the exact syntax
 and semantics of these declarations.
 
-Secondly, we need to update the main test program to enable the specific tests that we want to run
+We also need to update the main test program to enable the specific tests that we want to run
 on the Odroid-C2. The source file is in `projects/camkes/apps/uboot-driver-example/components/Test/src/test.c`.
 
 Each specific test for device `XXX` is only run if a C preprocessor symbol `TEST_XXX` is defined. A set of these are defined by testing each appropriate `CONFIG_PLAT_YYY` symbol that might be defined by CMake. `test.c` already defines a set of tests are are appropriate for the MaaxBoard, so we need to add a set for the Odroid-C2. At this point, only the `pinmux` command is implemented, so we add:
 
 ```text
-#elif defined(CONFIG_PLAT_ODROIDC2)
-    #define TEST_PINMUX
+  /* Determine which functionality to test based upon the platform */
+  #if defined(CONFIG_PLAT_MAAXBOARD)
+      ...
++ #elif defined(CONFIG_PLAT_ODROIDC2)
++     #define TEST_PINMUX
+  #else
+      ...
+  #endif
 ```
 
 ## Compilation
@@ -585,12 +591,12 @@ Next, we declare the `/leds` device tree path in the configuration of the U-Boot
 Finally, the main test program itself is modified to run tests for the `gpio` and `led` commands
 
 ```text
-#elif defined(CONFIG_PLAT_ODROIDC2)
-    #define TEST_PINMUX
-    #define TEST_GPIO
-    #define TEST_LED
-    #define TEST_LED_NAME_1 "c2:blue:alive"
-    #define TEST_LED_NAME_2 "c2:blue:alive"
+  #elif defined(CONFIG_PLAT_ODROIDC2)
+      #define TEST_PINMUX
++     #define TEST_GPIO
++     #define TEST_LED
++     #define TEST_LED_NAME_1 "c2:blue:alive"
++     #define TEST_LED_NAME_2 "c2:blue:alive"
 ```
 
 If we run the test program, we first notice the tail of the output of the `dm tree` command now includes:
