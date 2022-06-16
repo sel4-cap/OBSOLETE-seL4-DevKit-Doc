@@ -198,8 +198,8 @@ grep -r "meson-gxbb-.*-pinctrl" .
 which yields a result:
 
 ```text
-./pinctrl/meson/pinctrl-meson-gxbb.c:		.compatible = "amlogic,meson-gxbb-periphs-pinctrl",
-./pinctrl/meson/pinctrl-meson-gxbb.c:		.compatible = "amlogic,meson-gxbb-aobus-pinctrl",
+./pinctrl/meson/pinctrl-meson-gxbb.c:           .compatible = "amlogic,meson-gxbb-periphs-pinctrl",
+./pinctrl/meson/pinctrl-meson-gxbb.c:           .compatible = "amlogic,meson-gxbb-aobus-pinctrl",
 ```
 
 showing us that the single source file `pinctrl-meson-gxbb.c` implements a
@@ -209,24 +209,24 @@ At the bottom of that source file, we find the declarations:
 
 ```c
 static const struct udevice_id meson_gxbb_pinctrl_match[] = {
-	{
-		.compatible = "amlogic,meson-gxbb-periphs-pinctrl",
-		.data = (ulong)&meson_gxbb_periphs_pinctrl_data,
-	},
-	{
-		.compatible = "amlogic,meson-gxbb-aobus-pinctrl",
-		.data = (ulong)&meson_gxbb_aobus_pinctrl_data,
-	},
-	{ /* sentinel */ }
+        {
+                .compatible = "amlogic,meson-gxbb-periphs-pinctrl",
+                .data = (ulong)&meson_gxbb_periphs_pinctrl_data,
+        },
+        {
+                .compatible = "amlogic,meson-gxbb-aobus-pinctrl",
+                .data = (ulong)&meson_gxbb_aobus_pinctrl_data,
+        },
+        { /* sentinel */ }
 };
 
 U_BOOT_DRIVER(meson_gxbb_pinctrl) = {
-	.name = "meson-gxbb-pinctrl",
-	.id = UCLASS_PINCTRL,
-	.of_match = of_match_ptr(meson_gxbb_pinctrl_match),
-	.probe = meson_pinctrl_probe,
-	.priv_auto	= sizeof(struct meson_pinctrl),
-	.ops = &meson_gx_pinctrl_ops,
+        .name = "meson-gxbb-pinctrl",
+        .id = UCLASS_PINCTRL,
+        .of_match = of_match_ptr(meson_gxbb_pinctrl_match),
+        .probe = meson_pinctrl_probe,
+        .priv_auto      = sizeof(struct meson_pinctrl),
+        .ops = &meson_gx_pinctrl_ops,
 };
 ```
 
@@ -296,7 +296,6 @@ we create `plat_driver_data.h` in the former of those directories.
 There are five UClass Drivers that are effectively mandatory (`nop`, `root`, `simple_bus`, `phy` and `blk`),
 and we want to add two more (`pinconfig` and `pinctrl`), making a total of 7, so we declare in
 `plat_driver_data.h`:
-
 
 ```c
 #define _u_boot_uclass_driver_count     7
@@ -517,24 +516,24 @@ This tells is to look for the declaration of a `gpio-leds` driver in the U-Boot 
 
 ```c
 U_BOOT_DRIVER(led_gpio) = {
-	.name	= "gpio_led",
-	.id	= UCLASS_LED,
-	.ops	= &gpio_led_ops,
-	.priv_auto	= sizeof(struct led_gpio_priv),
-	.probe	= led_gpio_probe,
-	.remove	= led_gpio_remove,
+        .name   = "gpio_led",
+        .id     = UCLASS_LED,
+        .ops    = &gpio_led_ops,
+        .priv_auto      = sizeof(struct led_gpio_priv),
+        .probe  = led_gpio_probe,
+        .remove = led_gpio_remove,
 };
 
 static const struct udevice_id led_gpio_ids[] = {
-	{ .compatible = "gpio-leds" },
-	{ }
+        { .compatible = "gpio-leds" },
+        { }
 };
 
 U_BOOT_DRIVER(led_gpio_wrap) = {
-	.name	= "gpio_led_wrap",
-	.id	= UCLASS_NOP,
-	.of_match = led_gpio_ids,
-	.bind	= led_gpio_bind,
+        .name   = "gpio_led_wrap",
+        .id     = UCLASS_NOP,
+        .of_match = led_gpio_ids,
+        .bind   = led_gpio_bind,
 };
 ```
 
