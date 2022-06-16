@@ -75,11 +75,11 @@ int initialise_uboot_wrapper(char* fdt_blob)
 
 #ifdef CONFIG_NET
     // Initialize the ethernet system.
-	puts("Net:   ");
-	eth_initialize();
+    puts("Net:   ");
+    eth_initialize();
 #ifdef CONFIG_RESET_PHY_R
-	debug("Reset Ethernet PHY\n");
-	reset_phy();
+    debug("Reset Ethernet PHY\n");
+    reset_phy();
 #endif
 #endif
 
