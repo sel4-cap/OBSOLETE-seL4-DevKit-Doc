@@ -148,11 +148,11 @@ variable is `odroidc2`. We also need to locate the correct C header files for th
 platform and create a sym-link to them, so we add:
 
 ```makefile
-elseif("${KernelPlatform}" STREQUAL "odroidc2")
-    # Platform specific settings for the Odroid-C2 board.
-    set(arch_source "./arch-meson")
-    set(arch_target "../projects/uboot/arch/arm/include/asm/arch")
-    execute_process(COMMAND ln -fsn ${arch_source} ${arch_target})
++ elseif("${KernelPlatform}" STREQUAL "odroidc2")
++     # Define the drivers used for this platform
++     set(arch_source "./arch-meson")
++     set(arch_target "../projects/uboot/arch/arm/include/asm/arch")
++     execute_process(COMMAND ln -fsn ${arch_source} ${arch_target})
 ```
 
 in the "Platform specific settings" section of the file.
@@ -241,7 +241,10 @@ Firstly, we set the variable "iomux_driver" to the value we just found - "meson-
 by adding
 
 ```makefile
-    set(iomux_driver "meson-gxbb-pinctrl")
+     elseif("${KernelPlatform}" STREQUAL "odroidc2")
+         # Define the drivers used for this platform
++        set(iomux_driver "meson-gxbb-pinctrl")
+         ...
 ```
 
 in the "Platform Specific Settings" section of the `CMakeLists.txt` file as above.
@@ -544,40 +547,54 @@ In summary, we need to:
 - add 2 more UClass Drivers, 3 more Drivers, and 2 more U-Boot commands to the library configuration in `plat_driver_data.h`:
 
 ```text
-#define _u_boot_uclass_driver_count     9
-#define _u_boot_driver_count            7
-#define _u_boot_cmd_count               6
+#define _u_boot_uclass_driver_count     9 // was 7 previously
+#define _u_boot_driver_count            7 // was 4 previously
+#define _u_boot_cmd_count               6 // was 4 previously
 
-extern struct uclass_driver _u_boot_uclass_driver__gpio;
-extern struct uclass_driver _u_boot_uclass_driver__led;
+  extern struct uclass_driver _u_boot_uclass_driver__pinconfig;
+  extern struct uclass_driver _u_boot_uclass_driver__pinctrl;
++ extern struct uclass_driver _u_boot_uclass_driver__gpio;
++ extern struct uclass_driver _u_boot_uclass_driver__led;
 
-extern struct driver _u_boot_driver__meson_gx_gpio_driver;
-extern struct driver _u_boot_driver__led_gpio_wrap;
-extern struct driver _u_boot_driver__led_gpio;
+  extern struct driver _u_boot_driver__pinconfig_generic;
+  extern struct driver _u_boot_driver__meson_gxbb_pinctrl;
++ extern struct driver _u_boot_driver__meson_gx_gpio_driver;
++ extern struct driver _u_boot_driver__led_gpio_wrap;
++ extern struct driver _u_boot_driver__led_gpio;
 
-extern struct cmd_tbl _u_boot_cmd__gpio;
-extern struct cmd_tbl _u_boot_cmd__led;
+  extern struct cmd_tbl _u_boot_cmd__pinmux;
++ extern struct cmd_tbl _u_boot_cmd__gpio;
++ extern struct cmd_tbl _u_boot_cmd__led;
 ```
 
 - initialise these structures properly in `plat_driver_data.c`, adding:
 
 ```text
-driver_data.uclass_driver_array[7]  = _u_boot_uclass_driver__gpio;
-driver_data.uclass_driver_array[8]  = _u_boot_uclass_driver__led;
+  driver_data.uclass_driver_array[5]  = _u_boot_uclass_driver__pinconfig;
+  driver_data.uclass_driver_array[6]  = _u_boot_uclass_driver__pinctrl;
++ driver_data.uclass_driver_array[7]  = _u_boot_uclass_driver__gpio;
++ driver_data.uclass_driver_array[8]  = _u_boot_uclass_driver__led;
 
-driver_data.driver_array[4]  = _u_boot_driver__meson_gx_gpio_driver;
-driver_data.driver_array[5]  = _u_boot_driver__led_gpio_wrap;
-driver_data.driver_array[6]  = _u_boot_driver__led_gpio;
+  driver_data.driver_array[2]  = _u_boot_driver__pinconfig_generic;
+  driver_data.driver_array[3]  = _u_boot_driver__meson_gxbb_pinctrl;
++ driver_data.driver_array[4]  = _u_boot_driver__meson_gx_gpio_driver;
++ driver_data.driver_array[5]  = _u_boot_driver__led_gpio_wrap;
++ driver_data.driver_array[6]  = _u_boot_driver__led_gpio;
 
-driver_data.cmd_array[4]  = _u_boot_cmd__gpio;
-driver_data.cmd_array[5]  = _u_boot_cmd__led;
+  driver_data.cmd_array[3]  = _u_boot_cmd__pinmux;
++ driver_data.cmd_array[4]  = _u_boot_cmd__gpio;
++ driver_data.cmd_array[5]  = _u_boot_cmd__led;
 ```
 
 - modify `CMakeLists.txt` to enable those drivers and sources in the CMake build process:
 
-```text
-set(gpio_driver "meson_gx_gpio_driver")
-set(led_driver "gpio_led")
+```makefile
+     elseif("${KernelPlatform}" STREQUAL "odroidc2")
+         # Define the drivers used for this platform
+         set(iomux_driver "meson-gxbb-pinctrl")
++        set(gpio_driver "meson_gx_gpio_driver")
++        set(led_driver "gpio_led")
+         ...
 ```
 
 Next, we declare the `/leds` device tree path in the configuration of the U-Boot Driver Example program in `camkes/apps/uboot-driver-example/include/plat/odroidc2/platform_devices.h` and add that to the list of `DEV_PATHS` that are required by our test application:
@@ -588,7 +605,7 @@ Next, we declare the `/leds` device tree path in the configuration of the U-Boot
 #define DEV_PATH_COUNT 3
 ```
 
-Finally, the main test program itself is modified to run tests for the `gpio` and `led` commands
+Finally, the main test program `test.c` is modified to run tests for the `gpio` and `led` commands
 
 ```text
   #elif defined(CONFIG_PLAT_ODROIDC2)
