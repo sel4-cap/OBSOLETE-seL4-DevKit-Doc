@@ -24,6 +24,8 @@ Installation of the build environment comprises the download of a pre-built Dock
 docker pull ghcr.io/sel4devkit/maaxboard:latest
 ```
 
+_Temporary-note: While we retain private repos this can fail with an unhelpful 'Denied' error if user's password (Personal Access Token) has expired. Fix using `docker login ghcr.io` which prompts for entry of credentials; thereafter the `docker pull` should work._
+
 During download of the image progress is reported in the following format:
 
 ```bash

@@ -12,7 +12,7 @@ This assumes the following, building on previous sections:
 
 ## Preparing the seL4Test Application
 
-In the [Building Applications](building_applications.md) section, the `sel4test-driver-image-arm-maaxboard` executable was produced. The rest of this section, and indeed the commands in the supplied `uEnv.txt` U-Boot configuraton file, expect a file named `sel4_image`.
+In the [Building Applications](building_applications.md) section, the `sel4test-driver-image-arm-maaxboard` executable was produced. The rest of this section, and indeed the commands in the supplied `uEnv.txt` U-Boot configuration file, expect a file named `sel4_image`.
 
 As such the `sel4test-driver-image-arm-maaxboard` executable must be renamed to `sel4_image` prior to execution using the mechanisms described below.
 

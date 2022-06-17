@@ -8,7 +8,7 @@ This section of the document assumes the [build environment setup](build_environ
 
 ## Getting the Code
 
-Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and requited tools) will be cloned.
+Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and required tools) will be cloned.
 
 Create a directory to hold the code:
 
@@ -29,8 +29,6 @@ repo init -u https://github.com/seL4/sel4test-manifest.git
 ```bash
 repo sync
 ```
-
-**NOTE**: Until MaaXBoard support has been merged back to the seL4 repos the `repo init` line in the above command block needs to be `repo init -u https://github.com/sel4devkit/sel4test-manifest.git`.
 
 ## Building
 

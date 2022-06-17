@@ -34,7 +34,7 @@ The intended audience for this developer kit is an application developer who:
 
 - is looking for more practical guidance to get started with seL4.
 
-Whilst the developer kit documentation aims to cover all the salient points and commands, it assumes a reasonable level of developer knowledge and does not necessarily cover every detail of 'standard' Linux/macOS/Windows environments (for example, it covers seL4-related installation, but does not cover, say, installation of Docker).
+Whilst the developer kit documentation aims to cover all the salient points and commands, it assumes a reasonable level of developer knowledge and does not necessarily cover every detail of 'standard' Linux/macOS/Windows environments. For example, it covers seL4-related installation, but does not cover, say, installation of Docker; also, it assumes some familiarity with [Git](https://git-scm.com/) (its code repositories are hosted on [GitHub](https://github.com/)) and [repo](https://gerrit.googlesource.com/git-repo/) (seL4 uses repo for source dependency management, e.g. [see here](https://docs.sel4.systems/projects/buildsystem/repo-cheatsheet.html)).
 
 ## Development Environments
 

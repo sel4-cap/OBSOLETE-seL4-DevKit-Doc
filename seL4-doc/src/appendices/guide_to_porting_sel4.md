@@ -16,7 +16,7 @@ Support has not been incorporated into the mainline Linux kernel for the Avnet M
 
 Once a DTS file has been located it needs to be processed into a form suitable for inclusion in seL4, e.g. to remove use of C-style includes and macros. For the Avnet MaaXBoard this processing was performed using the following commands to generate DTS file named `maaxboard.dts`. It is expected the commands should be easily modifiable for other boards and sources of the Linux kernel. The following commands to be are executed within the [build environment](../build_environment_setup.md) (i.e. the Docker container).
 
-```sh
+```text
 git clone https://github.com/Avnet/linux-imx.git
 cd linux-imx
 cpp -nostdinc -I include -I arch -undef -x assembler-with-cpp \
@@ -32,7 +32,9 @@ Following creation of the platform's DTS file it should be stored in the `/tools
 To help fully understand the guidance supplied by the seL4 documentation, it is informative to examine the changes made previously to the seL4 repositories to support new platforms. To that end the following links are to commits in the seL4 git repositories where support for platforms was added. It should be noted that to perform a basic port of seL4 to a new platform, i.e. sufficient to run and pass the seL4Test application, will require modification to the [`seL4`](https://github.com/seL4/seL4), [`seL4_tools`](https://github.com/seL4/seL4_tools) and [`util_libs`](https://github.com/seL4/util_libs) git repositories.
 
 - Avnet MaaXBoard - Port to platform with existing SoC support
-  - TBC
+  - [seL4 commit](https://github.com/seL4/seL4/commit/55fde27e103d7d4a3eda5eba2bf70fc4234b7e8f)
+  - [seL4_tools commit](https://github.com/seL4/seL4_tools/commit/2f15ba2dc6a08c30b74c722b0673131d2aab32ac)
+  - [util_libs commit](https://github.com/seL4/util_libs/commit/73d4ccaeca68dcda83eda49245d774cab73480c0)
 
 - ODroid C4 - Port to platform using an SoC very similar to previously supported SoC
   - [seL4 commit](https://github.com/seL4/seL4/commit/76b1de0670fc09df279883be570f4a518bad4745)
@@ -74,7 +76,7 @@ To build and execute seL4Test for testing purposes against forks of the seL4 git
 
 3. Check out the newly updated manifest within the build environment:
 
-    ```sh
+    ```text
     mkdir /host/seL4test
     cd /host/seL4test
     repo init -u https://github.com/work_account/sel4test-manifest.git -b my_port
