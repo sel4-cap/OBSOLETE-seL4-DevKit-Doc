@@ -168,6 +168,6 @@ Once at the U-Boot prompt, the user can enter interactive U-Boot commands. For e
 - `setenv` to set environment variables;
 - `reset` to reset the CPU instead of physically cycling the power.
 
-_Note: A full reference to U-Boot commands can be found [here](https://www.denx.de/wiki/U-Bootdoc/BasicCommandSet) but we only use a couple of them directly in this Developer Kit._
+_Note: A full reference to U-Boot commands can be found [here](https://www.denx.de/wiki/U-Bootdoc/BasicCommandSet) but we only use a few of them directly in this developer kit._
 
 The following sections build upon this step by demonstrating the building and execution of an seL4 application on the MaaXBoard.

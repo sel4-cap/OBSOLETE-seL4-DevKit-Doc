@@ -113,7 +113,7 @@ A successful build will result in an executable file called `capdl-loader-image-
 
 ### Overview of the `picoserver_uboot` test application
 
-It is not the purpose of this DevKit to give a CAmkES tutorial (e.g. see [seL4's documentation](https://docs.sel4.systems/projects/camkes/)), but this application is based on the following CAmkES model:
+It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see [seL4's documentation](https://docs.sel4.systems/projects/camkes/)), but this application is based on the following CAmkES model:
 
 ![Picoserver CAmkES overview](figures/picoserver-camkes.png)
 
