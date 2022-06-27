@@ -34,6 +34,10 @@
 - [Library Extension - New Platform](uboot_library_add_platform.md)
 - [Library Extension - New Driver](uboot_library_add_driver.md)
 
+# Case Study Application
+
+- [Case Study Introduction](case_study_intro.md)
+
 ---
 
 # Appendices
