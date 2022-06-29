@@ -39,7 +39,7 @@ Throughout the sections of this guide devoted to extension of the U-Boot driver 
 
 - `kernel/tools/dts`: Location of platform device trees.
 - `projects/project_libs/camkes/apps/uboot-driver-example`: [The test application](uboot_driver_usage.md).
-- `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/maaxboard-usb/libubootdrivers).
+- `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/master/libubootdrivers).
 - `projects/uboot`: Fork of the U-Boot project source code (note, this is also symlinked to `projects/project_libs/libubootdrivers/uboot`).
 
 ## Required Reading
