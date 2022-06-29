@@ -12,11 +12,11 @@ Within the build environment a directory named `seL4Test` will be created and al
 
 Create a directory to hold the code:
 
-```bash
+```text
 mkdir /host/seL4Test
 ```
 
-```bash
+```text
 cd /host/seL4Test
 ```
 

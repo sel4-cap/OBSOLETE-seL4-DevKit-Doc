@@ -37,6 +37,7 @@
 # Case Study Application
 
 - [Case Study Introduction](case_study_intro.md)
+- [Building the Case Study Application](case_study_build.md)
 
 ---
 
