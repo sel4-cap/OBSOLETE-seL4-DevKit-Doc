@@ -1,6 +1,6 @@
 # Building the Case Study Application
 
-This section builds and runs the `security_demo` demonstration application described in [Case Study Introduction](case_study_introduction.md).
+This section builds and runs the `security_demo` demonstration application described in [Case Study Introduction](case_study_introduction.md). All the host machine and target platform requirements described previously in this developer kit documentation are assumed.
 
 ## Building the Application
 
@@ -38,7 +38,7 @@ ninja
 
 #### Implementation note
 
-If there is a `fatal error: pico_device.h: No such file or directory`, simply re-run the `init_build` command, followed by `ninja`. There is a known race condition with the CMake configuration of picoserver that has not been fixed (see [here](https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/)).
+If there is a `fatal error: pico_device.h: No such file or directory`, simply re-run the `init_build` command above, followed by `ninja`. There is a known race condition with the CMake configuration of picoserver (see [here](https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/)).
 
 
 ## Running the Application
