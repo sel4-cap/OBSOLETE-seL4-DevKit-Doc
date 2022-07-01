@@ -192,7 +192,7 @@ Connections can be re-established simply by issuing another `nc` command.
 
 #### Implementation note
 
-Connecting, disconnecting, and reconnecting to a network can give rise to delays in the order of a few minutes while the elements in the network handshake and resynchronise, particularly in the case of our application, which assigns a random MAC address to the same IP address each time it runs. The easiest options are:
+Connecting, disconnecting, and reconnecting to a network can give rise to delays in the order of a few minutes while the elements in the network handshake and resynchronise, particularly in the case of our application, which assigns a random MAC address to the same IP address each time it runs. If the connection is not established promptly, the easiest remedial options are:
 
-- Start from a clean reboot of the host machine (for example flushing the DNS cache); or
-- Be patient! (Be prepared to wait for a few minutes.)
+- Start from a clean reboot of the host machine (which will include flushing its DNS cache); or
+- Be patient! (If you are prepared to wait for a few minutes, the connection will be made. Note that `nc` may timeout after a while if no connection is made, so the command would need to be repeated.)
