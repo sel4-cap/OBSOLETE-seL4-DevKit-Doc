@@ -192,4 +192,7 @@ Connections can be re-established simply by issuing another `nc` command.
 
 #### Implementation note
 
-As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXBoard, host machine, and router), a changing MAC address for a given IP address can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over WiFi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; for a period, the host machine cannot then `nc` to the MaaXBoard over WiFi. This can be improved by, for example, using a USB flash drive to serve the `picoserver_uboot` application instead of TFTP.
+Connecting, disconnecting, and reconnecting to a network can give rise to delays in the order of a few minutes while the elements in the network handshake and resynchronise, particularly in the case of our application, which assigns a random MAC address to the same IP address each time it runs. The easiest options are:
+
+- Start from a clean reboot of the host machine (for example flushing the DNS cache); or
+- Be patient! (Be prepared to wait for a few minutes.)

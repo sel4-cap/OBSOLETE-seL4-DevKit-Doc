@@ -51,17 +51,11 @@ Running the `security_demo` application requires the following:
 
 [^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
-If the user has experience of running the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), then elements of the `security_demo` application will be familiar. For example, from a terminal window on the host machine, we will use the `netcat` (`nc`) command (native to Linux or macOS, or available as a [download](https://nmap.org/ncat/) for Windows) to connect to the MaaXBoard, so this should be readied. The following command will be used:
-
-```bash
-nc xxx.xxx.xxx.xxx 1234
-```
-
-where `xxx.xxx.xxx.xxx` is the IP address of the MaaXBoard, as previously specified in the `init_build` call, and 1234 is the port number that has been programmed into the application.
+If the user has experience of running the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), then elements of the `security_demo` application will be familiar. For example, from a terminal window on the host machine, we will use the `netcat` (`nc`) command (native to Linux or macOS, or available as a [download](https://nmap.org/ncat/) for Windows) to connect to the MaaXBoard, so this should be prepared.
 
 ## Running the Application
 
-The application invokes three instances of the [U-Boot Driver Library](uboot_driver_library.md), so various sets of diagnostic messages are repeated on the CoolTerm display as the application starts. We should not be unduly concerned with some of the individual messages, such as `No ethernet found`, since only one of the library instances is configured to use Ethernet (the library invoked by the EthDriverUboot component), and amongst the other messages should be confirmation that it was successful, e.g. `Assigned ipv4 xxx.xxx.xxx.xxx to device eth0`.
+The application invokes three instances of the [U-Boot Driver Library](uboot_driver_library.md), so various sets of diagnostic messages are repeated on the CoolTerm display as the application starts. We should not be unduly concerned with some of the individual messages, such as `No ethernet found`, since in this case only one of the library instances is configured to use Ethernet (i.e. the library invoked by the EthDriverUboot component), and amongst the other messages there should be confirmation that it was successful, e.g. `Assigned ipv4 xxx.xxx.xxx.xxx to device eth0`.
 
 When the application's initialisation has completed, we should see:
 
@@ -70,20 +64,56 @@ run_uboot_command@uboot_wrapper.c:176 --- running command 'fatrm mmc 0:2 transmi
 run_uboot_command@uboot_wrapper.c:181 --- command 'fatrm mmc 0:2 transmitter_log.txt' completed with return code 0 ---
 ```
 
-This is housekeeping by the application to delete any previous Transmitter logfile from the SD card, before it starts writing new log data.
+This is housekeeping by the application to delete any previous Transmitter logfile from the SD card, before it starts writing new log data. The logfile is named `transmitter_log.txt` and is expected on the third partition of the SD card - see the FAT partition `FILESYS` established during the [Partitioning the SD Card appendix](partitioning_sd_card.md).
 
-Just as with the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), the application may sporadically display `No such port ....` messages as it monitors traffic on the network; this is expected behaviour that may be ignored.
+Just as with the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), the application may sporadically display `No such port ....` messages as it monitors traffic on the network. This is expected diagnostic behaviour that may be ignored; indeed, the lack of any such messages may indicate for example that the Ethernet driver has not initialised properly.
 
 The application is now ready to perform various actions concurrently:
 
-- if a key is pressed, the plaintext character will be encrypted into a ciphertext character;
-- if it receives an Ethernet connection from a client on port 1234, it will send its ciphertext to the client (all ciphertext characters are buffered until an Ethernet client has connected);
-- every 30 seconds, if it has any ciphertext characters that it has not yet logged to file, it will append them to the logfile on the SD card (these are buffered separately to the Ethernet data).
+- If a key is pressed, the plaintext character will be encrypted into a ciphertext character;
+- If a client requests an Ethernet connection on port 1234, the application will establish the connection and transmit  ciphertext to the client, continuing to do so until the client closes the connection;
+- Every 30 seconds, if there are any ciphertext characters that it has not yet logged to file, the application will append them to the logfile on the SD card.
 
-Plaintext messages may be typed on the keyboard, e.g.
+From a terminal window on the host machine, start `netcat` with the command:
+
+```bash
+nc xxx.xxx.xxx.xxx 1234
+```
+
+where `xxx.xxx.xxx.xxx` is the IP address of the MaaXBoard, as previously specified in the `init_build` call, and 1234 is the port number that has been programmed into the application.
+
+In the CoolTerm window, a message such as the following will signify a successful connection:
+
+```text
+transmitter: Connection established with yyy.yyy.yyy.yyy on socket 1
+```
+
+where `yyy.yyy.yyy.yyy` is the IP address of the host machine.
+
+If this connection is not established promptly, please refer to the previous [implementation note](uboot_driver_usage.md#implementation-note) relating to network connection delays.
+
+If characters have been typed at the USB keyboard before making the `netcat` connection, then (ciphertext) characters will appear straightaway on the host machine, since the application stores characters in a buffer while they cannot be sent.
+
+Plaintext messages may be typed on the keyboard (note that these are not displayed anywhere), for example:
 
 ```text
 Hello world, testing 123. We love seL4!
 ```
 
-Nothing will be seen, except ... to be continued 
+Within the host machine's `netcat` session, the corresponding ciphertext message should appear:
+
+```text
+Uryyb jbeyq, grfgvat 123. Jr ybir frY4!
+```
+
+Periodically, the CoolTerm window will show diagnostic messages concerning the logfile, such as:
+
+```text
+run_uboot_command@uboot_wrapper.c:176 --- running command 'fatwrite mmc 0:2 0x55b010 transmitter_log.txt 26 1' ---
+38 bytes written in 5 ms (6.8 KiB/s)
+run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 transmitter_log.txt 26 1' completed with return code 0 ---
+```
+
+The application will continue indefinitely. `netcat` sessions on the host machine may be terminated (Ctrl-C) and restarted, whereupon the application will establish a new connection (buffering output in the meantime).
+
+If the MaaXBoard is powered off and its SD card removed, the `transmitter_log.txt` can be accessed from the `FILESYS` partition as one would expect.
