@@ -22,6 +22,22 @@ This document presents an entry-level developer kit to help users gain familiari
 
 - documenting the specific steps needed along with more general guidance.
 
+In its later sections, this documentation:
+
+- presents a comprehensive device driver library with:
+
+  - explanations and design details;
+
+  - test applications to exercise the drivers;
+
+  - guidance for extending it to other platforms; and
+
+- works through a case study application that:
+
+  - uses the device driver library; and
+
+  - demonstrates inter-component communications using different seL4 mechanisms.
+
 This developer kit does not cover or replace any of the extensive documentation and tutorials of the [seL4 website](https://sel4.systems).
 
 ## Audience
@@ -54,10 +70,14 @@ The document is structured into the following sections providing a step-by-step 
 
 - **Basic Requirements**: Defines the hardware requirements and the requirements on the user's host environment that need to be met to follow this guide. Completion of this section is expected to require the purchase of some equipment, e.g. the Avnet MaaXBoard.
   
-- **Development Environment Setup**: Guides the user through setup of all development environments such as unboxing and setup of the Avnet MaaXBoard as well us installation and configuration of all required tools.
+- **Development Environment Setup**: Guides the user through setup of all development environments such as unboxing and setup of the Avnet MaaXBoard as well as installation and configuration of all required tools.
 
 - **First Boot**: Provides an introduction and overview of the bootloader, guidance on how to prepare an SD card with the bootloader, through to the first power-up of the Avnet MaaXBoard and interaction with the bootloader running on the board.
 
 - **seL4 Application Development**: Guides the user through the compilation of an seL4 binary followed by execution of the binary on the Avnet MaaXBoard.
 
-- **Appendices**: Whilst the main sections of this document seek to simplify processes, e.g. through the use of pre-built assets and environments, it is accepted that this may result in a lack of flexibility. The appendices provide deeper technical details to enable greater flexibility. For example where a pre-built asset or environment has been used the appendices detail how they were built and provide guidance of how their configuration could be changed.
+- **Device Driver Development**: Presents a comprehensive and extensible device driver library, based upon the driver model used by U-Boot. It includes practical guidance on extending the library for other drivers and for other platforms.
+
+- **Case Study Application**: Works through a simple application that uses the driver library and demonstrates different seL4 connection mechanisms between its components.
+
+- **Appendices**: Whilst the main sections of this document seek to simplify processes, e.g. through the use of pre-built assets and environments, it is accepted that this may result in a lack of flexibility. The appendices provide deeper technical details to enable greater flexibility. For example where a pre-built asset or environment has been used, the appendices detail how they were built and provide guidance of how their configuration could be changed.
