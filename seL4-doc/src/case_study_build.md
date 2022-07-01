@@ -36,7 +36,7 @@ cd build
 ninja
 ```
 
-#### Implementation note
+### Implementation note
 
 If there is a `fatal error: pico_device.h: No such file or directory`, simply re-run the `init_build` command above, followed by `ninja`. There is a known race condition with the CMake configuration of picoserver, with a workaround of running the command twice, or running CMake again, by typing `cmake .` (see [here](https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/)).
 
@@ -116,4 +116,4 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 
 The application will continue indefinitely. `netcat` sessions on the host machine may be terminated (Ctrl-C) and restarted, whereupon the application will establish a new connection (buffering output in the meantime).
 
-If the MaaXBoard is powered off and its SD card removed, the `transmitter_log.txt` can be accessed from the `FILESYS` partition as one would expect.
+If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the `transmitter_log.txt` can be accessed from the `FILESYS` partition as one would expect.
