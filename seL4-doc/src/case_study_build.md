@@ -11,10 +11,8 @@ mkdir /host/security_demo
 cd /host/security_demo
 ```
 
-_Temporary-note: below is currently on maaxboard-usb branch; it will ultimately change_
-
 ```bash
-repo init -u https://github.com/sel4devkit/camkes-manifest.git -b maaxboard-usb
+repo init -u https://github.com/sel4devkit/camkes-manifest.git
 ```
 
 ```bash
