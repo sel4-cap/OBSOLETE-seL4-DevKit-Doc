@@ -2,11 +2,11 @@
 
 ## Background
 
-The [seL4 Microkernel](https://sel4.systems) is a technology of increasing interest and has potential to deliver significant benefit across a range of applications that require strong domain separation and software enforced trusted execution environments.
+The [seL4 Microkernel](https://sel4.systems) is a technology of increasing interest and has potential to deliver significant benefit across a range of applications that require strong domain separation and software-enforced trusted execution environments.
 
-seL4 is formally verified software and therefore offers significant benefits over other software based implementations in terms of the assurance and trust that can be gained. Given it is open source COTS technology the potential for reduced cost for high assurance products and reduced time to market are significant.
+seL4 is formally verified software and therefore offers significant benefits over other software-based implementations in terms of the assurance and trust that can be gained. Given it is open source COTS technology, the potential for reduced cost for high assurance products and reduced time to market are significant.
 
-Developing on top of the seL4 microkernel is currently complex and time consuming, and the expertise is currently limited to a small number of individuals and organisations. This developer kit is targeted at reducing the barrier to entry for using (i.e. developing on top of) the seL4 technology and increasing the number of companies that can cost-effectively adopt seL4 in their products.
+Developing on top of the seL4 microkernel is currently complex and time-consuming, and the expertise is limited to a small number of individuals and organisations. This developer kit is targeted at reducing the barrier to entry for using (i.e. developing on top of) the seL4 technology and increasing the number of organisations that can cost-effectively adopt seL4 in their products.
 
 ## Overview
 
@@ -56,9 +56,9 @@ Whilst the developer kit documentation aims to cover all the salient points and 
 
 Throughout this developer kit activities will be performed across three different environments:
 
-1. **Host Machine**: The engineer's host machine. This can be either macOS, Linux or Windows based.
+1. **Host Machine**: The developer's host machine. This can be either macOS, Linux or Windows based.
 
-2. **Build environment**: The environment within which all binaries for the target environment are built. This is a Linux based development environment running within a [Docker](https://www.docker.com) container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.
+2. **Build environment**: The environment within which all binaries for the target environment are built. This is a Linux-based development environment running within a [Docker](https://www.docker.com) container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.
 
 3. **Target Platform**: The [Avnet MaaXBoard](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard), a single board computer based around the [NXP i.MX 8M SoC (system on chip)](https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-processors/i-mx-8m-family-armcortex-a53-cortex-m4-audio-voice-video:i.MX8M). This is the environment upon which seL4 binaries are executed. User interaction with the target platform is performed via a serial console from the host machine.
 
@@ -80,4 +80,4 @@ The document is structured into the following sections providing a step-by-step 
 
 - **Case Study Application**: Works through a simple application that uses the driver library and demonstrates different seL4 connection mechanisms between its components.
 
-- **Appendices**: Whilst the main sections of this document seek to simplify processes, e.g. through the use of pre-built assets and environments, it is accepted that this may result in a lack of flexibility. The appendices provide deeper technical details to enable greater flexibility. For example where a pre-built asset or environment has been used, the appendices detail how they were built and provide guidance of how their configuration could be changed.
+- **Appendices**: Whilst the main sections of this document seek to simplify processes, e.g. through the use of pre-built assets and environments, it is accepted that this may result in a lack of flexibility. The appendices provide deeper technical details to enable greater flexibility. For example, where a pre-built asset or environment has been used, the appendices detail how they were built and provide guidance of how their configuration could be changed.

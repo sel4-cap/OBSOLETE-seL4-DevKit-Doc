@@ -176,7 +176,7 @@ It is expected that the set of source files referenced in the library `CMakeList
 
 For each error some judgement needs to be made:
 
-- If the required routine is fundamental to correct operation of the driver (this is the normal case) then the source file should be added to the `CMakeLists.txt` section for the driver class. It must be determined by the engineer whether the source file is likely to be required by all drivers of the driver class or is specific to the driver.
+- If the required routine is fundamental to correct operation of the driver (this is the normal case) then the source file should be added to the `CMakeLists.txt` section for the driver class. It must be determined by the developer whether the source file is likely to be required by all drivers of the driver class or is specific to the driver.
 
 - If the required routine is not required, e.g. it can be seen that it should never be called or a 'null' implementation would be sufficient, then the routine can be added to the wrapper file `src/wrapper/unimplemented.c`.
 

@@ -4,7 +4,7 @@ This section documents the required actions and guidance to add support for a ne
 
 By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform.
 
-Throughout the sections of this guide devoted to extension of the U-Boot driver library it is expected the engineer is working within the folder structure created by the `repo` tool (e.g. as used to build the [test applications](uboot_driver_usage.md)). Key folders and files within the hierarchy are shown below:
+Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the `repo` tool (e.g. as used to build the [test applications](uboot_driver_usage.md)). Key folders and files within the hierarchy are shown below:
 
 ```text
 <manifest root>
@@ -44,7 +44,7 @@ Throughout the sections of this guide devoted to extension of the U-Boot driver 
 
 ## Required Reading
 
-The engineer should be familiar with the following tools and concepts in order to add platform and driver support to the library.
+The developer should be familiar with the following tools and concepts in order to add platform and driver support to the library.
 
 - *Device Tree*: An introduction to device tree data is [provided by the Linux documentation](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html) and by the [Zephyr project](https://docs.zephyrproject.org/2.6.0/guides/dts/intro.html).
 
