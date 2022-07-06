@@ -32,11 +32,11 @@ repo sync
 
 ## Building
 
-To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures or other build options.
+To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures, or other build options.
 
-For the purposes of this example two configurations are used targeted the MaaXBoard, one for AArch32 and one for AArch64.
+For the purposes of this example, two configurations are targeted at the MaaXBoard: one for AArch32 and one for AArch64.
 
-The executable files produced can be executed on the target platform by following the guidance in the [Execution on Target Platform](execution_on_target_platform.md) section.
+The executable files that are produced can be executed on the target platform by following the guidance in the [Execution on Target Platform](execution_on_target_platform.md) section.
 
 ### AArch32 Build Instructions
 
@@ -50,7 +50,7 @@ cd /host/seL4Test/build-MaaXBoard-AArch32
 ninja
 ```
 
-On completion of the compilation the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.
+On completion of the compilation, the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch32/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.
 
 ### AArch64 Build Instructions
 
@@ -64,4 +64,4 @@ cd /host/seL4Test/build-MaaXBoard-AArch64
 ninja
 ```
 
-On completion of the compilation the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.
+On completion of the compilation, the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.

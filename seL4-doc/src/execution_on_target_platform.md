@@ -4,7 +4,7 @@
 
 This assumes the following, building on previous sections:
 
-- The MaaXBoard is powered and connected via the USB to TTL serial cable to the host machine.
+- The MaaXBoard is powered and connected via the USB-to-TTL serial UART cable to the host machine.
 - The host machine is running CoolTerm (or equivalent), configured for communication with the MaaXBoard.
 - An SD card has been prepared containing U-Boot.
 - The SD card's `BOOT` partition contains an appropriate version of `uEnv.txt`. If the chosen mechanism for transferring the executable is TFTP, this assumes that the `serverip`, `ipaddr` and `netmask` environment variables have been configured correctly for the user's network.
@@ -12,15 +12,13 @@ This assumes the following, building on previous sections:
 
 ## Preparing the seL4Test Application
 
-In the [Building Applications](building_applications.md) section, the `sel4test-driver-image-arm-maaxboard` executable was produced. The rest of this section, and indeed the commands in the supplied `uEnv.txt` U-Boot configuration file, expect a file named `sel4_image`.
-
-As such the `sel4test-driver-image-arm-maaxboard` executable must be renamed to `sel4_image` prior to execution using the mechanisms described below.
+In the [Building Applications](building_applications.md) section, the `sel4test-driver-image-arm-maaxboard` executable was produced. The rest of this section, and indeed the commands in the supplied `uEnv.txt` U-Boot configuration file, expect a file named `sel4_image`. Therefore the `sel4test-driver-image-arm-maaxboard` executable must be renamed to `sel4_image` prior to execution using the mechanisms described below.
 
 In [Build Environment Setup](build_environment_setup.md), the Docker container's host directory was mapped to `/scratch/seL4` on the host machine; therefore `sel4_image` should be available at `/scratch/seL4/seL4Test/build-MaaXBoard-AArch64/images/sel4_image` (for an AArch64 build) on the host machine.
 
 ## Choosing the Bootloader Mechanism
 
-In the [Bootloader](bootloader.md) section three transfer mechanisms, and the order in which these mechanisms will be attempted to access the `sel4_image` binary, were introduced:
+In the [Bootloader](bootloader.md) section, three transfer mechanisms, and the order in which these mechanisms will be attempted to access the `sel4_image` binary, were introduced:
 
 1. USB flash drive;
 2. SD card;
@@ -30,7 +28,9 @@ The following subsections provide guidance on how to use each of these mechanism
 
 ### USB Flash Drive
 
-To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT32; then copy `sel4_image` to the root of the flash drive. Then insert the USB flash drive into one of the USB ports on the MaaXBoard prior to applying power to the MaaXBoard.
+To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT32; then copy `sel4_image` to the root of the flash drive. Then insert the USB flash drive into the top USB port[^1] on the MaaXBoard prior to applying power to the MaaXBoard.
+
+[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board set up by the U-Boot bootloader.
 
 ### SD Card
 
@@ -38,7 +38,7 @@ To use this method, mount the SD card onto the host machine using the USB Micro 
 
 ### TFTP
 
-To utilise the TFTP mechanism the MaaXBoard must be connected to the same network as the host machine and the network related environment variables within the `uEnv.txt` (i.e. `serverip`, `ipaddr` and `netmask`) are configured.
+To use the TFTP mechanism, the MaaXBoard must be connected to the same network as the host machine and the network related environment variables within the `uEnv.txt` (i.e. `serverip`, `ipaddr` and `netmask`) are configured.
 
 The TFTP Server application must be running on the host machine and serving the `sel4_image` binary prior to applying power to the MaaXBoard.
 
