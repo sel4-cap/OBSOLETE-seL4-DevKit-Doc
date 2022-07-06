@@ -20,7 +20,7 @@ For convenience, the following table includes order codes and hyperlinks for the
 
 [^1]Where items are considered to be ubiquitous with no special requirements, no example order code is given.
 
-[^2]Although USB keyboards are fairly ubiquitous, experience leads us to recommend a 'basic' model such as this, which works with our keyboard driver; it may not work with more feature-rich models (e.g. a keyboard with an integral USB hub, nor does it work with [this compact keyboard](https://uk.farnell.com/a4-tech/rp011/keyboard-mini-slim-black-uk/dp/2113614)).
+[^2]Although USB keyboards are fairly ubiquitous, experience leads us to recommend a 'basic' model such as this, which works with our keyboard driver; the driver may not work with more feature-rich models (e.g. a keyboard with an integral USB hub, nor does it work with [this compact keyboard](https://uk.farnell.com/a4-tech/rp011/keyboard-mini-slim-black-uk/dp/2113614)).
 
 This guide assumes the following basic hardware capabilities of the user's development environment:
 
