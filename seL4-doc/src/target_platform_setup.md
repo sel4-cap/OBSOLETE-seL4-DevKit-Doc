@@ -17,9 +17,9 @@ For clarity, not all of the components have been labelled, only those to which w
 
 ## Connecting to the MaaXBoard
 
-Communications with the MaaXBoard from the host machine are via the USB-to-TTL serial cable. This converts between the board's 0V and 3.3V logic levels and the 0V and 5V TTL signal levels expected by USB. The USB end plugs into the host machine, and the flying leads are connected to the GPIO pins on the MaaXBoard.
+Communications with the MaaXBoard from the host machine are via the USB-to-TTL serial UART cable. This converts between the voltage levels and protocols of the board's UART and the host machine's USB port. The USB end plugs into the host machine, and the flying leads are connected to the GPIO pins on the MaaXBoard.
 
-The USB-to-TTL serial cable that we used has 3 flying lead connectors, but some cables have more connectors. The leads shown below in our photographs adhere to the following colour convention, but this should not necessarily be assumed for your cable and should be confirmed before connecting:
+The USB-to-TTL serial UART cable that we used has 3 flying lead connectors, but some cables have more connectors. The leads shown below in our photographs adhere to the following colour convention, but this should not necessarily be assumed for your cable and should be confirmed before connecting:
 
 - Black = Ground;
 - Yellow = Transmit;
@@ -35,6 +35,6 @@ The final photograph shows the MaaXBoard (anti-clockwise from the top):
 - connected to a power supply (USB-C);
 - connected to a USB flash drive (may not be necessary if loading via Ethernet);
 - connected to an Ethernet cable (may not be necessary if loading from USB);
-- connected to a USB-to-TTL serial cable.
+- connected to a USB-to-TTL serial UART cable.
 
 ![Avnet MaaXBoard populated](figures/maaxboard-populated.png)
