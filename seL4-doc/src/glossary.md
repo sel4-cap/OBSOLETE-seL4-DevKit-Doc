@@ -2,6 +2,8 @@
 
 | Term | Definition |
 | ---- | ---------- |
+| [AArch32](https://en.wikipedia.org/wiki/ARM_architecture_family#AArch32) | Execution state of [ARMv8](https://en.wikipedia.org/wiki/ARM_architecture_family#64/32-bit_architecture) architecture using 32-bit wide general-purpose registers. |
+| [AArch64](https://en.wikipedia.org/wiki/AArch64) | Execution state of [ARMv8](https://en.wikipedia.org/wiki/ARM_architecture_family#64/32-bit_architecture) architecture using 64-bit wide general-purpose registers. |
 | [Avnet](https://www.avnet.com) | The manufacturer of the MaaXBoard SBC. |
 | [Bootloader](https://en.wikipedia.org/wiki/Bootloader) | The tool responsible for booting a computer. Responsible for initialisation of software following by loading and execution of software. |
 | [CAmkES](https://docs.sel4.systems/projects/camkes/) | Component Architecture for microkernel-based Embedded Systems. An abstraction layer on top of seL4 providing a software development and runtime framework for quickly and reliably building microkernel-based multiserver (operating) systems. |
