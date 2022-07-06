@@ -11,7 +11,7 @@ Information on the design and structure of the library is provided under the fol
 
 ## Design Summary
 
-The primary goal of the library is to allow drivers from U-boot to be used within seL4 with minimal or no code changes. To support this goal, the library comprises:
+The primary goal of the library is to allow drivers from U-Boot to be used within seL4 with minimal or no code changes. To support this goal, the library comprises:
 
 - A set of U-Boot drivers.
 

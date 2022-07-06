@@ -26,6 +26,6 @@ Device drivers can be ported from any source where the device driver source code
 
 - U-Boot device drivers tend to be significantly simpler than device drivers found in Linux. This is because the use cases of a bootloader such as U-Boot do not require high performance, fully-featured drivers. Indeed it can be seen that many of the U-Boot device drivers are in fact actively simplified versions of Linux drivers that have been ported to the U-Boot driver framework.
 
-In line with the goals stated above this guide therefore focuses on the porting of drivers from U-boot to seL4.
+In line with the goals stated above this guide therefore focuses on the porting of drivers from U-Boot to seL4.
 
 The following sections describe the creation of an extensible library for seL4 allowing U-Boot device drivers to function under seL4 with either minimal or no modifications. As an example of its usage, the library provides an extensive set of device drivers for the Avnet MaaXBoard (support for USB, Ethernet, SD/MMC, I<sup>2</sup>C, GPIO, IOMUX, Clock and SPI devices). Guidance on the extension of this library to support other platforms and devices is also provided.
