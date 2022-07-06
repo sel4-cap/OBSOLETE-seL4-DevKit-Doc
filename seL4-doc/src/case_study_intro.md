@@ -14,7 +14,7 @@ The architecture of the demonstrator is shown below.
 
 ![Demonstrator architecture](figures/encrypter_arch.png)
 
-Blue blocks show CAmkES components created specifically for the security demonstrator (or previously created within the developer kit in the case of [Ethdriver](uboot_driver_usage.md#test-application-picoserver_uboot)); grey blocks show CAmkES global components.
+Blue blocks show CAmkES components created specifically for the security demonstrator (or previously created within the developer kit in the case of [EthdriverUboot](uboot_driver_usage.md#test-application-picoserver_uboot)); grey blocks show CAmkES global components.
 
 Arrow directions show an abstracted view of data flow. Arrow labels refer to seL4 connector types (some concerned with data flow, some with control flow), which are elaborated in the key. More details about seL4 connector types may be found in the [CAmkES manual](https://docs.sel4.systems/projects/camkes/manual.html), but the fundamental types are _RPC_ (Remote Procedure Call), _SharedData_, and _Notification_ (see examples such as `seL4RPCCall` in the key).
 
@@ -35,3 +35,19 @@ The Transmitter component interfaces to PicoServer via three connections, as sho
 The interface between PicoServer and EthDriverUboot uses the `seL4Ethdriver` global connector type, which is fundamentally another instance of `seL4RPCDataport` (_SharedData_ combined with _RPC_).
 
 TimeServer, which supports timing functionality for PicoServer, uses the `seL4TimeServer` global connector type, which is fundamentally another instance of `seL4RPCCallSignal` (_RPC_ combined with _Notification_).
+
+### Device Drivers
+
+As can be seen from the architecture diagram, three hardware devices are involved in the operation of the application.
+
+1. The KeyReader component requires access to the USB device to allow for plaintext characters to be input from a USB keyboard.
+
+2. The Transmitter component requires access to the MMC/SD device to allow for the ciphertext message to be output to a log file.
+
+3. The EthDriverUboot component requires access to the Ethernet device to allow for ciphertext message to be output to the network.
+
+Device drivers for the required hardware access are supplied by the [U-Boot Driver Library](uboot_driver_library.md) previously introduced by this development kit.
+
+Three separate instances of the library are used by the application, one per component with a need for hardware device access. The capabilities of each component, and their associated library instances, are configured such that each component is only capable of accessing the minimum set of hardware devices required to perform the desired function.
+
+For example, the Transmitter component only has a need to access the MMC/SD device to write the ciphertext log file. As such the capabilities of the Transmitter component permit it to access the memory-mapped interface of the MMC/SD device, however no such capabilities are provided for the USB or Ethernet devices. Any attempt by the Transmitter component to access the memory-mapped interface of the USB device (e.g. in an attempt to read the plaintext keypresses) would therefore be prevented by seL4.
