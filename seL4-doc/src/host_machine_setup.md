@@ -18,7 +18,7 @@ sudo usermod -aG docker <username>
 
 ## Etcher
 
-Although Etcher is assumed and used in some of this developer kit documentation, its core functionality is available at the macOS, Linux, or Windows command line, so it is not strictly necessary if you prefer other methods.
+Although [Etcher](https://www.balena.io/etcher/) is assumed and used in some of this developer kit documentation, its core functionality is available at the macOS, Linux, or Windows command line, so it is not strictly necessary if you prefer other methods.
 
 No special configuration is necessary for Etcher.
 
