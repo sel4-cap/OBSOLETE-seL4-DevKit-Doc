@@ -9,31 +9,31 @@ Throughout the sections of this guide devoted to extension of the U-Boot driver 
 ```text
 <manifest root>
 |
-└───kernel
+├───kernel
 │   └───tools
 │       └───dts
 │
 └───projects
-    └───camkes
-    |   └───apps
-    |       └───uboot-driver-example
-    |           └───include
-    |               └───plat
-    |                   └───<platform name>
-    |                       └───platform_devices.h
-    |
-    └───projects_libs
-    |   └───libubootdrivers
-    |       └───include
-    |       |   └───plat
-    |       |       └───<platform name>
-    |       |           └───plat_driver_data.h
-    |       └───src
-    |       |   └───plat
-    |       |       └───<platform name>
-    |       |           └───plat_driver_data.c
-    |       └───CMakeLists.txt
-    |
+    ├───camkes
+    │   └───apps
+    │       └───uboot-driver-example
+    │           └───include
+    │               └───plat
+    │                   └───<platform name>
+    │                       └───platform_devices.h
+    │
+    ├───projects_libs
+    │   └───libubootdrivers
+    │       ├───include
+    │       │   └───plat
+    │       │       └───<platform name>
+    │       │           └───plat_driver_data.h
+    │       ├───src
+    │       │   └───plat
+    │       │       └───<platform name>
+    │       │           └───plat_driver_data.c
+    │       └───CMakeLists.txt
+    │
     └───uboot
 ```
 

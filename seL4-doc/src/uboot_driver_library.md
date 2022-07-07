@@ -179,18 +179,18 @@ The library code is held within the following structure:
 
 ```text
 libubootdrivers
-|
-└───include
-│   └───plat
-│   └───public_api
+│
+├───include
+│   ├───plat
+│   ├───public_api
 │   └───wrapper
 │
-└───src
-|   └───plat
-|   └───timer
-|   └───wrapper
+├───src
+│   ├───plat
+│   ├───timer
+│   └───wrapper
 │
-└───uboot
+├───uboot
 │
 └───uboot_stub
 ```
