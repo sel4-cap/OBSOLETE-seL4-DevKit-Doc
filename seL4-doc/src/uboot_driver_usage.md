@@ -115,7 +115,7 @@ It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see 
 
 ![Picoserver CAmkES overview](figures/picoserver-camkes.png)
 
-Ethdriver is a simple implementation of an Ethernet driver that has been ported from U-Boot. Picoserver provides a picoTCP TCP/IP stack on top of this, and the echo component simply listens on port 1234 of a given IP address, echoing received characters on the display.
+EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the [case study application](case_study_intro.md) for more details.)
 
 ### Instructions for running `picoserver_uboot`
 

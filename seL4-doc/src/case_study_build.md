@@ -69,7 +69,7 @@ Just as with the [`picoserver_uboot` test application](uboot_driver_usage.md#tes
 The application is now ready to perform various actions concurrently:
 
 - If a key is pressed, the plaintext character will be encrypted into a ciphertext character;
-- If a client requests an Ethernet connection on port 1234, the application will establish the connection and transmit  ciphertext to the client, continuing to do so until the client closes the connection;
+- If a client requests an Ethernet connection on port 1234, the application will establish the connection and transmit ciphertext to the client, continuing to do so until the client closes the connection;
 - Every 30 seconds, if there are any ciphertext characters that it has not yet logged to file, the application will append them to the logfile on the SD card.
 
 From a terminal window on the host machine, start `netcat` with the command:
