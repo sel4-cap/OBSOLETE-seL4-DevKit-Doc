@@ -48,6 +48,7 @@
 - [Building U-Boot](./appendices/building_uboot.md)
 - [Manually Writing U-Boot to an SD Card](./appendices/writing_uboot_to_sd_card.md)
 - [Online Dependencies](./appendices/online-dependencies.md)
+- [Using the Developer Kit Offline](./appendices/devkit_offline_use.md)
 - [Optional Extra - SPI Bus BMP280 Pressure Sensor](./appendices/spi_bmp280.md)
 - [Library Extension - Worked Example](./appendices/add_driver_worked_example.md)
 - [Library Extension - Troubleshooting](./appendices/driver_troubleshooting.md)

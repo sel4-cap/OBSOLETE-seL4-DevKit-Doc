@@ -11,7 +11,7 @@ Information on the design and structure of the library is provided under the fol
 
 ## Design Summary
 
-The primary goal of the library is to allow drivers from U-boot to be used within seL4 with minimal or no code changes. To support this goal, the library comprises:
+The primary goal of the library is to allow drivers from U-Boot to be used within seL4 with minimal or no code changes. To support this goal, the library comprises:
 
 - A set of U-Boot drivers.
 
@@ -141,19 +141,19 @@ A worked example for use of the `initialise_uboot_wrapper` routine is provided b
 
 ## Build System
 
-U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. The U-Boot source code relies upon a KConfig build system that results in the definition of a set of macros (typically named `CONFIG_xxx`), together with the identification of the required source code files, to manage this configuration. However, seL4 relies upon the CMake build system. To resolve this issue the following approach has been taken:
+U-Boot is, by necessity, highly configurable in terms of which functionality is included in a build and the configuration of default values / settings. The U-Boot source code relies upon a KConfig build system that results in the definition of a set of macros (typically named `CONFIG_xxx`), together with the identification of the required source code files, to manage this configuration; however, seL4 relies upon the CMake build system. To resolve this issue the following approach has been taken:
 
-1. Macros which are expected to be consistent across all platforms, e.g. those supporting the basic U-Boot subsystem configuration which the library relies upon, are defined in the ```uboot_helper.h``` header file within the library's wrapper.
+1. Macros that are expected to be consistent across all platforms, e.g. those supporting the basic U-Boot subsystem configuration that the library relies upon, are defined in the ```uboot_helper.h``` header file within the library's wrapper.
 
 2. All other configuration, i.e. macros, includes and sources files, are controlled by the library's CMake file (```CMakeLists.txt```).
 
-As such all architecture and platform dependent configuration is encapsulated within the library's CMake file. The general structure of this file is as follow:
+As such all architecture and platform dependent configuration is encapsulated within the library's CMake file. The general structure of this file is as follows:
 
-- A section controlling architecture dependent settings. The settings necessary for ARM based platforms (both ARMv7 and ARMv8) hase been provided.
+- A section controlling architecture dependent settings. The settings necessary for ARM-based platforms (both ARMv7 and ARMv8) have been provided.
 
-- A section controlling platform dependent settings. Contains platform specific macros, identification of drivers supporting the platform, and setup of platform specific header files.
+- A section controlling platform dependent settings. This contains platform-specific macros, identification of drivers supporting the platform, and setup of platform specific header files.
 
-- One section for each class of device (e.g. clock devices, USB devices, etc). For each class of device the generic settings are provided (i.e. settings required irrespective of the chosen driver) as well as the settings provided for each supported driver.
+- One section for each class of device (e.g. clock devices, USB devices, etc.). For each class of device the generic settings are provided (i.e. settings required irrespective of the chosen driver) as well as the settings provided for each supported driver.
 
 - A section controlling configuration consistent across all architectures and platforms, e.g. the set of source files required by all platforms.
 
@@ -163,7 +163,7 @@ This modular structure of the CMake file is intended to allow for the library to
 
 Users of the library should be aware of its limitations, and potential workarounds for those limitations.
 
-1. **Thread safety**: The library is not thread safe; as such it is the responsibility of the user to serialise access to any single instance of the library. Note, however, that multiple instances of the library may be used. For example, two instances of the library could be used concurrently, each held within separate CAmkES components. IF multiple instances of the library are used, it is the responsibility of the user to ensure that each instance is using disjoint devices, i.e. two instances of the library would not both be able to access the same USB device;  however, it should be possible for one instance to access an Ethernet device whilst a second instance access a USB device.
+1. **Thread safety**: The library is not thread safe; as such it is the responsibility of the user to serialise access to any single instance of the library. Note, however, that multiple instances of the library may be used. For example, two instances of the library could be used concurrently, each held within separate CAmkES components. IF multiple instances of the library are used, it is the responsibility of the user to ensure that each instance is using disjoint devices, i.e. two instances of the library would not both be able to access the same USB device;  however, it should be possible for one instance to access an Ethernet device whilst a second instance accesses a USB device (see the [case study application](case_study_intro.md) for an example of this).
 
 2. **Performance**: Do not expect great performance from the library. The underlying U-Boot drivers have tended to prioritise simplicity over performance; for example the SPI driver for the Avnet MaaXBoard does not support the use of DMA transfers even though the underlying device can perform DMA transfers. Additionally, the library wrapper adds additional layers of address translations and data copying (e.g. in its support of memory mapped IO and DMA) as part of the trade-off for minimising changes necessary to the U-Boot drivers.
 
