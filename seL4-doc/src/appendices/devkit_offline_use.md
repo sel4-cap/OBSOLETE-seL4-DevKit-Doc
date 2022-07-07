@@ -1,5 +1,5 @@
-# Using the DevKit Offline
-If you need to use the devkit in situations where public internet access is unavailable, you can download the required files for building the devkit for offline use.
+# Using the Developer Kit Offline
+If you need to use the developer kit in situations where public internet access is unavailable, you can download the required files for building the developer kit for offline use.
 
 ## Downloading the Docker image to a file
 The Docker image contains all the required toolchain for building seL4 and seL4 applications, usually the command `docker pull` is used to download an image into your Docker desktop application, however this won’t be possible on a computer without internet access. The following steps detail how the Docker image can be downloaded and saved to a file which can then be transferred to a machine without internet access:
@@ -27,7 +27,7 @@ Loaded image: ghcr.io/sel4devkit/maaxboard:latest
 4. The docker image can now be used as detailed throughout the documentation, for more information, see [Build Environment Setup](build_environment_setup.md).
 
 ## Downloading source code for offline use
-The source code for seL4 and the seL4 devkit is stored across multiple repositories. The `repo` command line tool is used alongside manifest files to make downloading and managing the code from these multiple repositories easier. A manifest file details what repos and versions of those repos are required for a certain project. There are two main manifests for the seL4 devkit:
+The source code for seL4 and the seL4 developer kit is stored across multiple repositories. The `repo` command line tool is used alongside manifest files to make downloading and managing the code from these multiple repositories easier. A manifest file details what repos and versions of those repos are required for a certain project. There are two main manifests for the seL4 developer kit:
 
 * `camkes-manifest` - used to download the source for building CAmkES applications
 * `sel4test-manifest` - used for downloading the source for building the seL4 test program for the Avnet MaaXBoard
@@ -56,4 +56,4 @@ In order to download source code for offline use, you will need an internet conn
 4. You can now transfer the cloned repository folder to a offline machine, and build using `build-offline.sh`
 
 ## Downloading the pre-prepared SD card images
-Two SD card images are availible for the Maaxboard as part of the devkit, one containing a precompiled U-Boot image with a BOOT partition for holding seL4 executables and a FILESYS partition for use as a filesystem, and another containing the above in addtion to a precompiled seL4 test executable. These can be downloaded from the disk_images folder of the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt/tree/master/disk_images) repository. Instructions for writing these two and SD card can be found in the [SD Card preparation](../sd_card_preparation.md) chapter.
+Two SD card images are availible for the Maaxboard as part of the developer kit, one containing a precompiled U-Boot image with a BOOT partition for holding seL4 executables and a FILESYS partition for use as a filesystem, and another containing the above in addtion to a precompiled seL4 test executable. These can be downloaded from the disk_images folder of the [maaxboard-prebuilt](https://github.com/sel4devkit/maaxboard-prebuilt/tree/master/disk_images) repository. Instructions for writing these two and SD card can be found in the [SD Card preparation](../sd_card_preparation.md) chapter.
