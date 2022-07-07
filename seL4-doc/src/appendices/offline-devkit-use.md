@@ -51,7 +51,6 @@ In order to download source code for offline use, you will need an internet conn
 |  and U-Boot built by running build-offline.sh.                 |
 |  If you ran build.sh, build will start now.                    |
 +----------------------------------------------------------------+
-
 ```
 
 4. You can now transfer the cloned repository folder to a offline machine, and build using `build-offline.sh`
