@@ -1,6 +1,11 @@
 # Using the Developer Kit Offline
 If you need to use the developer kit in situations where public internet access is unavailable, you can download the required files for building the developer kit for offline use.
 
+- [Downloading the Docker image to a file](#downloading-the-docker-image-to-a-file)
+- [Downloading source code for offline use](#downloading-source-code-for-offline-use)
+- [Building U-Boot offline](#building-u-boot-offline)
+- [Downloading the pre-prepared SD card images](#downloading-the-pre-prepared-sd-card-images)
+
 ## Downloading the Docker image to a file
 The Docker image contains all the required toolchain for building seL4 and seL4 applications, usually the command `docker pull` is used to download an image into your Docker desktop application, however this won’t be possible on a computer without internet access. The following steps detail how the Docker image can be downloaded and saved to a file which can then be transferred to a machine without internet access:
 
