@@ -1,5 +1,5 @@
 # Using the Developer Kit Offline
-If you need to use the developer kit in situations where public internet access is unavailable, you can download the required files for building the developer kit for offline use.
+If you need to use the developer kit in situations where public internet access is unavailable, you can download the required files for building the developer kit for offline use. This appendix covers:
 
 - [Downloading the Docker image to a file](#downloading-the-docker-image-to-a-file)
 - [Downloading source code for offline use](#downloading-source-code-for-offline-use)
