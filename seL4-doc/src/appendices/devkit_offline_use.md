@@ -54,3 +54,6 @@ In order to download source code for offline use, you will need an internet conn
 ```
 
 4. You can now transfer the cloned repository folder to a offline machine, and build using `build-offline.sh`
+
+## Downloading the pre-prepared SD card image
+Two SD card images are availible for the Maaxboard as part of the devkit, one containing a precompiled U-Boot image with a BOOT partition for holding seL4 executables and a FILESYS partition for use as a filesystem, and another containing the above in addtion to a precompiled seL4 test executable. These can be downloaded from the disk_images folder of the (maaxboard-prebuilt)[https://github.com/sel4devkit/maaxboard-prebuilt/tree/master/disk_images] repository. Instructions for writing these two and SD card can be found in the (SD Card preparation)[../sd_card_preparation.md] chapter.
