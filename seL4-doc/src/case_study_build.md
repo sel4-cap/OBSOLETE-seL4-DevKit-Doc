@@ -40,11 +40,11 @@ If there is a `fatal error: pico_device.h: No such file or directory`, simply re
 
 ## Preparing to Run
 
-A successful build from the will result in an executable file called `capdl-loader-image-arm-maaxboard` in the `images` subdirectory. This should be copied to a file named `sel4_image` and then made available to the preferred loading mechanism, such as TFTP, as per [Execution on Target Platform](execution_on_target_platform.md).
+A successful build will result in an executable file called `capdl-loader-image-arm-maaxboard` in the `images` subdirectory. This should be copied to a file named `sel4_image` and then made available to the preferred loading mechanism, such as TFTP, as per [Execution on Target Platform](execution_on_target_platform.md).
 
 Running the `security_demo` application requires the following:
 
-- Connect a keyboard to the USB[^1] socket of the MaaXBoard;
+- Connect a keyboard to the USB socket[^1] of the MaaXBoard;
 - Establish an Ethernet connection between the MaaXBoard and the host machine, which can be direct or via a network, as outlined in [an earlier section](bootloader.md#loading-via-tftp) (e.g. it will already be in place if TFTP is being used to transfer executables).
 
 [^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
@@ -68,11 +68,11 @@ Just as with the [`picoserver_uboot` test application](uboot_driver_usage.md#tes
 
 The application is now ready to perform various actions concurrently:
 
-- If a key is pressed, the plaintext character will be encrypted into a ciphertext character;
-- If a client requests an Ethernet connection on port 1234, the application will establish the connection and transmit ciphertext to the client, continuing to do so until the client closes the connection;
-- Every 30 seconds, if there are any ciphertext characters that it has not yet logged to file, the application will append them to the logfile on the SD card.
+1. If a key is pressed, the plaintext character will be encrypted into a ciphertext character;
+2. If a client requests an Ethernet connection on port 1234, the application will establish the connection and transmit ciphertext to the client, continuing to do so until the client closes the connection;
+3. Every 30 seconds, if there are any ciphertext characters that it has not yet logged to file, the application will append them to the logfile on the SD card.
 
-From a terminal window on the host machine, start `netcat` with the command:
+For item (2), from a terminal window on the host machine, start `netcat` with the command:
 
 ```bash
 nc xxx.xxx.xxx.xxx 1234
