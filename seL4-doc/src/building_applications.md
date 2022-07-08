@@ -69,3 +69,7 @@ ninja
 ```
 
 On completion of the compilation, the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.
+
+## Appendices
+
+- [Guide to Porting seL4](appendices/guide_to_porting_sel4.md)
