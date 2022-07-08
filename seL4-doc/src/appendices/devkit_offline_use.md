@@ -71,7 +71,7 @@ In order to download source code for offline use, an internet-connected computer
 2. In the new folder, to download the source for `camkes-manifest`, run the following command to initialise the `repo` tool in this folder:
 
     ```bash
-    repo init -u https://github.com/sel4devkit/camkes-manifest.git`
+    repo init -u https://github.com/sel4devkit/camkes-manifest.git
     ```
 
     Replace `camkes-manifest.git` with `sel4test-manifest.git` to download the source for seL4 test.
