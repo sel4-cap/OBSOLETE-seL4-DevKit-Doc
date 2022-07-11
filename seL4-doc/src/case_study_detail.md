@@ -96,7 +96,7 @@ Within the security demo a mutex is used to enforce this critical section; each 
 
 The mutex is owned by the Crypto component, see definition of `circular_buffer_mutex` in the Crypto component's CAmkES file. To allow the Transmitter component to access the mutex a *procedure* interface is used providing `lock` and `unlock` routines.
 
-- Declaration of the `lock` and `unlock` *procedure* templates are declared in `interfaces/Lock_RPC.idl4`.
+- Declaration of the `lock` and `unlock` *procedure* templates are provided by `interfaces/Lock_RPC.idl4`.
 -
 
 
