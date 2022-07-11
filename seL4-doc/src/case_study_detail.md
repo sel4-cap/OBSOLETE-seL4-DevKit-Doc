@@ -80,19 +80,26 @@ The buffer has been deliberately designed for the purposes this worked example t
 
 ### Port
 
-At its core the circular buffer is a simple character array with *head* and *tail* pointers capturing the array indexes associated with the start and end of the used portion of the buffer. Further details are documented alongside the definition of the `dataport_buffer_t` type defintion in `include/dataport_buffer.h`.
+At its core the circular buffer is a simple character array with *head* and *tail* pointers capturing the array indexes associated with the start and end of the used portion of the buffer.
 
-*Port* interfaces of data type `dataport_buffer_t` are declared in the Crypto and Transmitter component CAmkES files, and an `seL4SharedData` connection declared in the CAmkES assembly (see `security_demo.camkes`).
+- Further details are documented alongside the definition of the `dataport_buffer_t` type definition in `include/dataport_buffer.h`.
+- *Port* interfaces of data type `dataport_buffer_t` are declared in the Crypto and Transmitter component CAmkES files.
+- An `seL4SharedData` connection the two *port* interfaces is then declared in the CAmkES assembly (see `security_demo.camkes`).
 
 This results in an instance of the circular buffer type being made available in an area of memory shared by both the Crypto and Transmitter components.
 
 ### Procedure
 
-Reading data from, or writing data to, the circular buffer requires the data array, *head* pointer, and *tail* pointer to be modified. Such modifications to the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components otherwise corruptions of the buffer may occur. As such access to the buffer within the two components must be protected to avoid concurrent access.
+Reading data from, or writing data to, the circular buffer requires the data array, *head* pointer, and *tail* pointer to be modified. Such modifications to the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components otherwise corruptions of the buffer may occur. As such access to the buffer across the two components must be protected to avoid concurrent access.
 
-Within the security demo a mutex is used to enforce this critical section. Each component must hold the lock on the mutex prior to accessing the circular buffer, and must release the mutex lock when the required access to the circular buffer has been completed.
+Within the security demo a mutex is used to enforce this critical section; each component must hold the lock on the mutex prior to accessing the circular buffer, and must release the lock when access to the circular buffer has been completed.
 
-TBC
+The mutex is owned by the Crypto component, see definition of `circular_buffer_mutex` in the Crypto component's CAmkES file. To allow the Transmitter component to access the mutex a *procedure* interface is used providing `lock` and `unlock` routines.
+
+- Declaration of the `lock` and `unlock` *procedure* templates are declared in `interfaces/Lock_RPC.idl4`.
+-
+
+
 
 ### Event
 
