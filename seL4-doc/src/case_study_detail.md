@@ -46,11 +46,6 @@ security_demo
 - `include/dataport_buffer.h`: Declaration of a C data type for a circular buffer to be stored in a dataport.
 - `include/<platform>/<eth|mmc|usb>_platform_devices.h`: Declaration of (platform specific) CAmkES attributes to grant a component with capabilities to access a hardware device.
 
-** Talk about key files and what they do.
-
-** The CAmkES files for each component exposes its interfaces (e.g. dataports, procedureal interfaces and notifications).
-** The 'assembly' defines the connections between the component interfaces.
-
 ## Concurrency Model
 
 From a concurrency perspective the security demo can be summarised as threads of execution on the high-side managing plain-text data running asynchronously to  threads of execution on the 'low-side' managing cipher-text data.
@@ -59,49 +54,68 @@ Threads of execution on the high-side perform the following functions:
 
 1. Reading plain-text keypresses from the USB keyboard;
 2. Encrypting those keypresses from plain-text to cipher-text; and
-3. Placing cipher-text keypresses into the shared circular buffer between the high-side and low-side.
+3. Placing cipher-text keypresses into a shared circular buffer between the high-side and low-side.
 
 Whilst threads of execution on the low-side perform the following functions:
 
-1. Reading cipher-text keypresses from the shared circular buffer between the high-side and low-side;
+1. Reading cipher-text keypresses from a shared circular buffer between the high-side and low-side;
 2. Periodically writing received cipher-text to a log file; and
 3. Outputting cipher-text to a network socket (if connected).
 
 All data is passed from the high-side to the low-side through a shared circular buffer stored within a dataport. It is this circular buffer between the high-side and low-side that permits:
 
-1. Data (the cipher-text) to be passed from the high-side to the low-side; and
+1. Data transfer from the high-side to the low-side; and
 2. Threads of execution on the high-side and threads of execution on the low-side to run asynchronously.
 
 ## Example of Inter-Component Communication
 
 The circular buffer shared between the Crypto component (hide-side) and the Transmitter component (low-side) is used in this section as a detailed worked example of CAmkES inter-component data flow and control flow.
 
-The buffer has been deliberately designed for the purposes this worked example to use of all three types of component interface listed in the [seL4 CAmkES manual](https://docs.sel4.systems/projects/camkes/manual.html), i.e. *procedure*, *event* and *port*.
+The buffer has been deliberately designed for the purpose of this worked example to use of all three types of component interface listed in the [seL4 CAmkES manual](https://docs.sel4.systems/projects/camkes/manual.html), i.e. *procedure*, *event* and *port*.
 
 ### Port
 
-At its core the circular buffer is a simple character array with *head* and *tail* pointers capturing the array indexes associated with the start and end of the used portion of the buffer.
+At its core the circular buffer is a simple character array with *head* and *tail* pointers holding array indexes associated with the start and end of the used portion of the array.
 
 - Further details are documented alongside the definition of the `dataport_buffer_t` type definition in `include/dataport_buffer.h`.
 - *Port* interfaces of data type `dataport_buffer_t` are declared in the Crypto and Transmitter component CAmkES files.
-- An `seL4SharedData` connection the two *port* interfaces is then declared in the CAmkES assembly (see `security_demo.camkes`).
+- An `seL4SharedData` connection between the two *port* interfaces is then declared in the CAmkES assembly (see `security_demo.camkes`).
 
 This results in an instance of the circular buffer type being made available in an area of memory shared by both the Crypto and Transmitter components.
 
 ### Procedure
 
-Reading data from, or writing data to, the circular buffer requires the data array, *head* pointer, and *tail* pointer to be modified. Such modifications to the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components otherwise corruptions of the buffer may occur. As such access to the buffer across the two components must be protected to avoid concurrent access.
+Reading data from, or writing data to, the circular buffer requires the data array, *head* pointer, and *tail* pointer to be modified. Such modification of the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components otherwise corruption of the buffer may occur. Access to the buffer by the two components must therefore be protected to avoid concurrent access.
 
 Within the security demo a mutex is used to enforce this critical section; each component must hold the lock on the mutex prior to accessing the circular buffer, and must release the lock when access to the circular buffer has been completed.
 
 The mutex is owned by the Crypto component, see definition of `circular_buffer_mutex` in the Crypto component's CAmkES file. To allow the Transmitter component to access the mutex a *procedure* interface is used providing `lock` and `unlock` routines.
 
 - Declaration of the `lock` and `unlock` *procedure* templates are provided by `interfaces/Lock_RPC.idl4`.
--
+- *Procedure* interfaces using the `lock` and `unlock` templates are declared in the Crypto and Transmitter component CAmkES files.
+- An `seL4RPCCall` connection between the two *procedure* interfaces is then declared in the CAmkES assembly (see `security_demo.camkes`).
 
-
+This results in the Crypto component being supplied with a mutex and remote procedure call interfaces being supplied to the Transmitter component to allow it to access the mutex.
 
 ### Event
 
-TBC
+Whilst a functional system could be produced with just the *port* and *procedure* interfaces described above, there would be no mechanism for the Transmitter component to determine whether the circular buffer contains any data other than to periodically poll the contents of the circular buffer; this would be needlessly inefficient.
 
+Instead an *event* interface is used to allow the Crypto component to notify Transmitter when a character has been written into the circular buffer. This allows the Transmitter component to wait or poll for such a notification before locking the mutex and accessing the circular buffer.
+
+- *Event* interfaces, with the Crypto component as the emitter and Transmitter as the consumer, are declared in the Crypto and Transmitter component CAmkES files.
+- An `seL4Notification` connection between the two *event* interfaces is then declared in the CAmkES assembly (see `security_demo.camkes`).
+
+This results in the creation of a notification that can be emitted from the Crypto component and either wait on, or polled, by the Transmitter component.
+
+### Summary
+
+Putting all three interface types (*port*, *procedure*, and *event*) together results in:
+
+- A shared circular buffer.
+- A mutex which can be accessed via remote procedure calls to protect the buffer against concurrent access; and
+- A notification mechanism to allow the producer to notify the consumer when new data is available.
+
+Thereby allowing data transfer, and buffering, between components such that the producer and consumer can work asynchronously.
+
+The example source code for the producer component demonstrating use of these inter-component communication mechanisms can be found in `components/Crypto/src/crypto.c`. The source code for the consumer component can be found in `components/Transmitter/src/transmitter.c`.
