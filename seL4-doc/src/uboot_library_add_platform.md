@@ -244,3 +244,7 @@ As with the clock driver, in many cases it may be possible to support devices wi
 Many drivers rely upon the availability of a GPIO driver to function correctly. For example: an MMC driver may use GPIO for card-detect and write-protect sensing; an Ethernet driver may use GPIO to reset an external PHY; an SPI driver may use GPIO for the chip select signal, etc.
 
 As such it may be necessary to provide a GPIO driver for other drivers to function correctly.
+
+## Appendices
+
+- [Odroid-C2 Worked Example](./appendices/add_odroidc2.md)

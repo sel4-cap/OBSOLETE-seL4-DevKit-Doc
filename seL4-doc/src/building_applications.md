@@ -6,6 +6,10 @@ As a worked example throughout this section the [seL4Test](https://docs.sel4.sys
 
 This section of the document assumes the [build environment setup](build_environment_setup.md) has been completed. All commands provided within this section are to be executed within the build environment; i.e. please ensure that you have followed the instructions in the [build environment setup's usage](build_environment_setup.md#usage) section and that you execute the following commands from inside the Docker container.
 
+## Context
+
+The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we carried out in preparation for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the [Guide to Porting seL4](appendices/guide_to_porting_sel4.md) appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.
+
 ## Getting the Code
 
 Within the build environment a directory named `seL4Test` will be created and all of the code and dependencies (e.g. the seL4 kernel, libraries and required tools) will be cloned.
@@ -65,3 +69,7 @@ ninja
 ```
 
 On completion of the compilation, the resulting executable is available at `/host/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the build environment, or available at `/<host_directory>/seL4Test/build-MaaXBoard-AArch64/images/sel4test-driver-image-arm-maaxboard` on the host machine, where `/<host_directory>` was the directory on the host mapped to the build environment.
+
+## Appendices
+
+- [Guide to Porting seL4](appendices/guide_to_porting_sel4.md)

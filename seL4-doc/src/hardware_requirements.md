@@ -16,7 +16,7 @@ For convenience, the following table includes order codes and hyperlinks for the
 | USB Flash Drive                      | Optional - USB transfer only  | General[^1]                      |
 | Ethernet Cable                       | Optional - TFTP transfer and some of the test applications | General[^1] |
 | USB Keyboard | Optional - some of the test applications | [1848111](https://uk.farnell.com/logitech/920-002524/keyboard-k120-business-logitech/dp/1848111)[^2] |
-| SPI Bus Pressure Sensor | Optional - test application only | [See Appendix](appendices/spi_bmp280.md) |
+| SPI Bus Pressure Sensor | Optional - test application only | [See SPI sensor appendix](appendices/spi_bmp280.md) |
 
 [^1]: Where items are considered to be ubiquitous with no special requirements, no example order code is given.
 
@@ -27,3 +27,7 @@ This guide assumes the following basic hardware capabilities of the user's devel
 1. The ability to connect the MaaXBoard to a wired network to which the host machine is also connected. This is required if the user wishes to perform TFTP transfer of executables from the host environment to the target platform (see the [Bootloader](bootloader.md) section). It is also required for full demonstration of the [case study application](case_study_intro.md) and to execute the [picoserver test application](uboot_driver_usage.md#test-application-picoserver_uboot).
 
 2. The ability to connect USB devices (i.e. the USB flash drive and USB SD card reader / writer) to the host machine.
+
+## Appendices
+
+- [SPI Bus Pressure Sensor](./appendices/spi_bmp280.md)

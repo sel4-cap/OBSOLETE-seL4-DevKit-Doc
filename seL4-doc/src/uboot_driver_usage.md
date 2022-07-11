@@ -196,3 +196,8 @@ Connecting, disconnecting, and reconnecting to a network can give rise to delays
 
 - Start from a clean reboot of the host machine (which will include flushing its DNS cache); or
 - Be patient! (If you are prepared to wait for a few minutes, the connection will be made. Note that `nc` may timeout after a while if no connection is made, so the command would need to be repeated.)
+
+## Appendices
+
+- [SPI Bus Pressure Sensor](./appendices/spi_bmp280.md)
+- [Odroid-C2 Worked Example](./appendices/add_odroidc2.md)
