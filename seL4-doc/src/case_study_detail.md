@@ -1,4 +1,4 @@
-# Case Study Design Details
+# Case Study Design Detail
 
 Following on from the [case study introduction](case_study_intro.md), this section provides further details on the design and functionality of the 'security domain' demonstrator application.
 

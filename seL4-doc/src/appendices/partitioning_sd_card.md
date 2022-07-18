@@ -1,4 +1,4 @@
-# Partitioning the SD card
+# Manually Partitioning the SD Card
 
 The SD card must be partitioned correctly in order to contain U-Boot, seL4 and space for a filesystem. This can be done as follows.
 

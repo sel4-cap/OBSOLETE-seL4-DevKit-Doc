@@ -1,4 +1,4 @@
-# Writing the MaaXBoard U-Boot image to a SD card
+# Manually Writing U-Boot to an SD card
 
 **Please note, the SD card must be correctly partitioned before following these instructions.**
 

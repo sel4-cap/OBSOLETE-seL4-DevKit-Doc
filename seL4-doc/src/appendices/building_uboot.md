@@ -1,4 +1,4 @@
-# Building U-Boot for the MaaXBoard
+# Building U-Boot
 
 In order to build U-Boot, the seL4devkit Docker build environment is required, please see [Build Environment Setup](../build_environment_setup.md) to setup this up if you haven't already done so.
 
