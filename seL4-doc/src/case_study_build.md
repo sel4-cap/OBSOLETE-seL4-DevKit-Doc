@@ -59,10 +59,18 @@ When the application's initialisation has completed, we should see:
 
 ```text
 run_uboot_command@uboot_wrapper.c:176 --- running command 'fatrm mmc 0:2 transmitter_log.txt' ---
+Net:   transmitter_log.txt: doesn't exist
+run_uboot_command@uboot_wrapper.c:181 --- command 'fatrm mmc 0:2 transmitter_log.txt' completed with return code 1 ---
+```
+
+Note that on subsequent runs, the log file will exist (unless the user has intentionally deleted it), and the output will instead read:
+
+```text
+run_uboot_command@uboot_wrapper.c:176 --- running command 'fatrm mmc 0:2 transmitter_log.txt' ---
 run_uboot_command@uboot_wrapper.c:181 --- command 'fatrm mmc 0:2 transmitter_log.txt' completed with return code 0 ---
 ```
 
-This is housekeeping by the application to delete any previous Transmitter logfile from the SD card, before it starts writing new log data. The logfile is named `transmitter_log.txt` and is expected on the third partition of the SD card - see the FAT partition `FILESYS` established during the [Partitioning the SD Card appendix](appendices/partitioning_sd_card.md).
+In either scenario, this is housekeeping by the application to delete any previous Transmitter logfile from the SD card, before it starts writing new log data. The logfile is named `transmitter_log.txt` and is expected on the third partition of the SD card - see the FAT partition `FILESYS` established during the [Partitioning the SD Card appendix](appendices/partitioning_sd_card.md).
 
 Just as with the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), the application may sporadically display `No such port ....` messages as it monitors traffic on the network. This is expected diagnostic behaviour that may be ignored; indeed, the lack of any such messages may indicate for example that the Ethernet driver has not initialised properly.
 
