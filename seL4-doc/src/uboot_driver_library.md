@@ -43,7 +43,7 @@ To mimic this functionality within the library, the following approach has been 
 
 U-Boot maintains a [global data](https://u-boot.readthedocs.io/en/latest/develop/global_data.html) structure for the storage of globally required fields.
 
-The macro `DECLARE_GLOBAL_DATA_PTR` is used by U-Boot to provide a pointer to this data structure. On most architectures this pointer is stored in a dedicated register (e.g. register `r25` on ARM); such a mechanism is not compatible with seL4.
+The macro `DECLARE_GLOBAL_DATA_PTR` is used by U-Boot to provide a pointer to this data structure. On most architectures this pointer is stored in a dedicated register (e.g. register `x18` on ARM64); such a mechanism is not compatible with seL4.
 
 Within the library the following approach has been taken to global data:
 
