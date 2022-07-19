@@ -30,13 +30,21 @@ cd build
 ../init-build.sh -DCAMKES_APP=security_demo -DPLATFORM=maaxboard -DPICOSERVER_IP_ADDR=xxx.xxx.xxx.xxx
 ```
 
+This command should be repeated as a workaround - see the [implementation note](#implementation-note) below:
+
+```bash
+../init-build.sh -DCAMKES_APP=security_demo -DPLATFORM=maaxboard -DPICOSERVER_IP_ADDR=xxx.xxx.xxx.xxx
+```
+
+Then run `ninja` as usual:
+
 ```bash
 ninja
 ```
 
 ### Implementation note
 
-If there is a `fatal error: pico_device.h: No such file or directory`, simply re-run the `init_build` command above, followed by `ninja`. There is a known race condition with the CMake configuration of picoserver, with a workaround of running the command twice, or running CMake again, by typing `cmake .` (see [here](https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/)).
+There is a known race condition with the CMake configuration of picoserver, which, if only run once, results in `fatal error: pico_device.h: No such file or directory`. A workaround is to run the command twice, or run CMake again, by typing `cmake .` (see [here](https://lists.sel4.systems/hyperkitty/list/devel@sel4.systems/thread/O5B42BFF4FZ2WSCPUK6C6QUAJHD6DETN/)).
 
 ## Preparing to Run
 
