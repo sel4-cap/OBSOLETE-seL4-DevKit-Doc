@@ -44,7 +44,7 @@ This developer kit does not cover or replace any of the extensive documentation 
 
 The intended audience for this developer kit is an application developer who:
 
-- has experience programming within a Linux, macOS or Windows environment;
+- has experience programming within a Linux, macOS, or Windows environment;
 
 - is already familiar with seL4's concepts and benefits; and
 
@@ -56,7 +56,7 @@ Whilst the developer kit documentation aims to cover all the salient points and 
 
 Throughout this developer kit activities will be performed across three different environments:
 
-1. **Host Machine**: The developer's host machine. This can be either macOS, Linux or Windows based.
+1. **Host Machine**: The developer's host machine. This can be running macOS, Linux, or Windows.
 
 2. **Build environment**: The environment within which all binaries for the target environment are built. This is a Linux-based development environment running within a [Docker](https://www.docker.com) container on the host machine. The use of a Docker container to provide all of the tooling required to build seL4 applications for the target platform greatly simplifies the requirements of the host machine.
 
