@@ -30,7 +30,7 @@ The following subsections provide guidance on how to use each of these mechanism
 
 To use this method, mount the USB flash drive onto the host machine and ensure that it has been formatted as FAT32; then copy `sel4_image` to the root of the flash drive. Then insert the USB flash drive into the top USB port[^1] on the MaaXBoard prior to applying power to the MaaXBoard.
 
-[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board set up by the U-Boot bootloader.
+[^1]: Note: Currently, only the upper USB port on the Avnet MaaXBoard is active (i.e. the port furthest away from the PCB); the lower USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
 ### SD Card
 

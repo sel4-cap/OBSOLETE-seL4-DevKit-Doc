@@ -55,7 +55,7 @@ Running the `security_demo` application requires the following:
 - Connect a keyboard to the USB socket[^1] of the MaaXBoard;
 - Establish an Ethernet connection between the MaaXBoard and the host machine, which can be direct or via a network, as outlined in [an earlier section](bootloader.md#loading-via-tftp) (e.g. it will already be in place if TFTP is being used to transfer executables).
 
-[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
+[^1]: Note: Currently, only the upper USB port on the Avnet MaaXBoard is active (i.e. the port furthest away from the PCB); the lower USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
 If the user has experience of running the [`picoserver_uboot` test application](uboot_driver_usage.md#test-application-picoserver_uboot), then elements of the `security_demo` application will be familiar. For example, from a terminal window on the host machine, we will use the `netcat` (`nc`) command (native to Linux or macOS, or available as a [download](https://nmap.org/ncat/) for Windows) to connect to the MaaXBoard, so this should be prepared.
 

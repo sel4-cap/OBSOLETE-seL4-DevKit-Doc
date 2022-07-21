@@ -50,7 +50,7 @@ It is left to the reader to look through the test script in detail, but the feat
 - SPI operations to access the SPI bus and read a BMP280 pressure sensor, if connected.
   - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations still run but return nothing in the test application.
 
-[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
+[^1]: Note: Currently, only the upper USB port on the Avnet MaaXBoard is active (i.e. the port furthest away from the PCB); the lower USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
 Other utility commands are exercised, such as `dm tree`, which is useful to follow the instantiation of device drivers, and `clocks` which lists all the available clocks. As well as 'headline' drivers like USB and SPI above, there are also some fundamental 'building block' drivers in the library, for elements such as clocks, IOMUX, and GPIO, which are needed by other drivers.
 
