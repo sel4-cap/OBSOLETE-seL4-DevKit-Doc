@@ -18,7 +18,7 @@ Blue blocks show CAmkES components created specifically for the security demonst
 
 Arrow directions show an abstracted view of data flow. Arrow labels refer to seL4 connector types (some concerned with data flow, some with control flow), which are elaborated in the key. More details about seL4 connector types may be found in the [CAmkES manual](https://docs.sel4.systems/projects/camkes/manual.html), but the fundamental types are _RPC_ (Remote Procedure Call), _SharedData_, and _Notification_ (see examples such as `seL4RPCCall` in the key).
 
-As the KeyReader and Crypto components handle plaintext, they are considered as 'high-side' in terms of security and must be kept separate from the downstream 'low-side' components that handle ciphertext.
+As the KeyReader and Crypto components handle plaintext and cryptographic data (e.g. keys), they are considered as 'high-side' in terms of security and must be kept separate from the downstream 'low-side' components that handle ciphertext. It is not the role of this developer kit to re-justify the credentials of seL4 (the [seL4 whitepaper](https://sel4.systems/About/seL4-whitepaper.pdf) is a good starting point), but suffice to say that seL4's capability-based access controls guarantee protection and separation between all components, regardless of the notional high and low sides that we have overlaid, only allowing interactions between components where explicitly established via the seL4 connector types.
 
 The following paragraphs briefly describe the data flow, from left to right, highlighting the different seL4 mechanisms used for inter-component communications.
 
