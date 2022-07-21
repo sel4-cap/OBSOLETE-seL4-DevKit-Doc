@@ -4,7 +4,7 @@ This section details the hardware related to the target platform that the guide 
 
 As detailed in the [Execution on Target Platform](execution_on_target_platform.md) section, there are multiple methods of transferring a compiled seL4 binary from the host machine to the target platform. Where a hardware item is required to support only one potential transfer method it is marked as 'optional'. The developer should decide which transfer method(s) are to be used to determine which items need to be available.
 
-For convenience, the following table includes order codes and hyperlinks for the [Farnell UK store](https://uk.farnell.com) correct as of 20th of January 2022; clearly, equivalent items are available from many other sources.
+For convenience, the following table includes order codes and hyperlinks for the [Farnell UK store](https://uk.farnell.com) correct as of 21st of July 2022; clearly, equivalent items are available from many other sources.
 
 | Item                                 | Notes                         | Order Code                                                                                                          |
 | ------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
