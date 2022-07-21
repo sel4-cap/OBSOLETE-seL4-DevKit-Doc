@@ -2,7 +2,9 @@
 
 This section works through an example to show some of our device drivers being used within a larger CAmkES application. It is nominally labelled as a 'security domain' demonstrator (named `security_demo`) but this is mainly in the context of being a keyboard-based encryption device that was inspired by an Enigma machine! It is intentionally simple and its main purpose is to show data separation and to provide worked examples of inter-component communications using different seL4 mechanisms.
 
-As with earlier sections of this developer kit documentation, we continue to defer to the seL4 Foundation's [documentation of CAmkES](https://docs.sel4.systems/projects/camkes/) for the bulk of its understanding, but this section will cover aspects of the use of CAmkES where appropriate.
+Extra functionality within the demonstration application is deliberately kept to a minimum to leave the source code less cluttered, so that the developer can readily see the 'more interesting' seL4 inter-component and device interactions without too much extra, feature-supporting code. In line with the rest of the developer kit, the demonstration application is intended to be more of a springboard for a developer kit user than a polished product for an end user.
+
+As with earlier sections of this developer kit documentation, we continue to defer to the seL4 Foundation's [documentation of CAmkES](https://docs.sel4.systems/projects/camkes/) as the primary source of understanding of CAmkES, but this section will cover aspects of the use of CAmkES where appropriate.
 
 ## Basic Description
 
