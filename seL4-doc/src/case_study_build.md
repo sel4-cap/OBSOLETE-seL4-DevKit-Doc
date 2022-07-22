@@ -131,3 +131,5 @@ run_uboot_command@uboot_wrapper.c:181 --- command 'fatwrite mmc 0:2 0x55b010 tra
 The application will continue indefinitely. `netcat` sessions on the host machine may be terminated (Ctrl-C) and restarted, whereupon the application will establish a new connection (buffering output in the meantime).
 
 If the MaaXBoard is powered off and its SD card removed and transferred to the host machine, the `transmitter_log.txt` can be accessed from the `FILESYS` partition as one would expect.
+
+To reduce the risk of corrupting the SD card, it is advisable to avoid powering off the MaaXBoard during a write operation of the logfile. As this operation lasts in the order of 10 ms and only occurs every 30 seconds (and only then if there are any ciphertext characters that have not yet been logged to file), the risk is both remote and avoidable (e.g. power off soon after a `fatwrite` command message, or wait for >30 seconds after the last `fatwrite` command message).
