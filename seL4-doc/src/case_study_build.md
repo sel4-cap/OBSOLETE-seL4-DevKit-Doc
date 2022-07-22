@@ -61,7 +61,7 @@ If the user has experience of running the [`picoserver_uboot` test application](
 
 ## Running the Application
 
-The application invokes three instances of the [U-Boot Driver Library](uboot_driver_library.md), so various sets of diagnostic messages are repeated on the CoolTerm display as the application starts. We should not be unduly concerned with some of the individual messages, such as `No ethernet found`, since in this case only one of the library instances is configured to use Ethernet (i.e. the library invoked by the EthDriverUboot component), and amongst the other messages there should be confirmation that it was successful, e.g. `Assigned ipv4 xxx.xxx.xxx.xxx to device eth0`.
+The application invokes three instances of the [U-Boot Driver Library](uboot_driver_library.md), so various sets of diagnostic messages are repeated on the CoolTerm display as the application starts. We should not be unduly concerned with some of the individual messages, such as `No ethernet found`, since in this case only one of the library instances is configured to use Ethernet (i.e. the library invoked by the EthDriverUboot component), and amongst the other messages there should be confirmation that it was successful, e.g. `Assigned ipv4 xxx.xxx.xxx.xxx to device eth0`. There are also some `clk_register: failed ... (parent ...)` messages, which are harmless (a fault in U-Boot's clock driver for the MaaXBoard).
 
 When the application's initialisation has completed, we should see:
 
