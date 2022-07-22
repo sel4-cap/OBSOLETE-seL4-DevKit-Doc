@@ -8,7 +8,7 @@ This section of the document assumes the [build environment setup](build_environ
 
 ## Context
 
-The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we carried out in preparation for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the [Guide to Porting seL4](appendices/guide_to_porting_sel4.md) appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.
+The seL4Test example that is built in this section is a result of an seL4 port for the Avnet MaaXBoard that we created for this developer kit. Whilst our seL4 port is not documented here in detail, there is some guidance on this in the [Guide to Porting seL4](appendices/guide_to_porting_sel4.md) appendix, which includes links to the Git commits that added the MaaXBoard port to the main seL4 repositories.
 
 ## Getting the Code
 
@@ -38,7 +38,7 @@ repo sync
 
 To support building with multiple different configurations within a single project, a directory is created for each configuration to contain the build artefacts. Different configurations are used for different platforms, architectures, or other build options.
 
-For the purposes of this example, two configurations are targeted at the MaaXBoard: one for AArch32 and one for AArch64.
+For the purposes of this example, two configurations are supported for the MaaXBoard: one for AArch32 and one for AArch64.
 
 The executable files that are produced can be executed on the target platform by following the guidance in the [Execution on Target Platform](execution_on_target_platform.md) section.
 
