@@ -64,7 +64,7 @@ Throughout this developer kit activities will be performed across three differen
 
 The required configuration of the host and target environments are detailed in the [Host Machine Setup](host_machine_setup.md) and [Target Platform Setup](target_platform_setup.md) sections. A preconfigured build environment is supplied as part of this developer kit as detailed in the [Build Environment Setup](build_environment_setup.md) section.
 
-This developer kit assumes a host machine and build environment with internet access for the many necessary resources. Where such access is restricted or unavailable, for example within a security domain, the appendix [Using the Developer Kit Offline](./appendices/devkit_offline_use.md) helps to guide the user through the downloads that are required for subsequent offline use.
+This developer kit assumes a host machine and build environment with internet access for the many necessary resources. Where such access is restricted or unavailable, for example within a standalone network, the appendix [Using the Developer Kit Offline](./appendices/devkit_offline_use.md) helps to guide the user through the downloads that are required for subsequent offline use.
 
 ## Structure
 
