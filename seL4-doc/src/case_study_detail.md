@@ -6,7 +6,7 @@ It is expected that the reader is familiar with the [seL4 CAmkES manual](https:/
 
 ## Code Structure
 
-The application is held within the following structure with key folders and files shown:
+The application is held within the following structure (all within the `camkes/apps` folder), with key folders and files shown:
 
 ```text
 security_demo
@@ -48,7 +48,7 @@ security_demo
 
 ## Concurrency Model
 
-From a concurrency perspective, the security demonstrator can be summarised as threads of execution on the 'high-side' managing plaintext data running asynchronously to  threads of execution on the 'low-side' managing ciphertext data.
+From a concurrency perspective, the security demonstrator can be summarised as threads of execution on the 'high-side' managing plaintext data running asynchronously to threads of execution on the 'low-side' managing ciphertext data.
 
 Threads of execution on the high-side perform the following functions:
 
@@ -75,7 +75,7 @@ The buffer has been deliberately designed for the purpose of this worked example
 
 ### Port
 
-At its core the circular buffer is a simple character array with *head* and *tail* pointers holding array indexes associated with the start and end of the used portion of the array.
+At its core the circular buffer is a simple character array with *head* and *tail* holding indexes associated with the start and end of the used portion of the array.
 
 - Further details are documented alongside the definition of the `dataport_buffer_t` type definition in `include/dataport_buffer.h`.
 - *Port* interfaces of data type `dataport_buffer_t` are declared in the Crypto and Transmitter component CAmkES files.
@@ -85,7 +85,7 @@ This results in an instance of the circular buffer type being made available in 
 
 ### Procedure
 
-Reading data from, or writing data to, the circular buffer requires the data array, *head* pointer, and *tail* pointer to be modified. Such modification of the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components, otherwise corruption of the buffer may occur. Access to the buffer by the two components must therefore be protected to avoid concurrent access.
+Reading data from, or writing data to, the circular buffer requires the data array, *head* index, and *tail* index to be modified. Such modification of the buffer cannot be allowed to occur concurrently by both the Crypto and Transmitter components, otherwise corruption of the buffer may occur. Access to the buffer by the two components must therefore be protected to avoid concurrent access.
 
 Within the security demonstrator, a mutex is used to enforce this critical section; each component must hold the lock on the mutex prior to accessing the circular buffer, and must release the lock when access to the circular buffer has been completed.
 
@@ -116,6 +116,6 @@ Putting all three interface types (*port*, *procedure*, and *event*) together re
 - A mutex which can be accessed via remote procedure calls to protect the buffer against concurrent access; and
 - A notification mechanism to allow the producer to notify the consumer when new data is available.
 
-This thereby allows data transfer and buffering between components such that the producer and consumer can work asynchronously.
+This thereby allows asynchronous data transfer and buffering between components such that the producer and consumer can work concurrently.
 
 The example source code for the producer component demonstrating use of these inter-component communication mechanisms can be found in `components/Crypto/src/crypto.c`. The source code for the consumer component can be found in `components/Transmitter/src/transmitter.c`.
