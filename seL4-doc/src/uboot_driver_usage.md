@@ -46,6 +46,7 @@ It is left to the reader to look through the test script in detail, but the feat
   - identify and list (`ls`) the contents of a USB flash drive, if connected;
   - read and echo keypresses from a USB keyboard, if connected, during a defined period.
 - SD/MMC operations to identify and list (`ls`) the contents of the SD card.
+- Filesystem operations to write a file to a FAT partition on the SD card before reading the contents back and deleting the file.
 - I<sup>2</sup>C operations to probe the bus and read the power management IC present on the MaaXBoard's I<sup>2</sup>C bus. (There are more details in the [worked example](uboot_library_add_driver.md#worked-example---i2c) that walks through the steps that were required to add this driver.)
 - SPI operations to access the SPI bus and read a BMP280 pressure sensor, if connected.
   - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations still run but return nothing in the test application.
