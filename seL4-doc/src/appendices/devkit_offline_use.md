@@ -1,6 +1,10 @@
 # Using the Developer Kit Offline
 
-In order to use the seL4 developer kit offline, for example in an environment where internet access is restricted or unavailable (e.g. within a security domain), a number of dependencies must be downloaded for offline use. This appendix assumes that an internet-connected machine is available, which can be used to download resources that are then used offline by the host machine and build environment. This appendix covers:
+In order to use the seL4 developer kit offline, for example in an environment where internet access is restricted or unavailable (e.g. within a security domain), a number of dependencies must be downloaded for offline use. This appendix assumes that an internet-connected machine is available, which can be used to download resources that are then used offline by the host machine and build environment.
+
+Note that the offline machine still needs the applications described in the [Software Requirements](../software_requirements.md) section (e.g. Docker and CoolTerm). Installing generally-available applications onto an offline machine is not specific to the developer kit, and it is assumed that the user is able to find a suitable method for their environment.
+
+This appendix covers:
 
 - [Downloading the Docker image to a file](#downloading-the-docker-image-to-a-file)
 - [Downloading source code for offline use](#downloading-source-code-for-offline-use)
@@ -51,6 +55,8 @@ The Docker image contains all the required toolchain for building seL4 and seL4 
     docker load -i sel4devkit_docker.tar
     ```
 
+    (As per the introductory section of this appendix, this requires that Docker is installed on the offline host machine.)
+    
     Docker will now load the image from the tarball. This may take some time and it may appear that Docker has frozen, but once Docker has loaded the file, the following output should be seen:
 
     ```bash
