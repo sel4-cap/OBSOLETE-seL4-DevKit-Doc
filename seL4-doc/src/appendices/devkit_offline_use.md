@@ -115,7 +115,7 @@ In order to download source code for offline use, an internet-connected computer
     +----------------------------------------------------------------+
     ```
 
-4. The cloned repository folder can be transferred to an offline machine, and built using `build-offline.sh`.
+4. The cloned repository folder can be transferred to an offline machine, and built within the Docker container using `build-offline.sh`.
 
 ## Downloading the pre-prepared SD card images
 
