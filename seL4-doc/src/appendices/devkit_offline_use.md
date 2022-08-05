@@ -82,7 +82,11 @@ In order to download source code for offline use, an internet-connected computer
     repo init -u https://github.com/sel4devkit/camkes-manifest.git
     ```
 
-    Replace `camkes-manifest.git` with `sel4test-manifest.git` to download the source for seL4 test.
+    A similar command would be used to download the source for `sel4test-manifest`:
+    
+    ```bash
+    repo init -u https://github.com/sel4/sel4test-manifest.git
+    ```
 
 3. Once the initialisation has completed, a synchronisation must be performed in order to download the source code from the various repositories. To do this run `repo sync` from the same folder.
 
