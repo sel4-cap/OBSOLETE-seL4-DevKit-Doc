@@ -29,7 +29,7 @@ The Docker image contains all the required toolchain for building seL4 and seL4 
     521655c15371: Download complete 
     ```
 
-2. Once the download has completed, the image can be saved to a file, using `docker save`. Because the image file produced will be quite large (around 4GB), it is recommended that the file is compressed before transferring it to the machine where it will be used offline. This can be done directly from the `docker save` command by piping the output to a compression utility such as `gzip` as follows:
+2. Once the download has completed, the image can be saved to a file, using `docker save`. Because the image file produced will be quite large (around 4GB), it is recommended that the file is compressed before transferring it to the machine where it will be used offline. This can be done directly from the `docker save` command by piping the output to a compression utility such as `gzip`[^1] as follows:
 
     ```bash
     docker save ghcr.io/sel4devkit/maaxboard:latest | gzip > sel4devkit_docker.tar.gz
@@ -42,6 +42,8 @@ The Docker image contains all the required toolchain for building seL4 and seL4 
     ```
 
     The saved image can now be transferred to the offline host machine.
+
+[^1]: `gzip` is available on macOS and Linux, but not by default on Windows; it is assumed that a Windows user can find a suitable option.
 
 3. On the offline host machine, decompress the image (if applicable) and save the tar file in an appropriate location. From the terminal, navigate to the folder where the tar file is saved, and run:
 
