@@ -46,11 +46,12 @@ It is left to the reader to look through the test script in detail, but the feat
   - identify and list (`ls`) the contents of a USB flash drive, if connected;
   - read and echo keypresses from a USB keyboard, if connected, during a defined period.
 - SD/MMC operations to identify and list (`ls`) the contents of the SD card.
-- I<sup>2</sup>C operations to probe the bus and read the power management IC present on the MaaXBoard's I<sup>2</sup>C bus. (There are more details in the [worked example](uboot_library_add_driver.md#worked-example---i2c) that walks through the steps that were required to add this driver.)
+- Filesystem operations to write a file to a FAT partition on the SD card before reading the contents back and deleting the file.
+- I<sup>2</sup>C operations to probe the bus and read the power management IC present on the MaaXBoard's I<sup>2</sup>C bus. (There are more details in the [worked example](appendices/add_driver_worked_example.md) that walks through the steps that were required to add this driver.)
 - SPI operations to access the SPI bus and read a BMP280 pressure sensor, if connected.
   - Procuring and connecting this sensor is an optional extra, described in the [SPI Bus Pressure Sensor appendix](appendices/spi_bmp280.md); otherwise these operations still run but return nothing in the test application.
 
-[^1]: Note: Currently, only the top USB port on the Avnet MaaXBoard is active; the bottom USB port does not function. This is a feature of the power domains on the board, not the USB driver.
+[^1]: Note: Currently, only the upper USB port on the Avnet MaaXBoard is active (i.e. the port furthest away from the PCB); the lower USB port does not function. This is a feature of the power domains on the board, not the USB driver.
 
 Other utility commands are exercised, such as `dm tree`, which is useful to follow the instantiation of device drivers, and `clocks` which lists all the available clocks. As well as 'headline' drivers like USB and SPI above, there are also some fundamental 'building block' drivers in the library, for elements such as clocks, IOMUX, and GPIO, which are needed by other drivers.
 
@@ -111,11 +112,11 @@ A successful build will result in an executable file called `capdl-loader-image-
 
 ### Overview of the `picoserver_uboot` test application
 
-It is not the purpose of this DevKit to give a CAmkES tutorial (e.g. see [seL4's documentation](https://docs.sel4.systems/projects/camkes/)), but this application is based on the following CAmkES model:
+It is not the purpose of this developer kit to give a CAmkES tutorial (e.g. see [seL4's documentation](https://docs.sel4.systems/projects/camkes/)), but this application is based on the following CAmkES model:
 
 ![Picoserver CAmkES overview](figures/picoserver-camkes.png)
 
-Ethdriver is a simple implementation of an Ethernet driver that has been ported from U-Boot. Picoserver provides a picoTCP TCP/IP stack on top of this, and the echo component simply listens on port 1234 of a given IP address, echoing received characters on the display.
+EthDriverUboot is a simple implementation of an Ethernet driver that has been ported from U-Boot. PicoServer provides a picoTCP TCP/IP stack on top of this, and the Echo component simply listens on port 1234 of a given IP address, echoing received characters on the display. (An additional component TimeServer has been omitted from the diagram for clarity, but see the [case study application](case_study_intro.md) for more details.)
 
 ### Instructions for running `picoserver_uboot`
 
@@ -192,4 +193,12 @@ Connections can be re-established simply by issuing another `nc` command.
 
 #### Implementation note
 
-As stated earlier, the application allocates a random MAC address. Depending on the configuration of your test environment (network connections between MaaXBoard, host machine, and router), a changing MAC address for a given IP address can have implications: for example, 1 to 2 minutes during which a connection could not be established have been observed, while the DNS reconfigures itself. This has been seen for example where the MaaXBoard bootloader has used TFTP to download the application from the host machine over WiFi using one MAC address, before the `picoserver_uboot` application starts running using the same IP address with a different MAC address; for a period, the host machine cannot then `nc` to the MaaXBoard over WiFi. This can be improved by, for example, using a USB flash drive to serve the `picoserver_uboot` application instead of TFTP.
+Connecting, disconnecting, and reconnecting to a network can give rise to delays in the order of a few minutes while the elements in the network handshake and resynchronise, particularly in the case of our application, which assigns a random MAC address to the same IP address each time it runs. If the connection is not established promptly, the easiest remedial options are:
+
+- Start from a clean reboot of the host machine (which will include flushing its DNS cache); or
+- Be patient! (If you are prepared to wait for a few minutes, the connection will be made. Note that `nc` may timeout after a while if no connection is made, so the command would need to be repeated.)
+
+## Appendices
+
+- [SPI Bus Pressure Sensor](./appendices/spi_bmp280.md)
+- [Odroid-C2 Worked Example](./appendices/add_odroidc2.md)

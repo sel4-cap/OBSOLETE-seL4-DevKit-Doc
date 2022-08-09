@@ -1,8 +1,8 @@
 # Build Environment Setup
 
-The build environment is the environment within which all binaries for the target environment are built, i.e. it the environment that provides the required compilation toolchain.
+The build environment is the environment within which all binaries for the target environment are built; i.e. the environment that provides the required compilation toolchain.
 
-To both simplify the requirements on the host environment and to enable rapid setup the build environment is provided as a pre-built Docker image.
+To simplify the requirements on the host environment and to enable rapid setup, the build environment is provided as a pre-built Docker image.
 
 ## Environment Details
 
@@ -24,8 +24,6 @@ Installation of the build environment comprises the download of a pre-built Dock
 docker pull ghcr.io/sel4devkit/maaxboard:latest
 ```
 
-_Temporary-note: While we retain private repos this can fail with an unhelpful 'Denied' error if user's password (Personal Access Token) has expired. Fix using `docker login ghcr.io` which prompts for entry of credentials; thereafter the `docker pull` should work._
-
 During download of the image progress is reported in the following format:
 
 ```bash
@@ -42,7 +40,7 @@ On completion of the download the build environment is ready for use.
 
 ## Usage
 
-When using the build environment a directory from the host machine must be mapped to the `/host` directory within the build environment; this is the directory within which all work should be performed.
+When using the build environment, a directory from the host machine must be mapped to the `/host` directory within the build environment; this is the directory within which all work should be performed.
 
 __WARNING__: Any changes made outside the build environment's `/host` directory will be lost when the build environment is exited.
 

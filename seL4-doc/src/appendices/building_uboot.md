@@ -1,4 +1,4 @@
-# Building U-Boot for the MaaXBoard
+# Building U-Boot
 
 In order to build U-Boot, the seL4devkit Docker build environment is required, please see [Build Environment Setup](../build_environment_setup.md) to setup this up if you haven't already done so.
 
@@ -12,13 +12,13 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 
 3. Once the bash shell in your build environment has loaded, you can now clone the [maaxboard-uboot](https://github.com/sel4devkit/maaxboard-uboot) repository from `https://github.com/sel4devkit/maaxboard-uboot.git` using git.
 
-4. Once git has successfully cloned the repository, a new folder called `maaxboard-uboot` should be created, containing a README file, a `build.sh` build script and a `firmware` folder.
+4. Once git has successfully cloned the repository, a new folder called `maaxboard-uboot` should be created, containing a README file, some build scripts, and a `firmware` folder.
 
-5. Once you have verified you have the correct files, run the build script using `./build.sh`
+5. Once you have verified you have the correct files, run the main build script using `./build.sh` (the other build scripts are used if [building offline](./devkit_offline_use.md#building-u-boot-offline)).
 
-6. `build.sh` will clone a number of git repositories and extract necessary files from them, after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, when you reach the end, when prompted type `y` to accept. *Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot*
+6. `build.sh` will clone a number of git repositories and extract necessary files from them, after which you will be presented with a license agreement for the NXP firmware for the i.MX8. You can navigate this agreement with the up and down arrow keys. Assuming you are happy to accept the agreement, type `y` to accept when prompted. *Note: if you decline the EULA, the build process will be terminated, since the firmware is required to build U-Boot.*
 
-7. `build.sh` will now clone some additional repositories and complete the build process. If this is successful you should see the following:
+7. After the script has completed the build process, if successful you should see the following:
 ![successful-uboot-build](../figures/successful-uboot-build.png)
 
 8. The generated `flash.bin` file is now ready to write to storage media. Please see [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md) for details on how to do this.
@@ -53,23 +53,25 @@ To build U-Boot for the MaaXBoard, and indeed any board, the following resources
 
 - A tool to compose all of the required elements (e.g. compiled U-Boot binaries and firmware blobs) into the structure and layout expected by the board at boot. In the case of i.MX-based SoCs this tool is [`imx-mkimage`](https://github.com/sel4devkit/imx-mkimage).
 
-To satisfy the requirements above, the build script performs the followed ordered steps:
+To satisfy the requirements above, the build script performs the following steps[^note]:
 
 1. Clones a copy of the U-Boot sources that support the MaaXBoard.
 
-2. Configures U-Boot build system for the MaaXBoard and then compiles the U-Boot binaries.
+2. Clones a copy of the ATF (ARM Trusted Firmware).
 
-3. Decompresses and compiles the DDR PHY and HDMI firmware.
+3. Clones a copy of the source code of the `imx-mkimage` tool.
 
-4. Clones a copy of the ATF (ARM Trusted Firmware).
+4. Configures U-Boot build system for the MaaXBoard and then compiles the U-Boot binaries.
 
-5. Compiles the ATF configured for the i.MX8MQ SoC as used by the MaaXBoard.
+5. Decompresses and compiles the DDR PHY and HDMI firmware.
 
-6. Clones a copy of the source code of the `imx-mkimage` tool.
+6. Compiles the ATF configured for the i.MX8MQ SoC as used by the MaaXBoard.
 
 7. Copies all of the binaries and firmware elements produced in the earlier steps into the locations expected by `imx-mkimage`.
 
 8. Builds and executes `imx-mkimage` configured for the i.MX8MQ SoC in 'headless' mode.
+
+[^note]: To facilitate [offline use of the developer kit](./devkit_offline_use.md), these steps are factored into the `clone.sh` and `build-offline.sh` scripts called by `build.sh`.
 
 The build steps, if successful, result in a binary named `flash.bin` which is suitable for booting the MaaXBoard if placed in a specific location on an SD card as documented within the section [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md).
 

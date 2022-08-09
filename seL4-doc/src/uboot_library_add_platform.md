@@ -2,49 +2,49 @@
 
 This section documents the required actions and guidance to add support for a new platform to the library.
 
-By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform.
+By the end of this section, an seL4 executable will be built for the new platform that can initialise the library (although the library may not support any of the platform's devices). Later sections of this guide cover the required actions to add driver support into the library for the new platform (e.g. see the [Odroid-C2 worked example appendix](appendices/add_odroidc2.md)).
 
-Throughout the sections of this guide devoted to extension of the U-Boot driver library it is expected the engineer is working within the folder structure created by the `repo` tool (e.g. as used to build the [test applications](uboot_driver_usage.md)). Key folders and files within the hierarchy are shown below:
+Throughout the sections of this guide devoted to extension of the U-Boot driver library, it is expected the developer is working within the folder structure created by the `repo` tool (e.g. as used to build the [test applications](uboot_driver_usage.md)). Key folders and files within the hierarchy are shown below:
 
 ```text
 <manifest root>
 |
-└───kernel
+├───kernel
 │   └───tools
 │       └───dts
 │
 └───projects
-    └───camkes
-    |   └───apps
-    |       └───uboot-driver-example
-    |           └───include
-    |               └───plat
-    |                   └───<platform name>
-    |                       └───platform_devices.h
-    |
-    └───projects_libs
-    |   └───libubootdrivers
-    |       └───include
-    |       |   └───plat
-    |       |       └───<platform name>
-    |       |           └───plat_driver_data.h
-    |       └───src
-    |       |   └───plat
-    |       |       └───<platform name>
-    |       |           └───plat_driver_data.c
-    |       └───CMakeLists.txt
-    |
+    ├───camkes
+    │   └───apps
+    │       └───uboot-driver-example
+    │           └───include
+    │               └───plat
+    │                   └───<platform name>
+    │                       └───platform_devices.h
+    │
+    ├───projects_libs
+    │   └───libubootdrivers
+    │       ├───include
+    │       │   └───plat
+    │       │       └───<platform name>
+    │       │           └───plat_driver_data.h
+    │       ├───src
+    │       │   └───plat
+    │       │       └───<platform name>
+    │       │           └───plat_driver_data.c
+    │       └───CMakeLists.txt
+    │
     └───uboot
 ```
 
 - `kernel/tools/dts`: Location of platform device trees.
 - `projects/project_libs/camkes/apps/uboot-driver-example`: [The test application](uboot_driver_usage.md).
-- `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/maaxboard-usb/libubootdrivers).
+- `projects/project_libs/libubootdrivers`: Referred to as "the library" throughout. See [linked Git repository](https://github.com/sel4devkit/projects_libs/tree/master/libubootdrivers).
 - `projects/uboot`: Fork of the U-Boot project source code (note, this is also symlinked to `projects/project_libs/libubootdrivers/uboot`).
 
 ## Required Reading
 
-The engineer should be familiar with the following tools and concepts in order to add platform and driver support to the library.
+The developer should be familiar with the following tools and concepts in order to add platform and driver support to the library.
 
 - *Device Tree*: An introduction to device tree data is [provided by the Linux documentation](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html) and by the [Zephyr project](https://docs.zephyrproject.org/2.6.0/guides/dts/intro.html).
 
@@ -81,7 +81,7 @@ Note that where settings are shared across multiple platforms, this logic can be
 
 It should also be noted that U-Boot drivers can support multiple devices. For example, many of the drivers added to support the Avnet MaaXBoard support multiple iMX SoCs. If previously supported drivers are compatible with the new platform, this support can be added now; for example, if platform `foo` has a GPIO device supported by the `gpio_mxc` driver (as used by the Avnet MaaXBoard), then the line `set(gpio_driver "gpio_mxc")` could be added to the `foo` platform's settings to enable support.
 
-To enable access to platform specific header files it is necessary to create a symlink within the U-Boot code structure named `arch` to one of the many `arch-xxx` folders provided by U-Boot; this mimics an equivalent action taken by U-Boot's native build system. As an example it can be seen that for the iMX8MQ based platforms the `arch` symlink points to the `arch-imx8m` folder. It is expected that identification of the correct folder to link will in most cases will be possible through naming convention alone. To definitively determine the folder to link, the symlink created during a build of U-Boot could be inspected.
+To enable access to platform specific header files it is necessary to create a symlink within the U-Boot code structure named `arch` to one of the many `arch-xxx` folders provided by U-Boot; this mimics an equivalent action taken by U-Boot's native build system. As an example it can be seen that for the iMX8MQ based platforms the `arch` symlink points to the `arch-imx8m` folder. It is expected that identification of the correct folder to link to will in most cases will be possible through naming convention alone. To definitively determine the folder to link, the symlink created during a build of U-Boot could be inspected.
 
 ### Define platform specific Linker Lists data structure
 
@@ -241,6 +241,10 @@ As with the clock driver, in many cases it may be possible to support devices wi
 
 ### GPIO
 
-Many drivers rely upon the availability of a GPIO driver to function correctly. For example: an MMC driver may use GPIO for card detect and write protect sensing; an Ethernet driver may use GPIO to reset an external PHY; an SPI driver may use GPIO for the chip select signal, etc.
+Many drivers rely upon the availability of a GPIO driver to function correctly. For example: an MMC driver may use GPIO for card-detect and write-protect sensing; an Ethernet driver may use GPIO to reset an external PHY; an SPI driver may use GPIO for the chip select signal, etc.
 
 As such it may be necessary to provide a GPIO driver for other drivers to function correctly.
+
+## Appendices
+
+- [Odroid-C2 Worked Example](./appendices/add_odroidc2.md)

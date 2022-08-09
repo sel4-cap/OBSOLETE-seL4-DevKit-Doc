@@ -1,8 +1,6 @@
 # First Boot
 
-First boot aims to demonstrate correct operation of the prepared SD card and communication over the serial interface.
-
-This ensures all steps have been followed correctly prior to proceeding with compilation and execution of an seL4 binary.
+First boot aims to demonstrate correct operation of the prepared SD card and communication over the serial interface. This ensures all steps have been followed correctly prior to proceeding with compilation and execution of an seL4 binary.
 
 ## Prerequisites
 
@@ -12,11 +10,11 @@ Prior to powering the MaaXBoard ensure the following setup is in place, building
 
 2. The MaaXBoard has been set up as per the [Target Platform Setup](target_platform_setup.md) section with only the USB-to-TTL cable connected and the SD card inserted.
 
-3. The USB-to-TTL cable is connected to the host machine with CoolTerm configured as per the [Host Machine Setup](host_machine_setup.md) section and connected.
+3. The USB-to-TTL cable is connected to the host machine with CoolTerm configured as per the [Host Machine Setup](host_machine_setup.md) section.
 
 ## Boot to U-Boot Prompt
 
-At this stage power should be supplied to the MaaXBoard by connecting the USB-C power adaptor. On supply of power the user should see the output of the bootloader displayed in CoolTerm. As no `sel4_image` binary has been supplied the user should be dropped to the U-Boot command prompt.
+At this stage power should be supplied to the MaaXBoard by connecting the USB-C power adapter. On supply of power the user should see the output of the bootloader displayed in CoolTerm. As no `sel4_image` binary has been supplied the user should be dropped to the U-Boot command prompt.
 
 The log below shows the serial terminal output on the host machine when the MaaXBoard boots with no access to a binary to execute.
 
@@ -168,6 +166,6 @@ Once at the U-Boot prompt, the user can enter interactive U-Boot commands. For e
 - `setenv` to set environment variables;
 - `reset` to reset the CPU instead of physically cycling the power.
 
-_Note: A full reference to U-Boot commands can be found [here](https://www.denx.de/wiki/U-Bootdoc/BasicCommandSet) but we only use a couple of them directly in this Developer Kit._
+A full reference to U-Boot commands can be found [here](https://u-boot.readthedocs.io/en/latest/usage/index.html?highlight=shell) but we only use a few of them directly in this developer kit.
 
 The following sections build upon this step by demonstrating the building and execution of an seL4 application on the MaaXBoard.

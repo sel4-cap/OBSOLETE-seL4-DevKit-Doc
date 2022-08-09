@@ -34,6 +34,12 @@
 - [Library Extension - New Platform](uboot_library_add_platform.md)
 - [Library Extension - New Driver](uboot_library_add_driver.md)
 
+# Case Study Application
+
+- [Case Study Introduction](case_study_intro.md)
+- [Case Study Design Detail](case_study_detail.md)
+- [Case Study Building and Running](case_study_build.md)
+
 ---
 
 # Appendices
@@ -42,8 +48,8 @@
 - [Manually Partitioning the SD Card](./appendices/partitioning_sd_card.md)
 - [Building U-Boot](./appendices/building_uboot.md)
 - [Manually Writing U-Boot to an SD Card](./appendices/writing_uboot_to_sd_card.md)
-- [Online Dependencies](./appendices/online-dependencies.md)
 - [Optional Extra - SPI Bus BMP280 Pressure Sensor](./appendices/spi_bmp280.md)
-- [Library Extension - Worked Example](./appendices/add_driver_worked_example.md)
+- [Library Extension - New Driver Worked Example](./appendices/add_driver_worked_example.md)
 - [Library Extension - Troubleshooting](./appendices/driver_troubleshooting.md)
 - [Odroid-C2 Platform - Worked Example](./appendices/add_odroidc2.md)
+- [Using the Developer Kit Offline](./appendices/devkit_offline_use.md)
