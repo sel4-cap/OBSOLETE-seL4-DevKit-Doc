@@ -5,7 +5,7 @@ To achieve the goals specified in [device driver introduction](device_driver_int
 Information on the design and structure of the library is provided under the following sections:
 
 - [Design Summary](#design-summary)
-- [Configuration](#configuration)
+- [Build System](#build-system)
 - [Library Limitations](#library-limitations)
 - [Code Structure](#code-structure)
 
