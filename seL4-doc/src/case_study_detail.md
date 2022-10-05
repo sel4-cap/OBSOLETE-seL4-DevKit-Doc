@@ -69,7 +69,7 @@ All data is passed from the high-side to the low-side through a shared circular 
 
 ## Example of Inter-Component Communication
 
-The circular buffer shared between the Crypto component (hide-side) and the Transmitter component (low-side) is used in this section as a detailed worked example of CAmkES inter-component data flow and control flow.
+The circular buffer shared between the Crypto component (high-side) and the Transmitter component (low-side) is used in this section as a detailed worked example of CAmkES inter-component data flow and control flow.
 
 The buffer has been deliberately designed for the purpose of this worked example to use of all three types of component interface listed in the [seL4 CAmkES manual](https://docs.sel4.systems/projects/camkes/manual.html), i.e. *procedure*, *event* and *port*.
 
