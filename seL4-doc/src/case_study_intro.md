@@ -26,7 +26,7 @@ The following paragraphs briefly describe the data flow, from left to right, hig
 
 ### Components and Connector Types
 
-Plaintext characters are typed on a keyboard and read by the KeyReader component. These characters are then encrypted by the Crypto component to transform them into ciphertext. _RPC_ is an appropriate connector type for the character-by-character data flow between KeyReader and Crypto (labelled as RPC-1 on the diagram), employing `seL4RPCCall`. Since this application is more concerned with demonstrating seL4 concepts than crypto-algorithms, the Enigma machine's rotors and plugboard are replaced with a simple [ROT13](https://en.wikipedia.org/wiki/ROT13) algorithm!
+Plaintext characters are typed on a keyboard and read by the KeyReader component. These characters are then 'encrypted' by the Crypto component to transform them into ciphertext. _RPC_ is an appropriate connector type for the character-by-character data flow between KeyReader and Crypto (labelled as RPC-1 on the diagram), employing `seL4RPCCall`. Since this application is more concerned with demonstrating seL4 concepts than crypto-algorithms, the Enigma machine's rotors and plugboard are replaced with a simple [ROT13](https://en.wikipedia.org/wiki/ROT13) algorithm!
 
 The encrypted characters are transferred to the Transmitter component via a shared circular buffer, where Crypto writes to the _head_ of the buffer and Transmitter reads from its _tail_. The buffer is implemented as a _SharedData_ connection (labelled as SharedData-1 on the diagram) using `seL4SharedData`. (Note that within CAmkES, shared memory is abstracted as a _Dataport_, so this terminology is often seen associated with this connection type.)
 
