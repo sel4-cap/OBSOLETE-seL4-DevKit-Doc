@@ -21,6 +21,8 @@ In order to build U-Boot, the seL4devkit Docker build environment is required, p
 7. After the script has completed the build process, if successful you should see the following:
 ![successful-uboot-build](../figures/successful-uboot-build.png)
 
+    *Note: During compilation of U-Boot the following spurious warning is generated and can be safely ignored:* `WARNING 'lpddr4_pmu_train_1d_imem.bin' not found, resulting binary is not-functional`.
+
 8. The generated `flash.bin` file is now ready to write to storage media. Please see [Manually writing U-Boot to an SD card](./writing_uboot_to_sd_card.md) for details on how to do this.
 
 ## Understanding build.sh
