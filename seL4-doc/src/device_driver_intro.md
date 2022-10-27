@@ -18,7 +18,7 @@ To help overcome this barrier, this guide attempts to provide a route for adding
 
 2. Methods of porting that allow devices to be supported with minimal effort, e.g. minimising changes to driver source code, have been prioritised over factors such as performance and support for all features.
 
-3. Consideration for device driver formal verification has not been applied. No guarantee of correctness, security, or anything else are given for the drivers ported, or the method described.
+3. Consideration for device driver formal verification has not been applied. No guarantee of correctness, security, or anything else is given for the drivers ported, or the method described.
 
 ## Porting Drivers
 
