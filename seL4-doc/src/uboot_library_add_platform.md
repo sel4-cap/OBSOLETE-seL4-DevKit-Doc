@@ -223,7 +223,7 @@ The following drivers are likely to form the core of the support for a platform 
 
 As documented [in the library overview](uboot_driver_library.md#timer), some U-Boot drivers rely upon access to a monotonic timer to underpin their timing needs.
 
-By default a platform will be supported by the `dummy` timer driver (see library file `src/timer/timer_dummy.c`). Whilst the dummy timer driver allows the library to build cleanly, it will raise an assertion / exception, thereby halting execution, should any of the timing routines be used. Some simple drivers (e.g. GPIO drivers) typically do not require any timing routines and so can be supported without the need to provide a functional timer; however, a functional timer will typically need to be provided to support more complex devices such as Ethernet or USB.
+By default a platform will be supported by the `dummy` timer driver (see library file `src/timer/timer_dummy.c`). Whilst the dummy timer driver allows the library to build cleanly, it will raise an assertion error / exception, thereby halting execution, should any of the timing routines be used. Some simple drivers (e.g. GPIO drivers) typically do not require any timing routines and so can be supported without the need to provide a functional timer; however, a functional timer will typically need to be provided to support more complex devices such as Ethernet or USB.
 
 The means of providing a timer driver is architecture- and platform-dependent, so detailed guidance cannot be provided. A worked example of a timer driver for the iMX8MQ SoC is provided in file `src/timer/timer_imx8mq.c`; it is expected that this driver could be extended to cover multiple iMX SoCs.
 
