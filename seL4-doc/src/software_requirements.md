@@ -12,9 +12,15 @@ The following mandatory applications are assumed on the host machine:
 
 - **Container toolset**: Used to provide the build environment. This guide assumes use of [Docker Desktop](https://www.docker.com/products/docker-desktop) for macOS or Windows host environments or [Docker Engine](https://hub.docker.com/search?offering=community&operating_system=linux&q=&type=edition) for Linux-based host environments.
 
+    Docker Engine is licensed under the Apache License Version 2.0, see [here](https://docs.docker.com/engine/) for more information. Docker Desktop is free to use for small companies, education and non-commercial open source projects, see [here](https://www.docker.com/pricing/faq/) for details and pricing.
+
 - **SD card writer application**: Used to write the SD card from which the MaaXBoard boots. [Balena Etcher](https://www.balena.io/etcher/) has been selected due to its availability on macOS, Windows and Linux environments. Alternative means of writing SD cards are available but not supported by this document.
 
+    Balena Etcher is licensed under the Apache License Version 2.0, see [here](https://github.com/balena-io/etcher/blob/master/LICENSE) for more information.
+
 - **Serial terminal application**: Used for serial communication with the target platform. [CoolTerm](https://freeware.the-meiers.org/) has been selected due to its availability on macOS, Windows and Linux environments. Alternative applications are available but not supported by this document.
+
+    CoolTerm is distributed as freeware with no documented limitations on use.
 
 ## Optional Requirements
 
@@ -26,4 +32,4 @@ Full details of the installation and configuration of a TFTP server is considere
 
 - **Linux**: TFTP servers are available for all major Linux distributions. On Fedora and CentOS a server can be installed via `yum -y install tftp-server`; on Debian and Ubuntu a server can be installed via `apt-get install tftpd-hpa`.
 
-- **Windows**: Multiple free TFTP server applications are available, e.g. [here](https://www.solarwinds.com/free-tools/free-tftp-server) and [here](https://pjo2.github.io/tftpd64).
+- **Windows**: Multiple free TFTP server applications are available, e.g. [SolarWinds TFTP Server](https://www.solarwinds.com/free-tools/free-tftp-server) (distributed as "100% free" with no documented limitations on use) and [Tftpd64](https://pjo2.github.io/tftpd64) (licensed under GNU General Public License, version 2).
