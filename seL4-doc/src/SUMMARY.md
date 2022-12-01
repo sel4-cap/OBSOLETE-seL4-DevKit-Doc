@@ -1,13 +1,10 @@
-# Licence
-
-This work is © Crown Copyright NCSC, licensed under a [Creative Commons Attribution 4.0 International License.](http://creativecommons.org/licenses/by/4.0/)
-
-
 # Summary
 
 [Introduction](introduction.md)
 
 [Glossary](glossary.md)
+
+[Licensing](licensing.md)
 
 # Basic Requirements
 
