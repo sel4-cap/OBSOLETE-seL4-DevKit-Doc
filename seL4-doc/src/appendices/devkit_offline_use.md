@@ -88,6 +88,8 @@ In order to download source code for offline use, an internet-connected computer
     repo init -u https://github.com/sel4/sel4test-manifest.git
     ```
 
+Note that Git might request a username and email, which can be any string and does not have to be associated with a Git account.
+
 3. Once the initialisation has completed, a synchronisation must be performed in order to download the source code from the various repositories. To do this run `repo sync` from the same folder.
 
 4. Once the `repo sync` has completed, all the required source files will be contained within the folder, and this folder can  be transferred to the offline machine. Instructions for building can be followed exactly as detailed in the rest of the documentation.
