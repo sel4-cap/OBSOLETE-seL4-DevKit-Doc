@@ -88,7 +88,7 @@ In order to download source code for offline use, an internet-connected computer
     repo init -u https://github.com/sel4/sel4test-manifest.git
     ```
 
-Note that Git might request a username and email, which can be any string and does not have to be associated with a Git account.
+Note that Repo might request a Github username and email. For read-only access, any string can be provided, but for write access a Github account will be required.
 
 3. Once the initialisation has completed, a synchronisation must be performed in order to download the source code from the various repositories. To do this run `repo sync` from the same folder.
 
